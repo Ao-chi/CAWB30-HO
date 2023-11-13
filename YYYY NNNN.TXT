@@ -1,0 +1,126 @@
+YYYY  NNNN
+YNNN  NYYY
+YYNN  NNYY
+YYYN  NNNY
+YNYN  NYNY
+YNNY  NYYN
+YNYY  NYNN
+YYNY  NNYN
+
+
+Requestor	        1 Search Ticket
+                    2 Submit Ticket
+                    3 Update Ticket
+                    4 Close Ticket
+                    6 Cancel Ticket
+Administrator	  7 User Administration
+Approver	        1 Search Ticket
+                    5 Approve Ticket
+Service Provider	  1 Search Ticket
+                    3 Update Ticket
+
+                          1 - SEARCH TICKET
+                          2 - SUBMIT TICKET
+                          3 - UPDATE TICKET
+                          4 - CLOSE TICKET
+                          5 - APPROVE TICKET
+                          6 - CANCEL TICKET
+                          7 - USER MAINTENANCE
+
+ EVALUATE WS-TYPE 
+           WHEN 'YYYY'
+           WHEN 'YYYN'
+                PERFORM 111-NEW-MAP
+               
+           WHEN 'YNNN'         
+           WHEN 'YNNY'
+                MOVE '5 - CANCEL TICKET' TO OPTN05I
+                MOVE SPACE TO OPTN06I
+                MOVE SPACES TO OPTN07I
+                PERFORM 111-NEW-MAP
+           WHEN 'YYNN'
+           WHEN 'YYNY'
+                MOVE '5 - CANCEL TICKET' TO OPTN05I
+                MOVE '6 - USER MAINTENANCE' TO OPTN06I
+                MOVE SPACES TO OPTN07I
+                PERFORM 111-NEW-MAP
+           WHEN 'YNYN'
+           WHEN 'YNYY'
+                MOVE SPACES TO OPTN07I
+                PERFORM 111-NEW-MAP            
+           WHEN 'NYYY'
+                MOVE '2 - UPDATE TICKET' TO OPTN02I
+                MOVE '3 - APPROVE TICKET' TO OPTN03I
+                MOVE '4 - USER MAINTENANCE' TO OPTN04I
+                MOVE SPACES TO OPTN05I
+                MOVE SPACE TO OPTN06I
+                MOVE SPACES TO OPTN07I 
+                PERFORM 111-NEW-MAP
+           WHEN 'NNYY'
+                MOVE '2 - UPDATE TICKET' TO OPTN02I
+                MOVE '3 - APPROVE TICKET' TO OPTN03I
+                MOVE SPACES TO OPTN04I
+                MOVE SPACES TO OPTN05I
+                MOVE SPACE TO OPTN06I
+                MOVE SPACES TO OPTN07I 
+                PERFORM 111-NEW-MAP    
+           WHEN 'NNNY'
+                MOVE '2 - UPDATE TICKET' TO OPTN02I
+                MOVE SPACES TO OPTN03I
+                MOVE SPACES TO OPTN04I
+                MOVE SPACES TO OPTN05I
+                MOVE SPACE TO OPTN06I
+                MOVE SPACES TO OPTN07I 
+                PERFORM 111-NEW-MAP 
+           WHEN 'NYNY'
+                MOVE '2 - UPDATE TICKET' TO OPTN02I
+                MOVE '3 - USER MAINTENANCE' TO OPTN03I
+                MOVE SPACES TO OPTN04I
+                MOVE SPACES TO OPTN05I
+                MOVE SPACE TO OPTN06I
+                MOVE SPACES TO OPTN07I 
+                PERFORM 111-NEW-MAP 
+           WHEN 'NYYN'
+                MOVE '2 - APPROVE TICKET' TO OPTN02I
+                MOVE '3 - USER MAINTENANCE' TO OPTN03I
+                MOVE SPACES TO OPTN04I
+                MOVE SPACES TO OPTN05I
+                MOVE SPACE TO OPTN06I
+                MOVE SPACES TO OPTN07I 
+                PERFORM 111-NEW-MAP 
+           WHEN 'NYNN'
+                MOVE '1 - USER MAINTENANCE' TO OPTN01I
+                MOVE SPACES TO OPTN02I
+                MOVE SPACES TO OPTN03I
+                MOVE SPACES TO OPTN04I
+                MOVE SPACES TO OPTN05I
+                MOVE SPACE TO OPTN06I
+                MOVE SPACES TO OPTN07I 
+                PERFORM 111-NEW-MAP 
+           WHEN 'NNYN'
+                MOVE '2 - APPROVE TICKET' TO OPTN02I
+                MOVE SPACES TO OPTN03I
+                MOVE SPACES TO OPTN04I
+                MOVE SPACES TO OPTN05I
+                MOVE SPACE TO OPTN06I
+                MOVE SPACES TO OPTN07I 
+                PERFORM 111-NEW-MAP 
+           WHEN 'NNNN'
+                MOVE SPACES TO OPTN01I
+                MOVE SPACES TO OPTN02I
+                MOVE SPACES TO OPTN03I
+                MOVE SPACES TO OPTN04I
+                MOVE SPACES TO OPTN05I
+                MOVE SPACE TO OPTN06I
+                MOVE SPACES TO OPTN07I 
+                PERFORM 111-NEW-MAP 
+           WHEN OTHER
+                MOVE SPACES TO ERRMSGO
+                EXEC CICS SEND TEXT
+                     FROM (WS-INVALID-TRNID)
+                     LENGTH (+15)
+                     ERASE
+                END-EXEC
+                EXEC CICS RETURN
+                END-EXEC
+           END-EVALUATE.

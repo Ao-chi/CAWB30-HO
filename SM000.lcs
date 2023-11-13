@@ -1,0 +1,111 @@
+CA-Realia CICS Ver:6.0.27  SM000.bms                                                                     13NOV23 12:24:45 PAGE  1
+
+    1          PRINT NOGEN
+    2 SM00S    DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      C
+    3                CTRL=(FREEKB,FRSET),TIOAPFX=YES,EXTATT=NO,              C
+    4                MAPATTS=(COLOR,HILIGHT)
+    5 SM00M    DFHMDI SIZE=(24,80)
+    6          DFHMDF POS=(01,01),LENGTH=06,ATTRB=(ASKIP,NORM),              C
+    7                INITIAL='SM00M'
+    8          DFHMDF POS=(01,32),LENGTH=18,ATTRB=(ASKIP,NORM),              C
+    9                INITIAL='SERVICE MANAGEMENT'
+   10          DFHMDF POS=(02,37),LENGTH=09,ATTRB=(ASKIP,NORM),              C
+   11                INITIAL='MAIN MENU'
+   12 OPTN01   DFHMDF POS=(06,33),LENGTH=20,ATTRB=(ASKIP,NORM),              C
+   13                INITIAL='1 - SEARCH TICKET'
+   14 OPTN02   DFHMDF POS=(08,33),LENGTH=20,ATTRB=(ASKIP,NORM),              C
+   15                INITIAL='2 - SUBMIT TICKET'
+   16 OPTN03   DFHMDF POS=(10,33),LENGTH=20,ATTRB=(ASKIP,NORM),              C
+   17                INITIAL='3 - UPDATE TICKET'
+   18 OPTN04   DFHMDF POS=(12,33),LENGTH=20,ATTRB=(ASKIP,NORM),              C
+   19                INITIAL='4 - CLOSE TICKET'
+   20 OPTN05   DFHMDF POS=(14,33),LENGTH=20,ATTRB=(ASKIP,NORM),              C
+   21                INITIAL='5 - APPROVE TICKET'
+   22 OPTN06   DFHMDF POS=(16,33),LENGTH=20,ATTRB=(ASKIP,NORM),              C
+   23                INITIAL='6 - CANCEL TICKET'
+   24 OPTN07   DFHMDF POS=(18,33),LENGTH=20,ATTRB=(ASKIP,NORM),              C
+   25                INITIAL='7 - USER MAINTENANCE'
+   26          DFHMDF POS=(20,33),LENGTH=15,ATTRB=(ASKIP,NORM),              C
+   27                INITIAL='ENTER OPTION : '
+   28          DFHMDF POS=(21,33),LENGTH=15,ATTRB=(ASKIP,NORM),              C
+   29                INITIAL='ENTER TICKET : '
+   30          DFHMDF POS=(24,13),LENGTH=10,ATTRB=(ASKIP,NORM),              C
+   31                INITIAL='PF3 - EXIT'
+   32 OPTION   DFHMDF POS=(20,50),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET)
+   33 TICKET   DFHMDF POS=(21,50),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET)
+   34 ERRMSG   DFHMDF POS=(22,01),LENGTH=71,ATTRB=(ASKIP,NORM,IC,FSET)
+   35 DATE     DFHMDF POS=(01,70),LENGTH=10,ATTRB=(ASKIP,NORM,IC,FSET)
+   36 TIME     DFHMDF POS=(02,70),LENGTH=08,ATTRB=(ASKIP,NORM,IC,FSET)
+   37 SM001M   DFHMDI SIZE=(24,80)
+   38          DFHMDF POS=(01,01),LENGTH=06,ATTRB=(ASKIP,NORM),              C
+   39                INITIAL='SM001'
+   40          DFHMDF POS=(01,32),LENGTH=18,ATTRB=(ASKIP,NORM),              C
+   41                INITIAL='SERVICE MANAGEMENT'
+   42          DFHMDF POS=(02,01),LENGTH=05,ATTRB=(ASKIP,NORM),              C
+   43                INITIAL='PAGE '
+   44          DFHMDF POS=(05,01),LENGTH=08,ATTRB=(ASKIP,NORM),              C
+   45                INITIAL='TITLE  :'
+   46          DFHMDF POS=(05,46),LENGTH=09,ATTRB=(ASKIP,NORM),              C
+   47                INITIAL='STATUS  :'
+   48          DFHMDF POS=(06,01),LENGTH=09,ATTRB=(ASKIP,NORM),              C
+   49                INITIAL='TO DATE :'
+   50          DFHMDF POS=(06,46),LENGTH=09,ATTRB=(ASKIP,NORM),              C
+   51                INITIAL='FR DATE :'
+   52          DFHMDF POS=(08,01),LENGTH=09,ATTRB=(ASKIP,NORM),              C
+   53                INITIAL='U/C/A/X'
+   54          DFHMDF POS=(08,12),LENGTH=06,ATTRB=(ASKIP,NORM),              C
+   55                INITIAL='NUMBER'
+   56          DFHMDF POS=(08,28),LENGTH=12,ATTRB=(ASKIP,NORM),              C
+   57                INITIAL='TICKET TITLE'
+   58          DFHMDF POS=(08,50),LENGTH=06,ATTRB=(ASKIP,NORM),              CCA-Realia CICS Ver:6.0.27  SM000.bms                                                                     13NOV23 12:24:45 PAGE  2
+
+   59                INITIAL='STATUS'
+   60          DFHMDF POS=(08,60),LENGTH=07,ATTRB=(ASKIP,NORM),              C
+   61                INITIAL='UPD DTE'
+   62          DFHMDF POS=(08,72),LENGTH=06,ATTRB=(ASKIP,NORM),              C
+   63                INITIAL='UPD BY'
+   64          DFHMDF POS=(23,02),LENGTH=10,ATTRB=(ASKIP,NORM),              C
+   65                INITIAL='PF2 - ADD'
+   66          DFHMDF POS=(23,13),LENGTH=10,ATTRB=(ASKIP,NORM),              C
+   67                INITIAL='PF3 - EXIT'
+   68          DFHMDF POS=(23,25),LENGTH=10,ATTRB=(ASKIP,NORM),              C
+   69                INITIAL='PF5 - FIND'
+   70          DFHMDF POS=(23,40),LENGTH=08,ATTRB=(ASKIP,NORM),              C
+   71                INITIAL='PF7 - UP'
+   72          DFHMDF POS=(23,53),LENGTH=10,ATTRB=(ASKIP,NORM),              C
+   73                INITIAL='PF8 - DOWN'
+   74          DFHMDF POS=(24,02),LENGTH=12,ATTRB=(ASKIP,NORM),              C
+   75                INITIAL='PF12 - RESET'
+   76 ERRMSG1  DFHMDF POS=(22,01),LENGTH=71,ATTRB=(ASKIP,NORM,IC,FSET)
+   77 DATE1    DFHMDF POS=(01,70),LENGTH=10,ATTRB=(ASKIP,NORM,IC,FSET)
+   78 TIME1    DFHMDF POS=(02,70),LENGTH=08,ATTRB=(ASKIP,NORM,IC,FSET)
+   79 PAGE     DFHMDF POS=(02,07),LENGTH=03,ATTRB=(ASKIP,NORM,IC,FSET)
+   80 TODATE   DFHMDF POS=(06,12),LENGTH=10,ATTRB=(ASKIP,NORM,IC,FSET)
+   81 FRDATE   DFHMDF POS=(06,57),LENGTH=10,ATTRB=(ASKIP,NORM,IC,FSET)
+   82 SELECT   DFHMDF POS=(10,05),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET),     C
+   83                 OCCURS=11
+   84 TIXNUM   DFHMDF POS=(10,06),LENGTH=06,ATTRB=(ASKIP,NORM,IC,FSET),      C
+   85                 OCCURS=11
+W **** This field overlaps previously defined field
+   86 TIXTITLE DFHMDF POS=(10,20),LENGTH=25,ATTRB=(ASKIP,NORM,IC,FSET),      C
+   87                 OCCURS=11
+W **** This field overlaps previously defined field
+W **** Label should be less than 8 characters long
+   88 STATS    DFHMDF POS=(10,50),LENGTH=10,ATTRB=(ASKIP,NORM,IC,FSET),      C
+   89                 OCCURS=11
+   90 LSTUPD   DFHMDF POS=(10,65),LENGTH=08,ATTRB=(ASKIP,NORM,IC,FSET),      C
+   91                 OCCURS=11
+W **** This field overlaps previously defined field
+   92 UPDBY    DFHMDF POS=(10,73),LENGTH=06,ATTRB=(ASKIP,NORM,IC,FSET),      C
+   93                 OCCURS=11
+W **** This field overlaps previously defined field
+   94          DFHMSD TYPE=FINAL
+      SM000 loaded with 2 MAPS, 109 FIELDS and 383 Bytes of Literals
+
+   95          END
+There were     5 (W) warning(s). Proceed with caution.CA-Realia CICS Ver:6.0.27  SM000.bms                                                                     13NOV23 12:24:46 PAGE  3
+
+      COBOL COPY file generated
+
+      Mapset generated. Object size is 3,340.
+

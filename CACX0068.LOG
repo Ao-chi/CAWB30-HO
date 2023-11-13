@@ -1,0 +1,14 @@
+Record Type: Text, 23/11/07, 10:48:42:32
+CACX0003E: 10:48:41 Transaction SMOO is unrecognized.
+
+Record Type: Message, 23/11/07, 10:49:28:02
+CACX0026E: Load of Program SW00P failed. ResultCode:66
+
+Record Type: Text, 23/11/07, 10:49:28:36
+CACX0004E: 10:49:28 Transaction SW00 failed. ProgID SW00P did not load.
+
+Record Type: Message, 23/11/07, 10:49:35:90
+CACX0026E: Load of Program SW00P failed. ResultCode:66
+
+Record Type: Text, 23/11/07, 10:49:36:25
+CACX0004E: 10:49:35 Transaction SM00 failed. ProgID SW00P did not load.
