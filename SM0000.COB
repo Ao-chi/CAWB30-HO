@@ -39,13 +39,22 @@
        01  WS-COMMAREA.
            05 WS-PROG-STATE                      PIC X(15).
            05 WS-PGMID                           PIC X(06).
+           05 USERID.
+              10  USERID7                        PIC X(7).
+              10  FILLER                         PIC X(1).
+           05 USR-TYPE.
+              10 USR-REQUESTOR                   PIC X.
+              10 USR-ADMIN                       PIC X.  
+              10 USR-APPROVER                    PIC X.
+              10 USR-SERVICE                     PIC X.
+           05 WS-STATE                           PIC X.   
        77 WS-RETNCODE                            PIC S9(8) COMP.
            COPY SM000.
            COPY DFHAID.
            COPY DFHBMSCA.
 
        LINKAGE SECTION.
-       01  DFHCOMMAREA                           PIC X(21).
+       01  DFHCOMMAREA                           PIC X(50).
       *
        PROCEDURE DIVISION.
        100-PROCESS.
@@ -57,11 +66,14 @@
            IF EIBTRNID = 'SM00'
               MOVE DFHCOMMAREA TO WS-COMMAREA
               MOVE 'SM0000' TO WS-PGMID
+              MOVE WS-TYPE TO USR-TYPE
+              MOVE WS-USERID TO USERID
               IF EIBCALEN NOT = +0
                  PERFORM 200-REC-MAP
               ELSE
                  MOVE 'ENTER OPTION AND PRESS ENTER' TO ERRMSGO 
                  PERFORM 110-VERIFY-ROLE
+              END-IF   
            ELSE
               MOVE SPACES TO ERRMSGO
               EXEC CICS SEND TEXT
@@ -225,7 +237,6 @@
               MOVE WS-MAPFAIL TO ERRMSGO
               PERFORM 110-VERIFY-ROLE
            END-IF.
-           MOVE WS-PROG-STATE TO ERRMSGO
            PERFORM 400-CHECK-EIBAID.
        200-EXIT.
            EXIT.
@@ -236,9 +247,7 @@
                 PROGRAM('SM001')
                 COMMAREA(WS-COMMAREA)
                 LENGTH(WS-LENGTH)
-                RESP(WS-RETNCODE)
-           END-EXEC
-           MOVE WS-PROG-STATE TO ERRMSGO.
+           END-EXEC.
        21A-EXIT.
            EXIT.
 

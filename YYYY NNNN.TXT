@@ -8,15 +8,15 @@ YNYY  NYNN
 YYNY  NNYN
 
 
-Requestor	        1 Search Ticket
+Requestor	          1 Search Ticket
                     2 Submit Ticket
                     3 Update Ticket
                     4 Close Ticket
                     6 Cancel Ticket
-Administrator	  7 User Administration
-Approver	        1 Search Ticket
+Administrator	     7 User Administration
+Approver	          1 Search Ticket
                     5 Approve Ticket
-Service Provider	  1 Search Ticket
+Service Provider	1 Search Ticket
                     3 Update Ticket
 
                           1 - SEARCH TICKET
@@ -124,3 +124,11 @@ Service Provider	  1 Search Ticket
                 EXEC CICS RETURN
                 END-EXEC
            END-EVALUATE.
+   01  WS-DETL-LINE        REDEFINES SM001MI PIC X(226).
+          05 FILLER                             PIC X(109).
+          05 DETL-SELECT                        OCCURS 11 TIMES.
+             10 DETL-SELECTL				     PIC S9(4) COMP.
+	         10 DETL-SELECTF				     PIC X.
+	         10 FILLER REDEFINES DETL-SELECTF   PIC X.
+                15 DETL-SELECTA			     PIC X.
+	         10 DETL-SELECTI				     PIC X(001).

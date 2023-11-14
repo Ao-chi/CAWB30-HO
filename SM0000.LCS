@@ -1,4 +1,4 @@
-CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
+CA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
 
 
      1	     CBL XOPTS(COBOL2)
@@ -42,14 +42,25 @@
     39	     01  WS-COMMAREA.
     40		 05 WS-PROG-STATE		       PIC X(15).
     41		 05 WS-PGMID			       PIC X(06).
-    42	     77 WS-RETNCODE			       PIC S9(8) COMP.
-    43	    P	 COPY SM000.
-    43	    *$PP-START-COPY E:\work-bpi\CAWB30-HO\SM000.COB
+    42		 05 USERID.
+    43		    10	USERID7 		       PIC X(7).
+    44		    10	FILLER			       PIC X(1).
+    45		 05 USR-TYPE.
+    46		    10 USR-REQUESTOR		       PIC X.
+    47		    10 USR-ADMIN		       PIC X.
+    48		    10 USR-APPROVER		       PIC X.
+    49		    10 USR-SERVICE		       PIC X.
+    50		 05 WS-STATE			       PIC X.
+    51	     77 WS-RETNCODE			       PIC S9(8) COMP.
+    52	    P	 COPY SM000.
+    52	    *$PP-START-COPY D:\work\CAWB30-HO\SM000.COB
      1	    * SYMBOLIC MAP of SM000 Created by CACXBMS Version 6.0.27
      2	     01  SM00MI.
      3		 02  FILLER				    PIC X(12).
      4		 02  OPTN01L				    PIC S9(4) COMP.
-     5		 02  OPTN01F				    PIC X.
+     5		 02  OPTN01F				    PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
+
+
      6		 02  FILLER REDEFINES OPTN01F.
      7		     03  OPTN01A			    PIC X.
      8		 02  OPTN01I				    PIC X(020).
@@ -58,9 +69,7 @@
     11		 02  FILLER REDEFINES OPTN02F.
     12		     03  OPTN02A			    PIC X.
     13		 02  OPTN02I				    PIC X(020).
-    14		 02  OPTN03L				    PIC S9(4) COMP.CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
-
-
+    14		 02  OPTN03L				    PIC S9(4) COMP.
     15		 02  OPTN03F				    PIC X.
     16		 02  FILLER REDEFINES OPTN03F.
     17		     03  OPTN03A			    PIC X.
@@ -109,7 +118,9 @@
     60		 02  TIMEF				    PIC X.
     61		 02  FILLER REDEFINES TIMEF.
     62		     03  TIMEA				    PIC X.
-    63		 02  TIMEI				    PIC X(008).
+    63		 02  TIMEI				    PIC X(008).CA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
+
+
     64	     01  SM00MO REDEFINES SM00MI.
     65		 02  FILLER				    PIC X(12).
     66		 02  FILLER				    PIC XX.
@@ -118,9 +129,7 @@
     69		 02  FILLER				    PIC XX.
     70		 02  FILLER				    PIC X.
     71		 02  OPTN02O				    PIC X(020).
-    72		 02  FILLER				    PIC XX.CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
-
-
+    72		 02  FILLER				    PIC XX.
     73		 02  FILLER				    PIC X.
     74		 02  OPTN03O				    PIC X(020).
     75		 02  FILLER				    PIC XX.
@@ -150,125 +159,9 @@
     99		 02  FILLER				    PIC XX.
    100		 02  FILLER				    PIC X.
    101		 02  TIMEO				    PIC X(008).
-   102	     01  SM001MI.
-   103		 02  FILLER				    PIC X(12).
-   104		 02  ERRMSG1L				    PIC S9(4) COMP.
-   105		 02  ERRMSG1F				    PIC X.
-   106		 02  FILLER REDEFINES ERRMSG1F.
-   107		     03  ERRMSG1A			    PIC X.
-   108		 02  ERRMSG1I				    PIC X(071).
-   109		 02  DATE1L				    PIC S9(4) COMP.
-   110		 02  DATE1F				    PIC X.
-   111		 02  FILLER REDEFINES DATE1F.
-   112		     03  DATE1A 			    PIC X.
-   113		 02  DATE1I				    PIC X(010).
-   114		 02  TIME1L				    PIC S9(4) COMP.
-   115		 02  TIME1F				    PIC X.
-   116		 02  FILLER REDEFINES TIME1F.
-   117		     03  TIME1A 			    PIC X.
-   118		 02  TIME1I				    PIC X(008).
-   119		 02  PAGEL				    PIC S9(4) COMP.
-   120		 02  PAGEF				    PIC X.
-   121		 02  FILLER REDEFINES PAGEF.
-   122		     03  PAGEA				    PIC X.
-   123		 02  PAGEI				    PIC X(003).
-   124		 02  TODATEL				    PIC S9(4) COMP.
-   125		 02  TODATEF				    PIC X.
-   126		 02  FILLER REDEFINES TODATEF.
-   127		     03  TODATEA			    PIC X.
-   128		 02  TODATEI				    PIC X(010).
-   129		 02  FRDATEL				    PIC S9(4) COMP.
-   130		 02  FRDATEF				    PIC X.CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
-
-
-   131		 02  FILLER REDEFINES FRDATEF.
-   132		     03  FRDATEA			    PIC X.
-   133		 02  FRDATEI				    PIC X(010).
-   134		 02  SELECTD OCCURS 011 TIMES.
-   135		     03  SELECTL			    PIC S9(4) COMP.
-   136		     03  SELECTF			    PIC X.
-   137		     03  FILLER REDEFINES SELECTF.
-   138			 04  SELECTA			    PIC X.
-   139		     03  SELECTI			    PIC X(001).
-   140		 02  TIXNUMD OCCURS 011 TIMES.
-   141		     03  TIXNUML			    PIC S9(4) COMP.
-   142		     03  TIXNUMF			    PIC X.
-   143		     03  FILLER REDEFINES TIXNUMF.
-   144			 04  TIXNUMA			    PIC X.
-   145		     03  TIXNUMI			    PIC X(006).
-   146		 02  TIXTITLED OCCURS 011 TIMES.
-   147		     03  TIXTITLEL			    PIC S9(4) COMP.
-   148		     03  TIXTITLEF			    PIC X.
-   149		     03  FILLER REDEFINES TIXTITLEF.
-   150			 04  TIXTITLEA			    PIC X.
-   151		     03  TIXTITLEI			    PIC X(025).
-   152		 02  STATSD OCCURS 011 TIMES.
-   153		     03  STATSL 			    PIC S9(4) COMP.
-   154		     03  STATSF 			    PIC X.
-   155		     03  FILLER REDEFINES STATSF.
-   156			 04  STATSA			    PIC X.
-   157		     03  STATSI 			    PIC X(010).
-   158		 02  LSTUPDD OCCURS 011 TIMES.
-   159		     03  LSTUPDL			    PIC S9(4) COMP.
-   160		     03  LSTUPDF			    PIC X.
-   161		     03  FILLER REDEFINES LSTUPDF.
-   162			 04  LSTUPDA			    PIC X.
-   163		     03  LSTUPDI			    PIC X(008).
-   164		 02  UPDBYD OCCURS 011 TIMES.
-   165		     03  UPDBYL 			    PIC S9(4) COMP.
-   166		     03  UPDBYF 			    PIC X.
-   167		     03  FILLER REDEFINES UPDBYF.
-   168			 04  UPDBYA			    PIC X.
-   169		     03  UPDBYI 			    PIC X(006).
-   170	     01  SM001MO REDEFINES SM001MI.
-   171		 02  FILLER				    PIC X(12).
-   172		 02  FILLER				    PIC XX.
-   173		 02  FILLER				    PIC X.
-   174		 02  ERRMSG1O				    PIC X(071).
-   175		 02  FILLER				    PIC XX.
-   176		 02  FILLER				    PIC X.
-   177		 02  DATE1O				    PIC X(010).
-   178		 02  FILLER				    PIC XX.
-   179		 02  FILLER				    PIC X.
-   180		 02  TIME1O				    PIC X(008).
-   181		 02  FILLER				    PIC XX.
-   182		 02  FILLER				    PIC X.
-   183		 02  PAGEO				    PIC X(003).
-   184		 02  FILLER				    PIC XX.
-   185		 02  FILLER				    PIC X.
-   186		 02  TODATEO				    PIC X(010).
-   187		 02  FILLER				    PIC XX.
-   188		 02  FILLER				    PIC X.CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
-
-
-   189		 02  FRDATEO				    PIC X(010).
-   190		 02  DFHMS001 OCCURS 011 TIMES.
-   191		     03  FILLER 			    PIC XX.
-   192		     03  FILLER 			    PIC X.
-   193		     03  SELECTO			    PIC X(001).
-   194		 02  DFHMS002 OCCURS 011 TIMES.
-   195		     03  FILLER 			    PIC XX.
-   196		     03  FILLER 			    PIC X.
-   197		     03  TIXNUMO			    PIC X(006).
-   198		 02  DFHMS003 OCCURS 011 TIMES.
-   199		     03  FILLER 			    PIC XX.
-   200		     03  FILLER 			    PIC X.
-   201		     03  TIXTITLEO			    PIC X(025).
-   202		 02  DFHMS004 OCCURS 011 TIMES.
-   203		     03  FILLER 			    PIC XX.
-   204		     03  FILLER 			    PIC X.
-   205		     03  STATSO 			    PIC X(010).
-   206		 02  DFHMS005 OCCURS 011 TIMES.
-   207		     03  FILLER 			    PIC XX.
-   208		     03  FILLER 			    PIC X.
-   209		     03  LSTUPDO			    PIC X(008).
-   210		 02  DFHMS006 OCCURS 011 TIMES.
-   211		     03  FILLER 			    PIC XX.
-   212		     03  FILLER 			    PIC X.
-   213		     03  UPDBYO 			    PIC X(006).
-    43	    *$PP-END-COPY
-    44	    P	 COPY DFHAID.
-    44	    *$PP-START-COPY E:\WORK-BPI\CAWB30-HO\CICSCOPY\DFHAID.COB
+    52	    *$PP-END-COPY
+    53	    P	 COPY DFHAID.
+    53	    *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHAID.COB
      1	     01  DFHAID.
      2	    *
      3	    * CA-Realia CICS 6.0 Computer Associates International, Inc.
@@ -285,7 +178,9 @@
     14           05  DFHCLEAR                  PIC X VALUE '_'.
     15           05  DFHPA1                    PIC X VALUE '%'.
     16           05  DFHPA2                    PIC X VALUE '>'.
-    17           05  DFHPA3                    PIC X VALUE ','.
+    17           05  DFHPA3                    PIC X VALUE ','.CA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
+
+
     18           05  DFHPF1                    PIC X VALUE '1'.
     19           05  DFHPF2                    PIC X VALUE '2'.
     20           05  DFHPF3                    PIC X VALUE '3'.
@@ -298,9 +193,7 @@
     27           05  DFHPF10                   PIC X VALUE ':'.
     28           05  DFHPF11                   PIC X VALUE '#'.
     29           05  DFHPF12                   PIC X VALUE '@'.
-    30           05  DFHPF13                   PIC X VALUE 'A'.CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
-
-
+    30           05  DFHPF13                   PIC X VALUE 'A'.
     31           05  DFHPF14                   PIC X VALUE 'B'.
     32           05  DFHPF15                   PIC X VALUE 'C'.
     33           05  DFHPF16                   PIC X VALUE 'D'.
@@ -327,9 +220,9 @@
     54	    *	 It is set by using <Ctrl>+C or <Ctrl>+<Break> Keys
     55           05  DFHQUIT                   PIC X VALUE '!'.
     56		 05  DFHNULL		       PIC X VALUE LOW-VALUE.
-    44	    *$PP-END-COPY
-    45	    P	 COPY DFHBMSCA.
-    45	    *$PP-START-COPY E:\WORK-BPI\CAWB30-HO\CICSCOPY\DFHBMSCA.COB
+    53	    *$PP-END-COPY
+    54	    P	 COPY DFHBMSCA.
+    54	    *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHBMSCA.COB
      1	     01  DFHBMSCA.
      2	    *
      3	    * CA-Realia CICS 6.0 Computer Associates International, Inc.
@@ -345,7 +238,9 @@
     13	    *
     14	    *	    The only exceptions are some 3270 Data Stream Orders
     15	    *	    They use different Hexadecimal values for ASCII and
-    16	    *	    EBCDIC and they cannot be expressed as quoted literals
+    16	    *	    EBCDIC and they cannot be expressed as quoted literalsCA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
+
+
     17	    *	    as the values are <Line Feed>, <Tab>, <End of File> etc.
     18	    *	    characters in ASCII
     19	    *
@@ -358,9 +253,7 @@
     26	    *	    must be changed.
     27	    *
     28	    *	    An alternative is to use REPLACING to change the values.
-    29	    *CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
-
-
+    29	    *
     30	    *	 i.e. COPY DFHBMSCA replacing
     31	    *			   ==005== BY ==009==  *> DFHPT
     32	    *			   ==021== BY ==010==  *> DFHNL
@@ -405,7 +298,9 @@
     71	    *						     VALUE APOST
     72           05  DFHBMS-PRO-BRY-FSET               PIC X VALUE 'Z'.
     73           05  DFHBMS-PRO-DAR-FSET               PIC X VALUE '_'.
-    74           05  DFHBMS-NUM-BRY                    PIC X VALUE 'Q'.
+    74           05  DFHBMS-NUM-BRY                    PIC X VALUE 'Q'.CA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
+
+
     75           05  DFHBMS-NUM-DAR                    PIC X VALUE '*'.
     76           05  DFHBMS-NUM-DAR-FSET               PIC X VALUE ')'.
     77	    *
@@ -418,9 +313,7 @@
     84		 05  DFHBMCUR-VAL VALUE 002	       PIC S9(4) COMP-4.
     85		 05  FILLER REDEFINES DFHBMCUR-VAL.
     86		     10  FILLER 		       PIC X.
-    87		     10  DFHBMCUR		       PIC X.CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
-
-
+    87		     10  DFHBMCUR		       PIC X.
     88      *                                          x'02'.
     89		 05  DFHBMMEC-VAL VALUE 130	       PIC S9(4) COMP-4.
     90		 05  FILLER REDEFINES DFHBMMEC-VAL.
@@ -465,7 +358,9 @@
    129           05  DFHUNDLN                          PIC X VALUE '4'.
    130	    *
    131	    ******************************************************************
-   132	    *	 supported 327X Data Stream Orders
+   132	    *	 supported 327X Data Stream OrdersCA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
+
+
    133	    *
    134		 05  DFHSBA-VAL VALUE 017		PIC S9(4) COMP-4.
    135		 05  FILLER REDEFINES DFHSBA-VAL.
@@ -478,9 +373,7 @@
    142		     10  DFHEUA 		       PIC X.
    143      *                                              x'12'
    144		 05  DFHIC-VAL VALUE 019	       PIC S9(4) COMP-4.
-   145		 05  FILLER REDEFINES DFHIC-VAL.CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
-
-
+   145		 05  FILLER REDEFINES DFHIC-VAL.
    146		     10  FILLER 		       PIC X.
    147		     10  DFHIC			       PIC X.
    148      *                                              X'13'.
@@ -525,7 +418,9 @@
    187	    ******************************************************************
    188	    *	 unsupported 327X Data Stream order codes
    189	    *
-   190		 05  DFHSA-VAL VALUE 040	       PIC S9(4) COMP-4.
+   190		 05  DFHSA-VAL VALUE 040	       PIC S9(4) COMP-4.CA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
+
+
    191		     88 DFHSA-VAL-EBCDIC	       VALUE 40.
    192		     88 DFHSA-VAL-ASCII 	       VALUE 21.
    193		 05  FILLER REDEFINES DFHSA-VAL.
@@ -538,9 +433,7 @@
    200		     10  FILLER 		       PIC X.
    201		     10  DFHGE			       PIC X.
    202      *                                              X'08'.
-   203	    *CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
-
-
+   203	    *
    204	    ******************************************************************
    205	    *	 SFE and MF supported attribute types
    206	    *
@@ -585,7 +478,9 @@
    245	    ******************************************************************
    246	    *	 unsupported Miscellaneous attributes and constants
    247	    *
-   248		 05  DFHALL			       PIC X VALUE LOW-VALUES.
+   248		 05  DFHALL			       PIC X VALUE LOW-VALUES.CA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
+
+
    249           05  DFHBASE                           PIC X VALUE '0'.
    250		 05  DFHBMDET			       PIC X VALUE LOW-VALUES.
    251		 05  DFHBMPSOSI-VAL VALUE 3599	       PIC S9(4) COMP-4.
@@ -598,9 +493,7 @@
    258           05  DFHERROR                          PIC X VALUE '¶'.
    259      *                                              EBCDIC X'1A'.
    260      *                                              ASCII  X'B6'.
-   261           05  DFHFIL                            PIC X VALUE '4'.CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
-
-
+   261           05  DFHFIL                            PIC X VALUE '4'.
    262           05  DFHMENT                           PIC X VALUE '2'.
    263           05  DFHMET                            PIC X VALUE '3'.
    264           05  DFHMFE                            PIC X VALUE '6'.
@@ -628,599 +521,599 @@
    286		     10  DFHFM			       PIC X.
    287      *                                              EBCDIC X'1E'.
    288		 05  DFHEO VALUE HIGH-VALUE	       PIC X.
-    45	    *$PP-END-COPY
-    46
-    47	     LINKAGE SECTION.
-    48	     01  DFHCOMMAREA			       PIC X(21).
-    49	    *
-    50	     PROCEDURE DIVISION 					      REALCICS
-    51	     100-PROCESS.
-    52		 EXEC CICS IGNORE CONDITION
-    53			   ERROR
-    54		 END-EXEC
-    55		 PERFORM 300-VERIFY-USER
-    56
-    57           IF EIBTRNID = 'SM00'
-    58		    MOVE DFHCOMMAREA TO WS-COMMAREA
-    59              MOVE 'SM0000' TO WS-PGMID
-    60		    IF EIBCALEN NOT = +0
-    61		       PERFORM 200-REC-MAP
-    62		    ELSE
-    63                 MOVE 'ENTER OPTION AND PRESS ENTER' TO ERRMSGO
-    64		       PERFORM 110-VERIFY-ROLE
-    65		 ELSE
-    66		    MOVE SPACES TO ERRMSGO
-    67		    EXEC CICS SEND TEXT
-    68			    FROM (WS-INVALID-TRNID)
-    69			    LENGTH (+15)
-    70			    ERASE
-    71		       END-EXEC
-    72		    EXEC CICS RETURN
-    73		    END-EXEC
-    74		 END-IF.
-    75	     100-EXIT.CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
+    54	    *$PP-END-COPY
+    55
+    56	     LINKAGE SECTION.
+    57	     01  DFHCOMMAREA			       PIC X(50).
+    58	    *
+    59	     PROCEDURE DIVISION 					      REALCICS
+    60	     100-PROCESS.
+    61		 EXEC CICS IGNORE CONDITION
+    62			   ERROR
+    63		 END-EXEC
+    64		 PERFORM 300-VERIFY-USER
+    65
+    66           IF EIBTRNID = 'SM00'
+    67		    MOVE DFHCOMMAREA TO WS-COMMAREA
+    68              MOVE 'SM0000' TO WS-PGMID
+    69		    MOVE WS-TYPE TO USR-TYPE
+    70		    MOVE WS-USERID TO USERID
+    71		    IF EIBCALEN NOT = +0CA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
 
 
-    76		 EXIT.
-    77
-    78	     110-VERIFY-ROLE.
-    79		 EVALUATE WS-TYPE
-    80           WHEN 'YYYY'
-    81           WHEN 'YYYN'
-    82		      PERFORM 111-NEW-MAP
-    83           WHEN 'YNNN'
-    84           WHEN 'YNNY'
-    85                MOVE '5 - CANCEL TICKET' TO OPTN05I
-    86		      MOVE SPACE TO OPTN06I
-    87		      MOVE SPACES TO OPTN07I
-    88		      PERFORM 111-NEW-MAP
-    89           WHEN 'YYNN'
-    90           WHEN 'YYNY'
-    91                MOVE '5 - CANCEL TICKET' TO OPTN05I
-    92                MOVE '6 - USER MAINTENANCE' TO OPTN06I
-    93		      MOVE SPACES TO OPTN07I
+    72		       PERFORM 200-REC-MAP
+    73		    ELSE
+    74                 MOVE 'ENTER OPTION AND PRESS ENTER' TO ERRMSGO
+    75		       PERFORM 110-VERIFY-ROLE
+    76		    END-IF
+    77		 ELSE
+    78		    MOVE SPACES TO ERRMSGO
+    79		    EXEC CICS SEND TEXT
+    80			    FROM (WS-INVALID-TRNID)
+    81			    LENGTH (+15)
+    82			    ERASE
+    83		       END-EXEC
+    84		    EXEC CICS RETURN
+    85		    END-EXEC
+    86		 END-IF.
+    87	     100-EXIT.
+    88		 EXIT.
+    89
+    90	     110-VERIFY-ROLE.
+    91		 EVALUATE WS-TYPE
+    92           WHEN 'YYYY'
+    93           WHEN 'YYYN'
     94		      PERFORM 111-NEW-MAP
-    95           WHEN 'YNYN'
-    96           WHEN 'YNYY'
-    97		      MOVE SPACES TO OPTN07I
-    98		      PERFORM 111-NEW-MAP
-    99           WHEN 'NYYY'
-   100                MOVE '2 - UPDATE TICKET' TO OPTN02I
-   101                MOVE '3 - APPROVE TICKET' TO OPTN03I
-   102                MOVE '4 - USER MAINTENANCE' TO OPTN04I
-   103		      MOVE SPACES TO OPTN05I
-   104		      MOVE SPACE TO OPTN06I
+    95           WHEN 'YNNN'
+    96           WHEN 'YNNY'
+    97                MOVE '5 - CANCEL TICKET' TO OPTN05I
+    98		      MOVE SPACE TO OPTN06I
+    99		      MOVE SPACES TO OPTN07I
+   100		      PERFORM 111-NEW-MAP
+   101           WHEN 'YYNN'
+   102           WHEN 'YYNY'
+   103                MOVE '5 - CANCEL TICKET' TO OPTN05I
+   104                MOVE '6 - USER MAINTENANCE' TO OPTN06I
    105		      MOVE SPACES TO OPTN07I
    106		      PERFORM 111-NEW-MAP
-   107           WHEN 'NNYY'
-   108                MOVE '2 - UPDATE TICKET' TO OPTN02I
-   109                MOVE '3 - APPROVE TICKET' TO OPTN03I
-   110		      MOVE SPACES TO OPTN04I
-   111		      MOVE SPACES TO OPTN05I
-   112		      MOVE SPACE TO OPTN06I
-   113		      MOVE SPACES TO OPTN07I
-   114		      PERFORM 111-NEW-MAP
-   115           WHEN 'NNNY'
-   116                MOVE '2 - UPDATE TICKET' TO OPTN02I
-   117		      MOVE SPACES TO OPTN03I
-   118		      MOVE SPACES TO OPTN04I
-   119		      MOVE SPACES TO OPTN05I
-   120		      MOVE SPACE TO OPTN06I
-   121		      MOVE SPACES TO OPTN07I
-   122		      PERFORM 111-NEW-MAP
-   123           WHEN 'NYNY'
-   124                MOVE '2 - UPDATE TICKET' TO OPTN02I
-   125                MOVE '3 - USER MAINTENANCE' TO OPTN03I
-   126		      MOVE SPACES TO OPTN04I
-   127		      MOVE SPACES TO OPTN05I
-   128		      MOVE SPACE TO OPTN06I
-   129		      MOVE SPACES TO OPTN07I
-   130		      PERFORM 111-NEW-MAP
-   131           WHEN 'NYYN'
-   132                MOVE '2 - APPROVE TICKET' TO OPTN02I
-   133                MOVE '3 - USER MAINTENANCE' TO OPTN03ICA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
+   107           WHEN 'YNYN'
+   108           WHEN 'YNYY'
+   109		      MOVE SPACES TO OPTN07I
+   110		      PERFORM 111-NEW-MAP
+   111           WHEN 'NYYY'
+   112                MOVE '2 - UPDATE TICKET' TO OPTN02I
+   113                MOVE '3 - APPROVE TICKET' TO OPTN03I
+   114                MOVE '4 - USER MAINTENANCE' TO OPTN04I
+   115		      MOVE SPACES TO OPTN05I
+   116		      MOVE SPACE TO OPTN06I
+   117		      MOVE SPACES TO OPTN07I
+   118		      PERFORM 111-NEW-MAP
+   119           WHEN 'NNYY'
+   120                MOVE '2 - UPDATE TICKET' TO OPTN02I
+   121                MOVE '3 - APPROVE TICKET' TO OPTN03I
+   122		      MOVE SPACES TO OPTN04I
+   123		      MOVE SPACES TO OPTN05I
+   124		      MOVE SPACE TO OPTN06I
+   125		      MOVE SPACES TO OPTN07I
+   126		      PERFORM 111-NEW-MAP
+   127           WHEN 'NNNY'
+   128                MOVE '2 - UPDATE TICKET' TO OPTN02I
+   129		      MOVE SPACES TO OPTN03ICA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
 
 
-   134		      MOVE SPACES TO OPTN04I
-   135		      MOVE SPACES TO OPTN05I
-   136		      MOVE SPACE TO OPTN06I
-   137		      MOVE SPACES TO OPTN07I
-   138		      PERFORM 111-NEW-MAP
-   139           WHEN 'NYNN'
-   140                MOVE '1 - USER MAINTENANCE' TO OPTN01I
-   141		      MOVE SPACES TO OPTN02I
-   142		      MOVE SPACES TO OPTN03I
-   143		      MOVE SPACES TO OPTN04I
-   144		      MOVE SPACES TO OPTN05I
-   145		      MOVE SPACE TO OPTN06I
-   146		      MOVE SPACES TO OPTN07I
-   147		      PERFORM 111-NEW-MAP
-   148           WHEN 'NNYN'
-   149                MOVE '2 - APPROVE TICKET' TO OPTN02I
-   150		      MOVE SPACES TO OPTN03I
-   151		      MOVE SPACES TO OPTN04I
-   152		      MOVE SPACES TO OPTN05I
-   153		      MOVE SPACE TO OPTN06I
-   154		      MOVE SPACES TO OPTN07I
-   155		      PERFORM 111-NEW-MAP
-   156           WHEN 'NNNN'
-   157		      MOVE SPACES TO OPTN01I
-   158		      MOVE SPACES TO OPTN02I
-   159		      MOVE SPACES TO OPTN03I
-   160		      MOVE SPACES TO OPTN04I
-   161		      MOVE SPACES TO OPTN05I
-   162		      MOVE SPACE TO OPTN06I
-   163		      MOVE SPACES TO OPTN07I
-   164		      PERFORM 111-NEW-MAP
-   165		 WHEN OTHER
-   166		      MOVE SPACES TO ERRMSGO
-   167		      EXEC CICS SEND TEXT
-   168			   FROM (WS-INVALID-TRNID)
-   169			   LENGTH (+15)
-   170			   ERASE
-   171		      END-EXEC
-   172		      EXEC CICS RETURN
-   173		      END-EXEC
-   174		 END-EVALUATE.
-   175	     110-EXIT.
-   176		 EXIT.
-   177
-   178	     112-DATE-TIME.
-   179		 MOVE EIBDATE TO WS-DATE.
-   180		 MOVE WS-DATE-X TO DATEO.
-   181		 EXEC CICS ASKTIME
-   182		      ABSTIME	 (WS-TIME)
-   183		 END-EXEC
-   184		 EXEC CICS FORMATTIME
-   185		      ABSTIME	 (WS-TIME)
-   186                DATESEP    ('-')
-   187		      MMDDYYYY	 (DATEO)
-   188		      TIME	 (TIMEO)
-   189                TIMESEP    (':')
-   190		 END-EXEC
-   191		 MOVE DFHBMASB TO TIMEACA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
+   130		      MOVE SPACES TO OPTN04I
+   131		      MOVE SPACES TO OPTN05I
+   132		      MOVE SPACE TO OPTN06I
+   133		      MOVE SPACES TO OPTN07I
+   134		      PERFORM 111-NEW-MAP
+   135           WHEN 'NYNY'
+   136                MOVE '2 - UPDATE TICKET' TO OPTN02I
+   137                MOVE '3 - USER MAINTENANCE' TO OPTN03I
+   138		      MOVE SPACES TO OPTN04I
+   139		      MOVE SPACES TO OPTN05I
+   140		      MOVE SPACE TO OPTN06I
+   141		      MOVE SPACES TO OPTN07I
+   142		      PERFORM 111-NEW-MAP
+   143           WHEN 'NYYN'
+   144                MOVE '2 - APPROVE TICKET' TO OPTN02I
+   145                MOVE '3 - USER MAINTENANCE' TO OPTN03I
+   146		      MOVE SPACES TO OPTN04I
+   147		      MOVE SPACES TO OPTN05I
+   148		      MOVE SPACE TO OPTN06I
+   149		      MOVE SPACES TO OPTN07I
+   150		      PERFORM 111-NEW-MAP
+   151           WHEN 'NYNN'
+   152                MOVE '1 - USER MAINTENANCE' TO OPTN01I
+   153		      MOVE SPACES TO OPTN02I
+   154		      MOVE SPACES TO OPTN03I
+   155		      MOVE SPACES TO OPTN04I
+   156		      MOVE SPACES TO OPTN05I
+   157		      MOVE SPACE TO OPTN06I
+   158		      MOVE SPACES TO OPTN07I
+   159		      PERFORM 111-NEW-MAP
+   160           WHEN 'NNYN'
+   161                MOVE '2 - APPROVE TICKET' TO OPTN02I
+   162		      MOVE SPACES TO OPTN03I
+   163		      MOVE SPACES TO OPTN04I
+   164		      MOVE SPACES TO OPTN05I
+   165		      MOVE SPACE TO OPTN06I
+   166		      MOVE SPACES TO OPTN07I
+   167		      PERFORM 111-NEW-MAP
+   168           WHEN 'NNNN'
+   169		      MOVE SPACES TO OPTN01I
+   170		      MOVE SPACES TO OPTN02I
+   171		      MOVE SPACES TO OPTN03I
+   172		      MOVE SPACES TO OPTN04I
+   173		      MOVE SPACES TO OPTN05I
+   174		      MOVE SPACE TO OPTN06I
+   175		      MOVE SPACES TO OPTN07I
+   176		      PERFORM 111-NEW-MAP
+   177		 WHEN OTHER
+   178		      MOVE SPACES TO ERRMSGO
+   179		      EXEC CICS SEND TEXT
+   180			   FROM (WS-INVALID-TRNID)
+   181			   LENGTH (+15)
+   182			   ERASE
+   183		      END-EXEC
+   184		      EXEC CICS RETURN
+   185		      END-EXEC
+   186		 END-EVALUATE.
+   187	     110-EXIT.CA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
 
 
-   192		 MOVE DFHBMASB TO DATEA.
-   193	     112-EXIT.
-   194		 EXIT.
-   195
-   196	     111-NEW-MAP.
-   197		 PERFORM 112-DATE-TIME
-   198
-   199		 MOVE DFHUNIMD TO OPTIONA
-   200		 MOVE DFHUNIMD TO TICKETA
-   201		 MOVE -1       TO OPTIONL
-   202		 MOVE LENGTH OF SM00MO TO WS-LENGTH
-   203		 EXEC CICS SEND
-   204                MAP('SM00M')
-   205                MAPSET('SM000')
-   206		      FROM(SM00MO)
-   207		      LENGTH(WS-LENGTH)
-   208		      CURSOR
-   209		      ERASE
-   210		 END-EXEC
-   211		 EXEC CICS RETURN
-   212		      TRANSID(EIBTRNID)
-   213		      COMMAREA(WS-COMMAREA)
-   214		 END-EXEC.
-   215	     110-EXIT.
-   216		 EXIT.
-   217
-   218	     200-REC-MAP.
-   219		 EXEC CICS RECEIVE
-   220                MAP('SM00M')
-   221                MAPSET('SM000')
-   222		      INTO (SM00MI)
-   223		 END-EXEC
-   224		 IF EIBRESP = DFHRESP(MAPFAIL)
-   225		    MOVE WS-MAPFAIL TO ERRMSGO
-   226		    PERFORM 110-VERIFY-ROLE
-   227		 END-IF.
-   228		 MOVE WS-PROG-STATE TO ERRMSGO
-   229		 PERFORM 400-CHECK-EIBAID.
-   230	     200-EXIT.
-   231		 EXIT.
-   232
-   233	     21A-SEARCH-SM001.
-   234		 MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-   235		 EXEC CICS XCTL
-   236                PROGRAM('SM001')
-   237		      COMMAREA(WS-COMMAREA)
-   238		      LENGTH(WS-LENGTH)
-   239		      RESP(WS-RETNCODE)
-   240		 END-EXEC
-   241		 MOVE WS-PROG-STATE TO ERRMSGO.
-   242	     21A-EXIT.
-   243		 EXIT.
-   244
-   245	     21B-SUBMIT-SM002.
-   246		 EXEC CICS LINK
-   247                PROGRAM('SM002')
+   188		 EXIT.
+   189
+   190	     112-DATE-TIME.
+   191		 MOVE EIBDATE TO WS-DATE.
+   192		 MOVE WS-DATE-X TO DATEO.
+   193		 EXEC CICS ASKTIME
+   194		      ABSTIME	 (WS-TIME)
+   195		 END-EXEC
+   196		 EXEC CICS FORMATTIME
+   197		      ABSTIME	 (WS-TIME)
+   198                DATESEP    ('-')
+   199		      MMDDYYYY	 (DATEO)
+   200		      TIME	 (TIMEO)
+   201                TIMESEP    (':')
+   202		 END-EXEC
+   203		 MOVE DFHBMASB TO TIMEA
+   204		 MOVE DFHBMASB TO DATEA.
+   205	     112-EXIT.
+   206		 EXIT.
+   207
+   208	     111-NEW-MAP.
+   209		 PERFORM 112-DATE-TIME
+   210
+   211		 MOVE DFHUNIMD TO OPTIONA
+   212		 MOVE DFHUNIMD TO TICKETA
+   213		 MOVE -1       TO OPTIONL
+   214		 MOVE LENGTH OF SM00MO TO WS-LENGTH
+   215		 EXEC CICS SEND
+   216                MAP('SM00M')
+   217                MAPSET('SM000')
+   218		      FROM(SM00MO)
+   219		      LENGTH(WS-LENGTH)
+   220		      CURSOR
+   221		      ERASE
+   222		 END-EXEC
+   223		 EXEC CICS RETURN
+   224		      TRANSID(EIBTRNID)
+   225		      COMMAREA(WS-COMMAREA)
+   226		 END-EXEC.
+   227	     110-EXIT.
+   228		 EXIT.
+   229
+   230	     200-REC-MAP.
+   231		 EXEC CICS RECEIVE
+   232                MAP('SM00M')
+   233                MAPSET('SM000')
+   234		      INTO (SM00MI)
+   235		 END-EXEC
+   236		 IF EIBRESP = DFHRESP(MAPFAIL)
+   237		    MOVE WS-MAPFAIL TO ERRMSGO
+   238		    PERFORM 110-VERIFY-ROLE
+   239		 END-IF.
+   240		 PERFORM 400-CHECK-EIBAID.
+   241	     200-EXIT.
+   242		 EXIT.
+   243
+   244	     21A-SEARCH-SM001.
+   245		 MOVE LENGTH OF WS-COMMAREA TO WS-LENGTHCA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
+
+
+   246		 EXEC CICS XCTL
+   247                PROGRAM('SM001')
    248		      COMMAREA(WS-COMMAREA)
-   249		      LENGTH(+15)CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
+   249		      LENGTH(WS-LENGTH)
+   250		 END-EXEC.
+   251	     21A-EXIT.
+   252		 EXIT.
+   253
+   254	     21B-SUBMIT-SM002.
+   255		 EXEC CICS LINK
+   256                PROGRAM('SM002')
+   257		      COMMAREA(WS-COMMAREA)
+   258		      LENGTH(+15)
+   259		      RESP(WS-RETNCODE)
+   260		 END-EXEC
+   261		 MOVE WS-PROG-STATE TO ERRMSGO.
+   262	     21B-EXIT.
+   263		 EXIT.
+   264
+   265	     21C-UPDATE-SM003.
+   266		 EXEC CICS LINK
+   267                PROGRAM('SM003')
+   268		      COMMAREA(WS-COMMAREA)
+   269		      LENGTH(+15)
+   270		      RESP(WS-RETNCODE)
+   271		 END-EXEC
+   272		 MOVE WS-PROG-STATE TO ERRMSGO.
+   273	     21C-EXIT.
+   274		 EXIT.
+   275
+   276	     21D-CLOSE-SM004.
+   277		 EXEC CICS LINK
+   278                PROGRAM('SM004')
+   279		      COMMAREA(WS-COMMAREA)
+   280		      LENGTH(+15)
+   281		      RESP(WS-RETNCODE)
+   282		 END-EXEC
+   283		 MOVE WS-PROG-STATE TO ERRMSGO.
+   284	     21D-EXIT.
+   285		 EXIT.
+   286
+   287	     21E-APPROVE-SM005.
+   288		 EXEC CICS LINK
+   289                PROGRAM('SM005')
+   290		      COMMAREA(WS-COMMAREA)
+   291		      LENGTH(+15)
+   292		      RESP(WS-RETNCODE)
+   293		 END-EXEC
+   294		 MOVE WS-PROG-STATE TO ERRMSGO.
+   295	     21R-EXIT.
+   296		 EXIT.
+   297
+   298	     21F-CANCEL-SM006.
+   299		 EXEC CICS LINK
+   300                PROGRAM('SM006')
+   301		      COMMAREA(WS-COMMAREA)
+   302		      LENGTH(+15)
+   303		      RESP(WS-RETNCODE)CA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
 
 
-   250		      RESP(WS-RETNCODE)
-   251		 END-EXEC
-   252		 MOVE WS-PROG-STATE TO ERRMSGO.
-   253	     21B-EXIT.
-   254		 EXIT.
-   255
-   256	     21C-UPDATE-SM003.
-   257		 EXEC CICS LINK
-   258                PROGRAM('SM003')
-   259		      COMMAREA(WS-COMMAREA)
-   260		      LENGTH(+15)
-   261		      RESP(WS-RETNCODE)
-   262		 END-EXEC
-   263		 MOVE WS-PROG-STATE TO ERRMSGO.
-   264	     21C-EXIT.
-   265		 EXIT.
-   266
-   267	     21D-CLOSE-SM004.
-   268		 EXEC CICS LINK
-   269                PROGRAM('SM004')
-   270		      COMMAREA(WS-COMMAREA)
-   271		      LENGTH(+15)
-   272		      RESP(WS-RETNCODE)
-   273		 END-EXEC
-   274		 MOVE WS-PROG-STATE TO ERRMSGO.
-   275	     21D-EXIT.
-   276		 EXIT.
-   277
-   278	     21E-APPROVE-SM005.
-   279		 EXEC CICS LINK
-   280                PROGRAM('SM005')
-   281		      COMMAREA(WS-COMMAREA)
-   282		      LENGTH(+15)
-   283		      RESP(WS-RETNCODE)
-   284		 END-EXEC
-   285		 MOVE WS-PROG-STATE TO ERRMSGO.
-   286	     21R-EXIT.
-   287		 EXIT.
-   288
-   289	     21F-CANCEL-SM006.
-   290		 EXEC CICS LINK
-   291                PROGRAM('SM006')
-   292		      COMMAREA(WS-COMMAREA)
-   293		      LENGTH(+15)
-   294		      RESP(WS-RETNCODE)
-   295		 END-EXEC
-   296		 MOVE WS-PROG-STATE TO ERRMSGO.
-   297	     21F-EXIT.
-   298		 EXIT.
-   299
-   300	     21G-ADMIN-UA001.
-   301		 EXEC CICS LINK
-   302                PROGRAM('UA001')
-   303		      COMMAREA(WS-COMMAREA)
-   304		      LENGTH(+15)
-   305		      RESP(WS-RETNCODE)
-   306		 END-EXEC
-   307		 MOVE WS-PROG-STATE TO ERRMSGO.CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
-
-
-   308	     21G-EXIT.
-   309		 EXIT.
-   310
-   311	     21H-F3-EXIT.
-   312		 MOVE SPACES TO ERRMSGO
-   313		 EXEC CICS SEND TEXT
-   314		      FROM (WS-END)
-   315		      LENGTH (+15)
-   316		      ERASE
-   317		 END-EXEC
-   318		 EXEC CICS RETURN
-   319		 END-EXEC.
-   320	     21H-EXIT.
-   321		 EXIT.
-   322
-   323	     300-VERIFY-USER SECTION.
-   324		 EXEC CICS ASSIGN
-   325		     USERID(WS-USERID)
+   304		 END-EXEC
+   305		 MOVE WS-PROG-STATE TO ERRMSGO.
+   306	     21F-EXIT.
+   307		 EXIT.
+   308
+   309	     21G-ADMIN-UA001.
+   310		 EXEC CICS LINK
+   311                PROGRAM('UA001')
+   312		      COMMAREA(WS-COMMAREA)
+   313		      LENGTH(+15)
+   314		      RESP(WS-RETNCODE)
+   315		 END-EXEC
+   316		 MOVE WS-PROG-STATE TO ERRMSGO.
+   317	     21G-EXIT.
+   318		 EXIT.
+   319
+   320	     21H-F3-EXIT.
+   321		 MOVE SPACES TO ERRMSGO
+   322		 EXEC CICS SEND TEXT
+   323		      FROM (WS-END)
+   324		      LENGTH (+15)
+   325		      ERASE
    326		 END-EXEC
-   327		 EXEC CICS
-   328                READ FILE('uaf001')
-   329		      INTO (WS-REC)
-   330		      RIDFLD (WS-USERID)
-   331		      KEYLENGTH (WS-STD-KEY-LEN)
-   332		      EQUAL
-   333		 END-EXEC
-   334		 IF EIBRESP = DFHRESP(NOTFND)
-   335		     EXEC CICS SEND TEXT
-   336			  FROM (WS-INVALID-USER)
-   337			  LENGTH (+20)
-   338			  ERASE
-   339		     END-EXEC
-   340		     EXEC CICS RETURN
-   341		     END-EXEC
-   342		 END-IF.
-   343	     300-EXIT.
-   344		 EXIT.
-   345
-   346	     400-CHECK-EIBAID.
-   347		 EVALUATE WS-TYPE
-   348           WHEN 'YYYY'
-   349           WHEN 'YYYN'
-   350		      EVALUATE EIBAID
-   351		      WHEN DFHPF3
-   352			   PERFORM 21H-F3-EXIT
-   353		      WHEN DFHENTER
-   354			   EVALUATE OPTIONI
-   355			   WHEN 1
-   356				PERFORM 21A-SEARCH-SM001
-   357			   WHEN 2
-   358				PERFORM 21B-SUBMIT-SM002
-   359			   WHEN 3
-   360				PERFORM 21C-UPDATE-SM003
-   361			   WHEN 4
-   362				PERFORM 21D-CLOSE-SM004
-   363			   WHEN 5
-   364				PERFORM 21E-APPROVE-SM005
-   365			   WHEN 6CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
+   327		 EXEC CICS RETURN
+   328		 END-EXEC.
+   329	     21H-EXIT.
+   330		 EXIT.
+   331
+   332	     300-VERIFY-USER SECTION.
+   333		 EXEC CICS ASSIGN
+   334		     USERID(WS-USERID)
+   335		 END-EXEC
+   336		 EXEC CICS
+   337                READ FILE('uaf001')
+   338		      INTO (WS-REC)
+   339		      RIDFLD (WS-USERID)
+   340		      KEYLENGTH (WS-STD-KEY-LEN)
+   341		      EQUAL
+   342		 END-EXEC
+   343		 IF EIBRESP = DFHRESP(NOTFND)
+   344		     EXEC CICS SEND TEXT
+   345			  FROM (WS-INVALID-USER)
+   346			  LENGTH (+20)
+   347			  ERASE
+   348		     END-EXEC
+   349		     EXEC CICS RETURN
+   350		     END-EXEC
+   351		 END-IF.
+   352	     300-EXIT.
+   353		 EXIT.
+   354
+   355	     400-CHECK-EIBAID.
+   356		 EVALUATE WS-TYPE
+   357           WHEN 'YYYY'
+   358           WHEN 'YYYN'
+   359		      EVALUATE EIBAID
+   360		      WHEN DFHPF3
+   361			   PERFORM 21H-F3-EXITCA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
 
 
-   366				PERFORM 21F-CANCEL-SM006
-   367			   WHEN 7
-   368				PERFORM 21G-ADMIN-UA001
-   369			   WHEN DFHNULL
-   370				MOVE WS-FIELD-REQ TO ERRMSGO
-   371			   WHEN OTHER
-   372                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
-   373			   END-EVALUATE
-   374		      WHEN OTHER
-   375                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
-   376		      END-EVALUATE
-   377           WHEN 'YNNN'
-   378           WHEN 'YNNY'
-   379		      EVALUATE EIBAID
-   380		      WHEN DFHPF3
-   381			   PERFORM 21H-F3-EXIT
-   382		      WHEN DFHENTER
-   383			   EVALUATE OPTIONI
-   384			   WHEN 1
-   385				PERFORM 21A-SEARCH-SM001
-   386			   WHEN 2
-   387				PERFORM 21B-SUBMIT-SM002
-   388			   WHEN 3
-   389				PERFORM 21C-UPDATE-SM003
-   390			   WHEN 4
-   391				PERFORM 21D-CLOSE-SM004
-   392			   WHEN 5
-   393				PERFORM 21F-CANCEL-SM006
-   394			   WHEN DFHNULL
-   395				MOVE WS-FIELD-REQ TO ERRMSGO
-   396			   WHEN OTHER
-   397                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
-   398			   END-EVALUATE
-   399		      WHEN OTHER
-   400                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
-   401		      END-EVALUATE
-   402           WHEN 'YYNN'
-   403           WHEN 'YYNY'
-   404		      EVALUATE EIBAID
-   405		      WHEN DFHPF3
-   406			   PERFORM 21H-F3-EXIT
-   407		      WHEN DFHENTER
-   408			   EVALUATE OPTIONI
-   409			   WHEN 1
-   410				PERFORM 21A-SEARCH-SM001
-   411			   WHEN 2
-   412				PERFORM 21B-SUBMIT-SM002
-   413			   WHEN 3
-   414				PERFORM 21C-UPDATE-SM003
-   415			   WHEN 4
-   416				PERFORM 21D-CLOSE-SM004
-   417			   WHEN 5
-   418				PERFORM 21F-CANCEL-SM006
-   419			   WHEN 6
-   420				PERFORM 21G-ADMIN-UA001
-   421			   WHEN DFHNULL
-   422				MOVE WS-FIELD-REQ TO ERRMSGO
-   423			   WHEN OTHERCA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
+   362		      WHEN DFHENTER
+   363			   EVALUATE OPTIONI
+   364			   WHEN 1
+   365				PERFORM 21A-SEARCH-SM001
+   366			   WHEN 2
+   367				PERFORM 21B-SUBMIT-SM002
+   368			   WHEN 3
+   369				PERFORM 21C-UPDATE-SM003
+   370			   WHEN 4
+   371				PERFORM 21D-CLOSE-SM004
+   372			   WHEN 5
+   373				PERFORM 21E-APPROVE-SM005
+   374			   WHEN 6
+   375				PERFORM 21F-CANCEL-SM006
+   376			   WHEN 7
+   377				PERFORM 21G-ADMIN-UA001
+   378			   WHEN DFHNULL
+   379				MOVE WS-FIELD-REQ TO ERRMSGO
+   380			   WHEN OTHER
+   381                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
+   382			   END-EVALUATE
+   383		      WHEN OTHER
+   384                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
+   385		      END-EVALUATE
+   386           WHEN 'YNNN'
+   387           WHEN 'YNNY'
+   388		      EVALUATE EIBAID
+   389		      WHEN DFHPF3
+   390			   PERFORM 21H-F3-EXIT
+   391		      WHEN DFHENTER
+   392			   EVALUATE OPTIONI
+   393			   WHEN 1
+   394				PERFORM 21A-SEARCH-SM001
+   395			   WHEN 2
+   396				PERFORM 21B-SUBMIT-SM002
+   397			   WHEN 3
+   398				PERFORM 21C-UPDATE-SM003
+   399			   WHEN 4
+   400				PERFORM 21D-CLOSE-SM004
+   401			   WHEN 5
+   402				PERFORM 21F-CANCEL-SM006
+   403			   WHEN DFHNULL
+   404				MOVE WS-FIELD-REQ TO ERRMSGO
+   405			   WHEN OTHER
+   406                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
+   407			   END-EVALUATE
+   408		      WHEN OTHER
+   409                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
+   410		      END-EVALUATE
+   411           WHEN 'YYNN'
+   412           WHEN 'YYNY'
+   413		      EVALUATE EIBAID
+   414		      WHEN DFHPF3
+   415			   PERFORM 21H-F3-EXIT
+   416		      WHEN DFHENTER
+   417			   EVALUATE OPTIONI
+   418			   WHEN 1
+   419				PERFORM 21A-SEARCH-SM001CA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
 
 
-   424                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
-   425			   END-EVALUATE
-   426		      WHEN OTHER
-   427                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
-   428		      END-EVALUATE
-   429           WHEN 'YNYN'
-   430           WHEN 'YNYY'
-   431		      EVALUATE EIBAID
-   432		      WHEN DFHPF3
-   433			   PERFORM 21H-F3-EXIT
-   434		      WHEN DFHENTER
-   435			   EVALUATE OPTIONI
-   436			   WHEN 1
-   437				PERFORM 21A-SEARCH-SM001
-   438			   WHEN 2
-   439				PERFORM 21B-SUBMIT-SM002
-   440			   WHEN 3
-   441				PERFORM 21C-UPDATE-SM003
-   442			   WHEN 4
-   443				PERFORM 21D-CLOSE-SM004
-   444			   WHEN 5
-   445				PERFORM 21E-APPROVE-SM005
-   446			   WHEN 6
-   447				PERFORM 21F-CANCEL-SM006
-   448			   WHEN DFHNULL
-   449				MOVE WS-FIELD-REQ TO ERRMSGO
-   450			   WHEN OTHER
-   451                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
-   452			   END-EVALUATE
-   453		      WHEN OTHER
-   454                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
-   455		      END-EVALUATE
-   456           WHEN 'NYYY'
-   457		      EVALUATE EIBAID
-   458		      WHEN DFHPF3
-   459			   PERFORM 21H-F3-EXIT
-   460		      WHEN DFHENTER
-   461			   EVALUATE OPTIONI
-   462			   WHEN 1
-   463				PERFORM 21A-SEARCH-SM001
-   464			   WHEN 2
-   465				PERFORM 21C-UPDATE-SM003
-   466			   WHEN 3
-   467				PERFORM 21E-APPROVE-SM005
-   468			   WHEN 4
-   469				PERFORM 21G-ADMIN-UA001
-   470			   WHEN DFHNULL
-   471				MOVE WS-FIELD-REQ TO ERRMSGO
-   472			   WHEN OTHER
-   473                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
-   474			   END-EVALUATE
-   475		      WHEN OTHER
-   476                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
-   477		      END-EVALUATE
-   478           WHEN 'NNYY'
-   479		      EVALUATE EIBAID
-   480		      WHEN DFHPF3
-   481			   PERFORM 21H-F3-EXITCA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
+   420			   WHEN 2
+   421				PERFORM 21B-SUBMIT-SM002
+   422			   WHEN 3
+   423				PERFORM 21C-UPDATE-SM003
+   424			   WHEN 4
+   425				PERFORM 21D-CLOSE-SM004
+   426			   WHEN 5
+   427				PERFORM 21F-CANCEL-SM006
+   428			   WHEN 6
+   429				PERFORM 21G-ADMIN-UA001
+   430			   WHEN DFHNULL
+   431				MOVE WS-FIELD-REQ TO ERRMSGO
+   432			   WHEN OTHER
+   433                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
+   434			   END-EVALUATE
+   435		      WHEN OTHER
+   436                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
+   437		      END-EVALUATE
+   438           WHEN 'YNYN'
+   439           WHEN 'YNYY'
+   440		      EVALUATE EIBAID
+   441		      WHEN DFHPF3
+   442			   PERFORM 21H-F3-EXIT
+   443		      WHEN DFHENTER
+   444			   EVALUATE OPTIONI
+   445			   WHEN 1
+   446				PERFORM 21A-SEARCH-SM001
+   447			   WHEN 2
+   448				PERFORM 21B-SUBMIT-SM002
+   449			   WHEN 3
+   450				PERFORM 21C-UPDATE-SM003
+   451			   WHEN 4
+   452				PERFORM 21D-CLOSE-SM004
+   453			   WHEN 5
+   454				PERFORM 21E-APPROVE-SM005
+   455			   WHEN 6
+   456				PERFORM 21F-CANCEL-SM006
+   457			   WHEN DFHNULL
+   458				MOVE WS-FIELD-REQ TO ERRMSGO
+   459			   WHEN OTHER
+   460                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
+   461			   END-EVALUATE
+   462		      WHEN OTHER
+   463                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
+   464		      END-EVALUATE
+   465           WHEN 'NYYY'
+   466		      EVALUATE EIBAID
+   467		      WHEN DFHPF3
+   468			   PERFORM 21H-F3-EXIT
+   469		      WHEN DFHENTER
+   470			   EVALUATE OPTIONI
+   471			   WHEN 1
+   472				PERFORM 21A-SEARCH-SM001
+   473			   WHEN 2
+   474				PERFORM 21C-UPDATE-SM003
+   475			   WHEN 3
+   476				PERFORM 21E-APPROVE-SM005
+   477			   WHEN 4CA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
 
 
-   482		      WHEN DFHENTER
-   483			   EVALUATE OPTIONI
-   484			   WHEN 1
-   485				PERFORM 21A-SEARCH-SM001
-   486			   WHEN 2
-   487				PERFORM 21C-UPDATE-SM003
-   488			   WHEN 3
-   489				PERFORM 21E-APPROVE-SM005
-   490			   WHEN DFHNULL
-   491				MOVE WS-FIELD-REQ TO ERRMSGO
-   492			   WHEN OTHER
-   493                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
-   494			   END-EVALUATE
-   495		      WHEN OTHER
-   496                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
-   497		      END-EVALUATE
-   498           WHEN 'NNNY'
-   499		       EVALUATE EIBAID
-   500		      WHEN DFHPF3
-   501			   PERFORM 21H-F3-EXIT
-   502		      WHEN DFHENTER
-   503			   EVALUATE OPTIONI
-   504			   WHEN 1
-   505				PERFORM 21A-SEARCH-SM001
-   506			   WHEN 2
-   507				PERFORM 21C-UPDATE-SM003
-   508			   WHEN DFHNULL
-   509				MOVE WS-FIELD-REQ TO ERRMSGO
-   510			   WHEN OTHER
-   511                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
-   512			   END-EVALUATE
-   513		      WHEN OTHER
-   514                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
-   515		      END-EVALUATE
-   516           WHEN 'NYNY'
-   517		      EVALUATE EIBAID
-   518		      WHEN DFHPF3
-   519			   PERFORM 21H-F3-EXIT
-   520		      WHEN DFHENTER
-   521			   EVALUATE OPTIONI
-   522			   WHEN 1
-   523				PERFORM 21A-SEARCH-SM001
-   524			   WHEN 2
-   525				PERFORM 21C-UPDATE-SM003
-   526			   WHEN 3
-   527				PERFORM 21G-ADMIN-UA001
-   528			   WHEN DFHNULL
-   529				MOVE WS-FIELD-REQ TO ERRMSGO
-   530			   WHEN OTHER
-   531                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
-   532			   END-EVALUATE
-   533		      WHEN OTHER
-   534                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
-   535		      END-EVALUATE
-   536           WHEN 'NYYN'
-   537		      EVALUATE EIBAID
-   538		      WHEN DFHPF3
-   539			   PERFORM 21H-F3-EXITCA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
+   478				PERFORM 21G-ADMIN-UA001
+   479			   WHEN DFHNULL
+   480				MOVE WS-FIELD-REQ TO ERRMSGO
+   481			   WHEN OTHER
+   482                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
+   483			   END-EVALUATE
+   484		      WHEN OTHER
+   485                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
+   486		      END-EVALUATE
+   487           WHEN 'NNYY'
+   488		      EVALUATE EIBAID
+   489		      WHEN DFHPF3
+   490			   PERFORM 21H-F3-EXIT
+   491		      WHEN DFHENTER
+   492			   EVALUATE OPTIONI
+   493			   WHEN 1
+   494				PERFORM 21A-SEARCH-SM001
+   495			   WHEN 2
+   496				PERFORM 21C-UPDATE-SM003
+   497			   WHEN 3
+   498				PERFORM 21E-APPROVE-SM005
+   499			   WHEN DFHNULL
+   500				MOVE WS-FIELD-REQ TO ERRMSGO
+   501			   WHEN OTHER
+   502                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
+   503			   END-EVALUATE
+   504		      WHEN OTHER
+   505                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
+   506		      END-EVALUATE
+   507           WHEN 'NNNY'
+   508		       EVALUATE EIBAID
+   509		      WHEN DFHPF3
+   510			   PERFORM 21H-F3-EXIT
+   511		      WHEN DFHENTER
+   512			   EVALUATE OPTIONI
+   513			   WHEN 1
+   514				PERFORM 21A-SEARCH-SM001
+   515			   WHEN 2
+   516				PERFORM 21C-UPDATE-SM003
+   517			   WHEN DFHNULL
+   518				MOVE WS-FIELD-REQ TO ERRMSGO
+   519			   WHEN OTHER
+   520                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
+   521			   END-EVALUATE
+   522		      WHEN OTHER
+   523                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
+   524		      END-EVALUATE
+   525           WHEN 'NYNY'
+   526		      EVALUATE EIBAID
+   527		      WHEN DFHPF3
+   528			   PERFORM 21H-F3-EXIT
+   529		      WHEN DFHENTER
+   530			   EVALUATE OPTIONI
+   531			   WHEN 1
+   532				PERFORM 21A-SEARCH-SM001
+   533			   WHEN 2
+   534				PERFORM 21C-UPDATE-SM003
+   535			   WHEN 3CA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
 
 
-   540		      WHEN DFHENTER
-   541			   EVALUATE OPTIONI
-   542			   WHEN 1
-   543				PERFORM 21A-SEARCH-SM001
-   544			   WHEN 2
-   545				PERFORM 21E-APPROVE-SM005
-   546			   WHEN 3
-   547				PERFORM 21G-ADMIN-UA001
-   548			   WHEN DFHNULL
-   549				MOVE WS-FIELD-REQ TO ERRMSGO
-   550			   WHEN OTHER
-   551                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
-   552			   END-EVALUATE
-   553		      WHEN OTHER
-   554                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
-   555		      END-EVALUATE
-   556           WHEN 'NYNN'
-   557		      EVALUATE EIBAID
-   558		      WHEN DFHPF3
-   559			   PERFORM 21H-F3-EXIT
-   560		      WHEN DFHENTER
-   561			   EVALUATE OPTIONI
-   562			   WHEN 1
-   563				PERFORM 21G-ADMIN-UA001
-   564			   WHEN DFHNULL
-   565				MOVE WS-FIELD-REQ TO ERRMSGO
-   566			   WHEN OTHER
-   567                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
-   568			   END-EVALUATE
-   569		      WHEN OTHER
-   570                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
-   571		      END-EVALUATE
-   572           WHEN 'NNYN'
-   573		      EVALUATE EIBAID
-   574		      WHEN DFHPF3
-   575			   PERFORM 21H-F3-EXIT
-   576		      WHEN DFHENTER
-   577			   EVALUATE OPTIONI
-   578			   WHEN 1
-   579				PERFORM 21A-SEARCH-SM001
-   580			   WHEN 2
-   581				PERFORM 21E-APPROVE-SM005
-   582			   WHEN DFHNULL
-   583				MOVE WS-FIELD-REQ TO ERRMSGO
-   584			   WHEN OTHER
-   585                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
-   586			   END-EVALUATE
-   587		      WHEN OTHER
-   588                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
-   589		      END-EVALUATE
-   590
-   591           WHEN 'NNNN'
-   592		      EVALUATE EIBAID
-   593		      WHEN DFHPF3
-   594			   PERFORM 21H-F3-EXIT
-   595		      WHEN DFHENTER
-   596			   EVALUATE TRUE
-   597			   WHEN OPTIONI NOT = SPACESCA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
+   536				PERFORM 21G-ADMIN-UA001
+   537			   WHEN DFHNULL
+   538				MOVE WS-FIELD-REQ TO ERRMSGO
+   539			   WHEN OTHER
+   540                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
+   541			   END-EVALUATE
+   542		      WHEN OTHER
+   543                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
+   544		      END-EVALUATE
+   545           WHEN 'NYYN'
+   546		      EVALUATE EIBAID
+   547		      WHEN DFHPF3
+   548			   PERFORM 21H-F3-EXIT
+   549		      WHEN DFHENTER
+   550			   EVALUATE OPTIONI
+   551			   WHEN 1
+   552				PERFORM 21A-SEARCH-SM001
+   553			   WHEN 2
+   554				PERFORM 21E-APPROVE-SM005
+   555			   WHEN 3
+   556				PERFORM 21G-ADMIN-UA001
+   557			   WHEN DFHNULL
+   558				MOVE WS-FIELD-REQ TO ERRMSGO
+   559			   WHEN OTHER
+   560                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
+   561			   END-EVALUATE
+   562		      WHEN OTHER
+   563                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
+   564		      END-EVALUATE
+   565           WHEN 'NYNN'
+   566		      EVALUATE EIBAID
+   567		      WHEN DFHPF3
+   568			   PERFORM 21H-F3-EXIT
+   569		      WHEN DFHENTER
+   570			   EVALUATE OPTIONI
+   571			   WHEN 1
+   572				PERFORM 21G-ADMIN-UA001
+   573			   WHEN DFHNULL
+   574				MOVE WS-FIELD-REQ TO ERRMSGO
+   575			   WHEN OTHER
+   576                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
+   577			   END-EVALUATE
+   578		      WHEN OTHER
+   579                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
+   580		      END-EVALUATE
+   581           WHEN 'NNYN'
+   582		      EVALUATE EIBAID
+   583		      WHEN DFHPF3
+   584			   PERFORM 21H-F3-EXIT
+   585		      WHEN DFHENTER
+   586			   EVALUATE OPTIONI
+   587			   WHEN 1
+   588				PERFORM 21A-SEARCH-SM001
+   589			   WHEN 2
+   590				PERFORM 21E-APPROVE-SM005
+   591			   WHEN DFHNULL
+   592				MOVE WS-FIELD-REQ TO ERRMSGO
+   593			   WHEN OTHERCA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
 
 
-   598			   WHEN OPTIONI NOT = LOW-VALUES
-   599                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
-   600			   END-EVALUATE
-   601		      WHEN OTHER
-   602                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
-   603		      END-EVALUATE
-   604		 WHEN OTHER
-   605		      MOVE SPACES TO ERRMSGO
-   606		      EXEC CICS SEND TEXT
-   607			   FROM (WS-INVALID-TRNID)
-   608			   LENGTH (+15)
-   609			   ERASE
-   610		      END-EXEC
-   611		      EXEC CICS RETURN
-   612		      END-EXEC
-   613		 END-EVALUATE.
-   614	     400-EXIT.
-   615		 EXIT.
-   616
-CA-Realia CACXPREP E:\work-bpi\CAWB30-HO\SM0000.COB
+   594                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
+   595			   END-EVALUATE
+   596		      WHEN OTHER
+   597                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
+   598		      END-EVALUATE
+   599
+   600           WHEN 'NNNN'
+   601		      EVALUATE EIBAID
+   602		      WHEN DFHPF3
+   603			   PERFORM 21H-F3-EXIT
+   604		      WHEN DFHENTER
+   605			   EVALUATE TRUE
+   606			   WHEN OPTIONI NOT = SPACES
+   607			   WHEN OPTIONI NOT = LOW-VALUES
+   608                          MOVE 'OPTION INVALID VALUE' TO ERRMSGO
+   609			   END-EVALUATE
+   610		      WHEN OTHER
+   611                     MOVE 'INAVLID PFKEY PRESSED' TO ERRMSGO
+   612		      END-EVALUATE
+   613		 WHEN OTHER
+   614		      MOVE SPACES TO ERRMSGO
+   615		      EXEC CICS SEND TEXT
+   616			   FROM (WS-INVALID-TRNID)
+   617			   LENGTH (+15)
+   618			   ERASE
+   619		      END-EXEC
+   620		      EXEC CICS RETURN
+   621		      END-EXEC
+   622		 END-EVALUATE.
+   623	     400-EXIT.
+   624		 EXIT.
+   625
+CA-Realia CACXPREP D:\work\CAWB30-HO\SM0000.COB
 
 
 		Options Summary
@@ -1237,6 +1130,6 @@
 		      PPCODE
 		      DCHK
 
-		Source Lines Translated:    1183
+		Source Lines Translated:    1080
 		Translation Time:	     .02 sec
-		Translation Speed:	  943333 lines per min
+		Translation Speed:	  600000 lines per min

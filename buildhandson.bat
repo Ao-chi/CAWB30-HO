@@ -39,8 +39,11 @@ rem
 rem Generate Sample System Maps
 if exist SM000.bin erase SM000.bin
 if exist SM000.cob erase SM000.cob
+if exist SM0001.bin erase SM0001.bin
+if exist SM0001.cob erase SM0001.cob
 set _step=3
 call bms SM000
+call bms SM0001
 if errorlevel 1 goto builderr
 rem Generate Sample System Programs: Translate, Compile, and Link
 if exist SM0000.dll erase SM0000.dll

@@ -78,7 +78,7 @@
 	   05 WS-PROG-STATE			 PIC X(15).
 
       P    COPY SM000.
-      *$PP-START-COPY E:\work-bpi\CAWB30-HO\SM000.COB
+      *$PP-START-COPY D:\work\CAWB30-HO\SM000.COB
       * SYMBOLIC MAP of SM000 Created by CACXBMS Version 6.0.27
        01  SM00MI.
 	   02  FILLER				      PIC X(12).
@@ -180,121 +180,9 @@
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  TIMEO				      PIC X(008).
-       01  SM001MI.
-	   02  FILLER				      PIC X(12).
-	   02  ERRMSG1L 			      PIC S9(4) COMP.
-	   02  ERRMSG1F 			      PIC X.
-	   02  FILLER REDEFINES ERRMSG1F.
-	       03  ERRMSG1A			      PIC X.
-	   02  ERRMSG1I 			      PIC X(071).
-	   02  DATE1L				      PIC S9(4) COMP.
-	   02  DATE1F				      PIC X.
-	   02  FILLER REDEFINES DATE1F.
-	       03  DATE1A			      PIC X.
-	   02  DATE1I				      PIC X(010).
-	   02  TIME1L				      PIC S9(4) COMP.
-	   02  TIME1F				      PIC X.
-	   02  FILLER REDEFINES TIME1F.
-	       03  TIME1A			      PIC X.
-	   02  TIME1I				      PIC X(008).
-	   02  PAGEL				      PIC S9(4) COMP.
-	   02  PAGEF				      PIC X.
-	   02  FILLER REDEFINES PAGEF.
-	       03  PAGEA			      PIC X.
-	   02  PAGEI				      PIC X(003).
-	   02  TODATEL				      PIC S9(4) COMP.
-	   02  TODATEF				      PIC X.
-	   02  FILLER REDEFINES TODATEF.
-	       03  TODATEA			      PIC X.
-	   02  TODATEI				      PIC X(010).
-	   02  FRDATEL				      PIC S9(4) COMP.
-	   02  FRDATEF				      PIC X.
-	   02  FILLER REDEFINES FRDATEF.
-	       03  FRDATEA			      PIC X.
-	   02  FRDATEI				      PIC X(010).
-	   02  SELECTD OCCURS 011 TIMES.
-	       03  SELECTL			      PIC S9(4) COMP.
-	       03  SELECTF			      PIC X.
-	       03  FILLER REDEFINES SELECTF.
-		   04  SELECTA			      PIC X.
-	       03  SELECTI			      PIC X(001).
-	   02  TIXNUMD OCCURS 011 TIMES.
-	       03  TIXNUML			      PIC S9(4) COMP.
-	       03  TIXNUMF			      PIC X.
-	       03  FILLER REDEFINES TIXNUMF.
-		   04  TIXNUMA			      PIC X.
-	       03  TIXNUMI			      PIC X(006).
-	   02  TIXTITLED OCCURS 011 TIMES.
-	       03  TIXTITLEL			      PIC S9(4) COMP.
-	       03  TIXTITLEF			      PIC X.
-	       03  FILLER REDEFINES TIXTITLEF.
-		   04  TIXTITLEA		      PIC X.
-	       03  TIXTITLEI			      PIC X(025).
-	   02  STATSD OCCURS 011 TIMES.
-	       03  STATSL			      PIC S9(4) COMP.
-	       03  STATSF			      PIC X.
-	       03  FILLER REDEFINES STATSF.
-		   04  STATSA			      PIC X.
-	       03  STATSI			      PIC X(010).
-	   02  LSTUPDD OCCURS 011 TIMES.
-	       03  LSTUPDL			      PIC S9(4) COMP.
-	       03  LSTUPDF			      PIC X.
-	       03  FILLER REDEFINES LSTUPDF.
-		   04  LSTUPDA			      PIC X.
-	       03  LSTUPDI			      PIC X(008).
-	   02  UPDBYD OCCURS 011 TIMES.
-	       03  UPDBYL			      PIC S9(4) COMP.
-	       03  UPDBYF			      PIC X.
-	       03  FILLER REDEFINES UPDBYF.
-		   04  UPDBYA			      PIC X.
-	       03  UPDBYI			      PIC X(006).
-       01  SM001MO REDEFINES SM001MI.
-	   02  FILLER				      PIC X(12).
-	   02  FILLER				      PIC XX.
-	   02  FILLER				      PIC X.
-	   02  ERRMSG1O 			      PIC X(071).
-	   02  FILLER				      PIC XX.
-	   02  FILLER				      PIC X.
-	   02  DATE1O				      PIC X(010).
-	   02  FILLER				      PIC XX.
-	   02  FILLER				      PIC X.
-	   02  TIME1O				      PIC X(008).
-	   02  FILLER				      PIC XX.
-	   02  FILLER				      PIC X.
-	   02  PAGEO				      PIC X(003).
-	   02  FILLER				      PIC XX.
-	   02  FILLER				      PIC X.
-	   02  TODATEO				      PIC X(010).
-	   02  FILLER				      PIC XX.
-	   02  FILLER				      PIC X.
-	   02  FRDATEO				      PIC X(010).
-	   02  DFHMS001 OCCURS 011 TIMES.
-	       03  FILLER			      PIC XX.
-	       03  FILLER			      PIC X.
-	       03  SELECTO			      PIC X(001).
-	   02  DFHMS002 OCCURS 011 TIMES.
-	       03  FILLER			      PIC XX.
-	       03  FILLER			      PIC X.
-	       03  TIXNUMO			      PIC X(006).
-	   02  DFHMS003 OCCURS 011 TIMES.
-	       03  FILLER			      PIC XX.
-	       03  FILLER			      PIC X.
-	       03  TIXTITLEO			      PIC X(025).
-	   02  DFHMS004 OCCURS 011 TIMES.
-	       03  FILLER			      PIC XX.
-	       03  FILLER			      PIC X.
-	       03  STATSO			      PIC X(010).
-	   02  DFHMS005 OCCURS 011 TIMES.
-	       03  FILLER			      PIC XX.
-	       03  FILLER			      PIC X.
-	       03  LSTUPDO			      PIC X(008).
-	   02  DFHMS006 OCCURS 011 TIMES.
-	       03  FILLER			      PIC XX.
-	       03  FILLER			      PIC X.
-	       03  UPDBYO			      PIC X(006).
       *$PP-END-COPY
       P    COPY DFHBMSCA.
-      *$PP-START-COPY E:\WORK-BPI\CAWB30-HO\CICSCOPY\DFHBMSCA.COB
+      *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHBMSCA.COB
        01  DFHBMSCA.
       *
       * CA-Realia CICS 6.0 Computer Associates International, Inc.
