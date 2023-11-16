@@ -13,74 +13,59 @@
       *------------------------*
        WORKING-STORAGE SECTION.
            COPY SM0001.
+      *--------------------*     
+      * COPYBOOK REDEFINES *
+      *--------------------*
+       01  DETL-LINE REDEFINES SM001MI.
+           05 FILLER                              PIC X(104).
+           05 DETL-SELECT                         OCCURS 11.
+              10 DETL-SELECTL                     PIC S9(4) COMP.
+              10 DETL-SELECTF				      PIC X.
+	          10 FILLER REDEFINES DETL-SELECTF.
+                 15 DETL-SELECTA                  PIC X.
+	          10 DETL-SELECTI                     PIC X(001). 
+           05 DETL-DETAIL                         OCCURS 11.
+              10 DETL-DETAILL				      PIC S9(4)
+                 COMP.
+              10 DETL-DETAILF				      PIC X.
+	          10 FILLER REDEFINES DETL-DETAILF.
+                 15 DETL-DETAILA                  PIC X.
+	          10 DETL-DETAILI. 
+                 15 DETAILS-TIX-ID                PIC X(07). 
+                 15 FILLER1                       PIC X(03).
+                 15 DETAILS-TIX-TITLE             PIC X(25). 
+                 15 FILLER2                       PIC X(01).
+                 15 DETAILS-TIX-STAT              PIC X(10).
+                 15 FILLER3                       PIC X(04).   
+                 15 DETAILS-LAST-UPD.
+                    20  DETAIL-DD                 PIC X(02).
+                    20  SLASH1                    PIC X.
+                    20  DETAIL-MM                 PIC X(02).
+                    20  SLASH2                    PIC X.
+                    20  DETAIL-YYYY               PIC X(04). 
+                 15 FILLER4                       PIC X(02).
+                 15 DETAILS-UPD-BY                PIC X(08).           
            COPY DFHBMSCA.
            COPY DFHAID.
-       
-       01  WS-DETL-LINE        REDEFINES SM001MI.
-           05 FILLER                             PIC X(162).
-           05 DETL-SELECT                        OCCURS 11 TIMES.
-              10 DETL-SELECTL				     PIC S9(4)
-                 COMP.
-              10 DETL-SELECTF				     PIC X.
-	          10 FILLER REDEFINES DETL-SELECTF.
-                 15 DETL-SELECTA			     
-                 PIC X.
-	          10 DETL-SELECTI				     
-                 PIC X(01). 
-           05 DETL-TIXNUM                        OCCURS 11 TIMES.
-              10 DETL-TIXNUML				     PIC S9(4)
-                 COMP.
-              10 DETL-TIXNUMF				     PIC X.
-	          10 FILLER REDEFINES DETL-TIXNUMF.
-                 15 DETL-TIXNUMA			     
-                 PIC X.
-	          10 DETL-TIXNUMI				     
-                 PIC X(06).
-           05 DETL-TITLE1                        OCCURS 11 TIMES.
-              10 DETL-TITLE1L				     PIC S9(4)
-                 COMP.
-              10 DETL-TITLE1F				     PIC X.
-	          10 FILLER REDEFINES DETL-TITLE1F.
-                 15 DETL-TITLE1A			     
-                 PIC X.
-	          10 DETL-TITLE1I				     
-                 PIC X(25).      
-           05 DETL-STATS                        OCCURS 11 TIMES.
-              10 DETL-STATSL				     PIC S9(4)
-                 COMP.
-              10 DETL-STATSF				     PIC X.
-	          10 FILLER REDEFINES DETL-STATSF.
-                 15 DETL-STATSA			     
-                 PIC X.
-	          10 DETL-STATSI				     
-                 PIC X(10).
-           05 DETL-LSTUPD                        OCCURS 11 TIMES.
-              10 DETL-LSTUPDL				     PIC S9(4)
-                 COMP.
-              10 DETL-LSTUPDF				     PIC X.
-	          10 FILLER REDEFINES DETL-LSTUPDF.
-                 15 DETL-LSTUPDA			     
-                 PIC X.
-	          10 DETL-LSTUPDI				     
-                 PIC X(08).
-           05 DETL-UPDBY                        OCCURS 11 TIMES.
-              10 DETL-UPDBYL				     PIC S9(4)
-                 COMP.
-              10 DETL-UPDBYF				     PIC X.
-	          10 FILLER REDEFINES DETL-UPDBYF.
-                 15 DETL-UPDBYA			     
-                 PIC X.
-	          10 DETL-UPDBYI				     
-                 PIC X(06).                   
+
        01  WS-CURRENT-MAP  VALUE 'SM01S'         PIC X(7).
        01  WS-REC-LENGTH                         PIC S9(4) 
-           COMP VALUE +227. 
+           COMP VALUE +228. 
+       01  WS-KEYB.                       
+           05 WS-KEYB6                   PIC X(06) VALUE LOW-VALUES.
+           05 FILLER REDEFINES WS-KEYB6.
+              10 FILLER                  PIC X(03).
+              10 WS-KEYB3                PIC 9(03). 
+           05 WS-KEYB1                   PIC X(01) VALUE HIGH-VALUES.    
        01  WS-STF-REC.
-           05 WS-TICKET-ID                       PIC 9(06).
-           05 WS-TICKET-TITLE                    PIC X(25).
-           05 WS-TICKET-DESC                     PIC X(100).
+           05 WS-TICKET-ID                       PIC 9(07).
+           05 WS-TIX-ID                          REDEFINES WS-TICKET-ID.
+              10 WS-T-ID                         PIC X(06).
+              10 FILLER                          PIC X.
            05 WS-TICKET-REQ                      PIC X(08).
            05 WS-TICKET-STAT                     PIC X(10).
+           05 WS-TICKET-TITLE                    PIC X(25).
+           05 WS-TICKET-DESC                     PIC X(100).
            05 WS-LAST-UPD                        PIC X(20).
            05 WS-UPD-BY                          PIC X(08).
            05 WS-UPD-REMARKS                     PIC X(50).
@@ -110,6 +95,7 @@
              15 USR-APPROVER                     PIC X.
              15 USR-SERVICE                      PIC X.
            05 WS-STATE                           PIC X.
+
        01  WS-COUNTERS.
            05 WS-INDEX                           PIC 9(02).   
        01  WS-ERRMSGS.
@@ -149,13 +135,13 @@
                IF WS-STATE NOT = LOW-VALUES
                   PERFORM 200-REC-MAP
                ELSE
-                   MOVE 'SELECT TICKET AND PRESS ENTER' TO ERRMSG1O 
+                   MOVE 'SELECT TICKET AND PRESS ENTER' TO ERRMSG1I 
                    MOVE 1 TO WS-STATE
                    PERFORM 111-CREATE-MAP
 
                END-IF
            ELSE 
-               MOVE SPACES TO ERRMSG1O
+               MOVE SPACES TO ERRMSG1I
                MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                EXEC CICS SEND TEXT
                        FROM (WS-INVALID-ACCESS)
@@ -171,15 +157,15 @@
 
        110-DATE-TIME.
            MOVE EIBDATE TO WS-DATE.
-           MOVE WS-DATE-X TO DATE1O.
+           MOVE WS-DATE-X TO DATE1I.
            EXEC CICS ASKTIME
                 ABSTIME    (WS-TIME)
            END-EXEC
            EXEC CICS FORMATTIME
                 ABSTIME    (WS-TIME)
                 DATESEP    ('/')
-                MMDDYYYY   (DATE1O)
-                TIME       (TIME1O)
+                MMDDYYYY   (DATE1I)
+                TIME       (TIME1I)
                 TIMESEP    (':')
            END-EXEC
            MOVE DFHBMASB TO TIME1A
@@ -196,7 +182,7 @@
            MOVE -1 TO TITLEL
            EXEC CICS SEND
                 MAP('SM001M')
-                MAPSET('SM0001')
+                MAPSET('SM01S')
                 FROM(SM001MO)
                 LENGTH(WS-LENGTH)
                 CURSOR
@@ -214,9 +200,10 @@
                 MAP('SM001M')
                 MAPSET('SM0001')
                 INTO (SM001MI)
+                RESP(WS-RETNCODE)
            END-EXEC
            IF EIBRESP = DFHRESP(MAPFAIL)
-              MOVE WS-MAPFAIL TO ERRMSG1O
+              MOVE WS-MAPFAIL TO ERRMSG1I
               PERFORM 111-CREATE-MAP
            END-IF
               PERFORM 500-CHECK-EIBAID.
@@ -233,19 +220,21 @@
                         COMMAREA (WS-COMMAREA)
                         LENGTH (WS-LENGTH)
                    END-EXEC
-                   MOVE WS-PROG-STATE TO ERRMSG1O
+                   MOVE WS-PROG-STATE TO ERRMSG1I
                 ELSE
-                   MOVE WS-INVALID-ACCESS TO ERRMSG1O
+                   MOVE WS-INVALID-ACCESS TO ERRMSG1I
                 END-IF   
            WHEN DFHPF3
                 MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                 EXEC CICS XCTL 
-                     PROGRAM('SM000')
+                     PROGRAM('SM0000')
                      COMMAREA(WS-COMMAREA)
                      LENGTH(WS-LENGTH)
                 END-EXEC
            WHEN DFHENTER 
-                EVALUATE SELECTI
+                PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL 
+                       WS-INDEX > 11
+                EVALUATE DETL-SELECTI(WS-INDEX)
                 WHEN 'U'
                      MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                      EXEC CICS LINK 
@@ -253,7 +242,7 @@
                           COMMAREA (WS-COMMAREA)
                           LENGTH (WS-LENGTH)
                      END-EXEC
-                     MOVE WS-PROG-STATE TO ERRMSG1O
+                     MOVE WS-PROG-STATE TO ERRMSG1I
                 WHEN 'C'
                      MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                      EXEC CICS LINK 
@@ -261,7 +250,7 @@
                           COMMAREA (WS-COMMAREA)
                           LENGTH (WS-LENGTH)
                      END-EXEC
-                     MOVE WS-PROG-STATE TO ERRMSG1O  
+                     MOVE WS-PROG-STATE TO ERRMSG1I  
                 WHEN 'A'
                      MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                      EXEC CICS LINK 
@@ -269,7 +258,7 @@
                           COMMAREA (WS-COMMAREA)
                           LENGTH (WS-LENGTH)
                      END-EXEC
-                     MOVE WS-PROG-STATE TO ERRMSG1O  
+                     MOVE WS-PROG-STATE TO ERRMSG1I  
                 WHEN 'X'
                      MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                      EXEC CICS LINK 
@@ -277,44 +266,57 @@
                           COMMAREA (WS-COMMAREA)
                           LENGTH (WS-LENGTH)
                      END-EXEC
-                     MOVE WS-PROG-STATE TO ERRMSG1O   
+                     MOVE WS-PROG-STATE TO ERRMSG1I   
                 WHEN OTHER
                   MOVE 'INVALID VALUE. PLEASE CORRECT HIGHLIGHT FIELDS'
-                     TO ERRMSG1O                   
+                     TO ERRMSG1I                   
                 END-EVALUATE    
+                END-PERFORM
            WHEN OTHER
-                MOVE 'INAVLID PFKEY PRESSED' TO ERRMSG1O     
+                MOVE 'INAVLID PFKEY PRESSED' TO ERRMSG1I     
            END-EVALUATE.     
        500-EXIT.
            EXIT.    
 
        300-BROWSE-TICKET.
            EXEC CICS STARTBR 
-                FILE('STF001')
-                RIDFLD(WS-TICKET-ID)
-                KEYLENGTH(06)
+                FILE('STF001C')
+                RIDFLD(WS-KEYB)
+                KEYLENGTH(07)
                 RESP2(WS-RETNCODE2)
                 RESP(WS-RETNCODE)
                 GTEQ
            END-EXEC
-           
-           PERFORM 10 TIMES
-           EXEC CICS READNEXT 
-                     FILE('STF001')
-                     RIDFLD(WS-TICKET-ID)
-                     INTO(WS-STF-REC)
-                     LENGTH(WS-REC-LENGTH)
-                     KEYLENGTH(06)
-                      RESP(WS-RETNCODE)
 
-           END-EXEC
-           MOVE WS-TICKET-ID TO TIXNUMI
-
-           
-           END-PERFORM
+           IF WS-RETNCODE2 = DFHRESP(NORMAL)
+              PERFORM 310-READ-NEXT
+           ELSE
+              MOVE 'NO DATA AVAILABLE' TO ERRMSG1I
+           END-IF   
 
            EXEC CICS ENDBR  
                 FILE('STF001')
            END-EXEC.
        300-EXIT.
+           EXIT.    
+
+       310-READ-NEXT.
+           PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL WS-INDEX > 11
+           EXEC CICS READNEXT 
+                     FILE('STF001C')
+                     RIDFLD(WS-KEYB)
+                     INTO(WS-STF-REC)
+                     LENGTH(WS-REC-LENGTH)
+                     KEYLENGTH(07)
+                     RESP2(WS-RETNCODE2)
+           END-EXEC
+           MOVE WS-T-ID TO WS-KEYB6
+           MOVE HIGH-VALUES TO WS-KEYB1
+           MOVE WS-TIX-ID TO DETAILS-TIX-ID(WS-INDEX)
+           MOVE WS-TICKET-TITLE TO DETAILS-TIX-TITLE(WS-INDEX)
+           MOVE WS-TICKET-STAT TO DETAILS-TIX-STAT(WS-INDEX)
+           MOVE WS-LAST-UPD TO DETAILS-LAST-UPD(WS-INDEX)
+           MOVE WS-UPD-BY TO DETAILS-UPD-BY(WS-INDEX)
+           END-PERFORM.
+       310-EXIT.
            EXIT.    

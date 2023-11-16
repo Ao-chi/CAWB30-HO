@@ -1,0 +1,579 @@
+CA-Realia CACXPREP D:\work\CAWB30-HO\SMADDSTF.COB
+
+
+     1	     CBL XOPTS(COBOL2)
+     2	     IDENTIFICATION DIVISION.
+     3	     PROGRAM-ID. SMADDSTF.
+     4	    * Revision Information
+     5	    * ^{File:samp00.cob  }
+     6	    * ^{Timestamp:Tue Apr 29 13:57:04 1997}
+     7	    * ^{Revision:4.0}
+     8	    *
+     9	    * CA-Realia CICS Version 6.0
+    10	    *
+    11	    * This software is the property of Computer Associates International, Inc.
+    12	    * and is protected by International Copyright law
+    13	    * Any unauthorized use or reproduction is prohibited
+    14	    *
+    15	    * Copyright (c) 1984, 1997 Computer Associates International, Inc.
+    16	    *
+    17	    * This software is provided by Computer Associates
+    18	    * as an example of a CICS application program.
+    19	    * It should not be considered complete or correct.
+    20	    *
+    21	    ******************************************************************
+    22	    *DESCRIPTION:Main menu program				     *
+    23	    ******************************************************************
+    24	     ENVIRONMENT DIVISION.
+    25	     CONFIGURATION SECTION.
+    26	     SOURCE-COMPUTER.	 IBM-PC.
+    27	     OBJECT-COMPUTER.	 IBM-PC.
+    28	     DATA DIVISION.
+    29	     WORKING-STORAGE SECTION.
+    30       01  WS-CURRENT-MAP  VALUE 'sm0001s'        PIC X(7).
+    31	     01  WS-USERID		       PIC X(8).
+    32	     01  WS-LENGTH		       PIC S9(4) COMP.
+    33	     01  WS-REC-LENGTH		       PIC S9(4) COMP VALUE +228.
+    34	     01  WS-KEY-LENGTH		       PIC S9(4) COMP VALUE +7.
+    35	     01  WS-REC3-LENGTH 	       PIC S9(4) COMP VALUE +89.
+    36	     01  WS-KEY3-LENGTH 	       PIC S9(4) COMP VALUE +9.
+    37	     01  WS-TIME		       PIC 9(15) COMP-3.
+    38	     01  WS-ERR-MSG		       PIC X(50).
+    39	     01  WS-PGM 		       PIC X(6).
+    40       01  WS-KEY                        PIC X(07) VALUE '000001 '.
+    41	     01  WS-KEY-NUM REDEFINES WS-KEY   PIC 9(06).
+    42       01  WS-INVALID-RESP               PIC X(13) VALUE 'INVALID RESP'.
+    43       01  WS-KEY2                       PIC X(08) VALUE 'ISCB119 '.
+    44       01  WS-KEY3                       PIC X(09) VALUE '000002003'.
+    45	     01  WS-REC2		       PIC X(20).
+    46	     01  I			       PIC 9(03).
+    47	     01  J			       PIC 9(03).
+    48	     01  K			       PIC 9(03).
+    49	     01  WS-MASS-REC.
+    50		 05 FILLER     PIC X(25)    VALUE
+    51              '000006 ISCB110 ONGOING   '.
+    52		 05 FILLER     PIC X(25)    VALUE
+    53              '000007 ISCB110 APPROVED  '.
+    54		 05 FILLER     PIC X(25)    VALUE
+    55              '000008 ISCB110 ONGOING   '.
+    56		 05 FILLER     PIC X(25)    VALUE
+    57              '000009 ISCB110 COMPLETED '.
+    58		 05 FILLER     PIC X(25)    VALUECA-Realia CACXPREP D:\work\CAWB30-HO\SMADDSTF.COB
+
+
+    59              '000010 ISCB110 CLOSED    '.
+    60		 05 FILLER     PIC X(25)    VALUE
+    61              '000011 ISCB110 APPROVED  '.
+    62		 05 FILLER     PIC X(25)    VALUE
+    63              '000012 ISCB110 COMPLETED '.
+    64		 05 FILLER     PIC X(25)    VALUE
+    65              '000013 ISCB110 APPROVED  '.
+    66		 05 FILLER     PIC X(25)    VALUE
+    67              '000014 ISCB110 CLOSED    '.
+    68		 05 FILLER     PIC X(25)    VALUE
+    69              '000015 ISCB110 CREATED   '.
+    70		 05 FILLER     PIC X(25)    VALUE
+    71              '000016 ISCB110 CREATED   '.
+    72		 05 FILLER     PIC X(25)    VALUE
+    73              '000017 ISCB110 CREATED   '.
+    74		 05 FILLER     PIC X(25)    VALUE
+    75              '000018 ISCB110 APPROVED  '.
+    76		 05 FILLER     PIC X(25)    VALUE
+    77              '000019 ISCB110 CREATED   '.
+    78		 05 FILLER     PIC X(25)    VALUE
+    79              '000020 ISCB120 ONGOING   '.
+    80		 05 FILLER     PIC X(25)    VALUE
+    81              '000021 ISCB120 ONGOING   '.
+    82		 05 FILLER     PIC X(25)    VALUE
+    83              '000022 ISCB120 CREATED   '.
+    84		 05 FILLER     PIC X(25)    VALUE
+    85              '000023 ISCB120 ONGOING   '.
+    86		 05 FILLER     PIC X(25)    VALUE
+    87              '000024 ISCB120 ONGOING   '.
+    88		 05 FILLER     PIC X(25)    VALUE
+    89              '000025 ISCB120 APPROVED  '.
+    90		 05 FILLER     PIC X(25)    VALUE
+    91              '000026 ISCB120 APPROVED  '.
+    92		 05 FILLER     PIC X(25)    VALUE
+    93              '000027 ISCB120 CREATED   '.
+    94		 05 FILLER     PIC X(25)    VALUE
+    95              '000028 ISCB120 CREATED   '.
+    96		 05 FILLER     PIC X(25)    VALUE
+    97              '000029 ISCB120 CREATED   '.
+    98		 05 FILLER     PIC X(25)    VALUE
+    99              '000030 ISCB130 APPROVED  '.
+   100		 05 FILLER     PIC X(25)    VALUE
+   101              '000031 ISCB130 ONGOING   '.
+   102		 05 FILLER     PIC X(25)    VALUE
+   103              '000032 ISCB130 CREATED   '.
+   104		 05 FILLER     PIC X(25)    VALUE
+   105              '000033 ISCB130 ONGOING   '.
+   106		 05 FILLER     PIC X(25)    VALUE
+   107              '000034 ISCB130 ONGOING   '.
+   108		 05 FILLER     PIC X(25)    VALUE
+   109              '000035 ISCB130 APPROVED  '.
+   110	     01  FILLER REDEFINES WS-MASS-REC.
+   111		 05 WS-REC-TABLE	   OCCURS 30.
+   112		    10 Ticket-ID		  PIC X(7).
+   113		    10 Requestor		  PIC X(8).
+   114		    10 TKT-Stat 		  PIC X(10).
+   115	     01  WS-REC-CONSTANTS.
+   116           05 Ticket-Title           PIC X(25)  VALUE 'TITLE'.CA-Realia CACXPREP D:\work\CAWB30-HO\SMADDSTF.COB
+
+
+   117           05 Ticket-Description     PIC X(100) VALUE 'DESCRIPTION'.
+   118		 05 Last-Update 	   PIC X(20)  VALUE
+   119               '22/09/2022 10:11:23'.
+   120           05 Last-Update-by         PIC X(8)  VALUE 'ISCB145 '.
+   121           05 Last-Update-Remarks    PIC X(50) VALUE 'REMARKS'.
+   122
+   123	     01  WS-REC.
+   124		 05 WS-REC-KEY		       PIC X(07).
+   125		 05 WS-REC-KEY-NUM REDEFINES WS-REC-KEY PIC 9(07).
+   126		 05 WS-REC-Requestor	       PIC X(8).
+   127		 05 WS-REC-Status	       PIC X(10).
+   128		 05 WS-REC-Title	       PIC X(25).
+   129		 05 WS-REC-Description	       PIC X(100).
+   130		 05 WS-REC-Last-Update	       PIC X(20).
+   131		 05 WS-REC-Last-Update-by      PIC X(8).
+   132		 05 WS-REC-Update-Remarks      PIC X(50).
+   133	     01  WS-REC3.
+   134		 05 WS-REC3-Ticket-ID	       PIC X(7).
+   135		 05 WS-REC3-Seq-Number	       PIC 9(03).
+   136		 05 WS-REC3-Last-Update        PIC X(20).
+   137		 05 WS-REC3-Last-Update-by     PIC X(8).
+   138		 05 WS-REC3-Update-Remarks     PIC X(50).
+   139		 05 FILLER		       PIC X(2).
+   140
+   141
+   142
+   143
+   144	    *
+   145	    P	 COPY DFHAID.
+   145	    *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHAID.COB
+     1	     01  DFHAID.
+     2	    *
+     3	    * CA-Realia CICS 6.0 Computer Associates International, Inc.
+     4	    *
+     5	    * Revision Information
+     6	    * ^{File:dfhaid.cob  }
+     7	    * ^{Timestamp:Thu May 15 14:02:52 1997}
+     8	    * ^{Revision:2.0}
+     9	    *
+    10	    *This is the AID constants copy file
+    11	    *
+    12           05  DFHENTER                  PIC X VALUE ''''.
+    13	    *				       value APOST
+    14           05  DFHCLEAR                  PIC X VALUE '_'.
+    15           05  DFHPA1                    PIC X VALUE '%'.
+    16           05  DFHPA2                    PIC X VALUE '>'.
+    17           05  DFHPA3                    PIC X VALUE ','.
+    18           05  DFHPF1                    PIC X VALUE '1'.
+    19           05  DFHPF2                    PIC X VALUE '2'.
+    20           05  DFHPF3                    PIC X VALUE '3'.
+    21           05  DFHPF4                    PIC X VALUE '4'.
+    22           05  DFHPF5                    PIC X VALUE '5'.
+    23           05  DFHPF6                    PIC X VALUE '6'.
+    24           05  DFHPF7                    PIC X VALUE '7'.
+    25           05  DFHPF8                    PIC X VALUE '8'.
+    26           05  DFHPF9                    PIC X VALUE '9'.
+    27           05  DFHPF10                   PIC X VALUE ':'.
+    28           05  DFHPF11                   PIC X VALUE '#'.CA-Realia CACXPREP D:\work\CAWB30-HO\SMADDSTF.COB
+
+
+    29           05  DFHPF12                   PIC X VALUE '@'.
+    30           05  DFHPF13                   PIC X VALUE 'A'.
+    31           05  DFHPF14                   PIC X VALUE 'B'.
+    32           05  DFHPF15                   PIC X VALUE 'C'.
+    33           05  DFHPF16                   PIC X VALUE 'D'.
+    34           05  DFHPF17                   PIC X VALUE 'E'.
+    35           05  DFHPF18                   PIC X VALUE 'F'.
+    36           05  DFHPF19                   PIC X VALUE 'G'.
+    37           05  DFHPF20                   PIC X VALUE 'H'.
+    38           05  DFHPF21                   PIC X VALUE 'I'.
+    39           05  DFHPF22                   PIC X VALUE '›'.
+    40      *                                  EBCDIC Cent sign x'4A'
+    41      *                                  ASCII  Cent sign x'9B'
+    42           05  DFHPF23                   PIC X VALUE '.'.
+    43           05  DFHPF24                   PIC X VALUE '<'.
+    44           05  DFHOPID                   PIC X VALUE 'W'.
+    45           05  DFHMSRE                   PIC X VALUE 'X'.
+    46           05  DFHTRIG                   PIC X VALUE '"'.
+    47      *                                        value QUOTE  "
+    48           05  DFHPEN                    PIC X VALUE '='.
+    49           05  DFHCLRP                   PIC X VALUE 'Ý'.
+    50      *                                  EBCDIC x'6A'
+    51      *                                  ASCII  x'DD'
+    52           05  DFHSTRF                   PIC X VALUE 'h'.
+    53	    *	 DFHQUIT is a CA-Realia CICS Extension
+    54	    *	 It is set by using <Ctrl>+C or <Ctrl>+<Break> Keys
+    55           05  DFHQUIT                   PIC X VALUE '!'.
+    56		 05  DFHNULL		       PIC X VALUE LOW-VALUE.
+   145	    *$PP-END-COPY
+   146	    *
+   147	    PCOPY DFHBMSCA.
+   147	    *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHBMSCA.COB
+     1	     01  DFHBMSCA.
+     2	    *
+     3	    * CA-Realia CICS 6.0 Computer Associates International, Inc.
+     4	    *
+     5	    * Revision Information
+     6	    * ^{File:dfhbmsca.cob}
+     7	    * ^{Timestamp:Tue Oct 08 15:34:54 1996}
+     8	    * ^{Revision:2.0}
+     9	    *
+    10	    *  Note:This FILE is provided with most values as quoted literals
+    11	    *	    so that the file can be used for both ASCII and EBCDIC
+    12	    *	    programs
+    13	    *
+    14	    *	    The only exceptions are some 3270 Data Stream Orders
+    15	    *	    They use different Hexadecimal values for ASCII and
+    16	    *	    EBCDIC and they cannot be expressed as quoted literals
+    17	    *	    as the values are <Line Feed>, <Tab>, <End of File> etc.
+    18	    *	    characters in ASCII
+    19	    *
+    20	    *	    They have their values set up to default to the EBCDIC
+    21	    *	    values.
+    22	    *
+    23	    *	    3270 orders are only needed for EXEC CICS SEND and RECEIVE
+    24	    *	    and SEND TEXT with imbedded format orders.
+    25	    *	    If you use these values in ASCII programs the values
+    26	    *	    must be changed.CA-Realia CACXPREP D:\work\CAWB30-HO\SMADDSTF.COB
+
+
+    27	    *
+    28	    *	    An alternative is to use REPLACING to change the values.
+    29	    *
+    30	    *	 i.e. COPY DFHBMSCA replacing
+    31	    *			   ==005== BY ==009==  *> DFHPT
+    32	    *			   ==021== BY ==010==  *> DFHNL
+    33	    *			   ==040== BY ==021==  *> DFHSA
+    34	    *			   ==041== BY ==031==  *> DFHSFE
+    35	    *			   ==044== BY ==023==  *> DFHMF
+    36	    *			   ==060== BY ==020==  *> DFHRA
+    37	    *			   ==063== BY ==026==. *> DFHSUB
+    38	    *
+    39	    ******************************************************************
+    40	    *BMS and Terminal Control - Order & Attributes constants	     *
+    41	    ******************************************************************
+    42	    *
+    43	    *	 Field Attributes
+    44	    *
+    45           05  DFHBMASB                          PIC X VALUE '8'.
+    46           05  DFHBMASF                          PIC X VALUE '1'.
+    47           05  DFHBMASK                          PIC X VALUE '0'.
+    48           05  DFHBMBRY                          PIC X VALUE 'H'.
+    49           05  DFHBMDAR                          PIC X VALUE '<'.
+    50           05  DFHBMFSE                          PIC X VALUE 'A'.
+    51           05  DFHBMPRF                          PIC X VALUE '/'.
+    52           05  DFHBMPRO                          PIC X VALUE '-'.
+    53           05  DFHBMUNN                          PIC X VALUE '&'.
+    54           05  DFHBMUNP                          PIC X VALUE ' '.
+    55           05  DFHUNNUM                          PIC X VALUE 'J'.
+    56	    *
+    57	    *	 partially supported
+    58	    *
+    59           05  DFHUNNOD                          PIC X VALUE '('.
+    60           05  DFHUNIMD                          PIC X VALUE 'I'.
+    61           05  DFHUNINT                          PIC X VALUE 'R'.
+    62           05  DFHUNNON                          PIC X VALUE '('.
+    63           05  DFHPROTI                          PIC X VALUE 'Y'.
+    64           05  DFHPROTN                          PIC X VALUE '%'.
+    65	    *
+    66	    *	 These values are additions to mainframe constants
+    67	    *
+    68           05  DFHBMS-ASK-DARK                   PIC X VALUE '@'.
+    69           05  DFHBMS-ASK-BRY-FSET               PIC X VALUE '9'.
+    70           05  DFHBMS-ASK-DAR-FSET               PIC X VALUE ''''.
+    71	    *						     VALUE APOST
+    72           05  DFHBMS-PRO-BRY-FSET               PIC X VALUE 'Z'.
+    73           05  DFHBMS-PRO-DAR-FSET               PIC X VALUE '_'.
+    74           05  DFHBMS-NUM-BRY                    PIC X VALUE 'Q'.
+    75           05  DFHBMS-NUM-DAR                    PIC X VALUE '*'.
+    76           05  DFHBMS-NUM-DAR-FSET               PIC X VALUE ')'.
+    77	    *
+    78	    *	 Field Flag values
+    79		 05  DFHBMEOF-VAL VALUE 128	       PIC S9(4) COMP-4.
+    80		 05  FILLER REDEFINES DFHBMEOF-VAL.
+    81		     10  FILLER 		       PIC X.
+    82		     10  DFHBMEOF		       PIC X.
+    83      *                                          x'80'.
+    84		 05  DFHBMCUR-VAL VALUE 002	       PIC S9(4) COMP-4.CA-Realia CACXPREP D:\work\CAWB30-HO\SMADDSTF.COB
+
+
+    85		 05  FILLER REDEFINES DFHBMCUR-VAL.
+    86		     10  FILLER 		       PIC X.
+    87		     10  DFHBMCUR		       PIC X.
+    88      *                                          x'02'.
+    89		 05  DFHBMMEC-VAL VALUE 130	       PIC S9(4) COMP-4.
+    90		 05  FILLER REDEFINES DFHBMMEC-VAL.
+    91		     10  FILLER 		       PIC X.
+    92		     10  DFHBMMEC		       PIC X.
+    93      *                                          x'82'.
+    94      *                                          x'02'.
+    95		 05  DFHBMFLG-VAL  VALUE 0	       PIC S9(4) COMP-4.
+    96		     88  DFHERASE		       VALUES 128 130.
+    97      *                                          x'80' X'82'
+    98		     88  DFHCURSR		       VALUES 002 130.
+    99      *                                          x'02' X'82'
+   100		 05  FILLER REDEFINES DFHBMFLG-VAL.
+   101		     10  FILLER 		       PIC X.
+   102		     10  DFHBMFLG		       PIC X.
+   103
+   104		 05  DFHBMDUP-VAL VALUE 028	       PIC S9(4) COMP-4.
+   105		 05  FILLER REDEFINES DFHBMDUP-VAL.
+   106		     10  FILLER 		       PIC X.
+   107		     10  DFHBMDUP		       PIC X.
+   108      *                                              x'1C'
+   109	    *
+   110	    ******************************************************************
+   111	    *	 supported 327X Extended Attributes
+   112	    *
+   113	    *	 Extended COLOR Attributes
+   114	    *
+   115           05  DFHDFCOL                          PIC X VALUE '0'.
+   116           05  DFHBLUE                           PIC X VALUE '1'.
+   117           05  DFHRED                            PIC X VALUE '2'.
+   118           05  DFHPINK                           PIC X VALUE '3'.
+   119           05  DFHGREEN                          PIC X VALUE '4'.
+   120           05  DFHTURQ                           PIC X VALUE '5'.
+   121           05  DFHYELLO                          PIC X VALUE '6'.
+   122           05  DFHNEUTR                          PIC X VALUE '7'.
+   123	    *
+   124	    *	 Extended HILIGHT Attributes
+   125	    *
+   126           05  DFHDFHI                           PIC X VALUE '0'.
+   127           05  DFHBLINK                          PIC X VALUE '1'.
+   128           05  DFHREVRS                          PIC X VALUE '2'.
+   129           05  DFHUNDLN                          PIC X VALUE '4'.
+   130	    *
+   131	    ******************************************************************
+   132	    *	 supported 327X Data Stream Orders
+   133	    *
+   134		 05  DFHSBA-VAL VALUE 017		PIC S9(4) COMP-4.
+   135		 05  FILLER REDEFINES DFHSBA-VAL.
+   136		     10  FILLER 		       PIC X.
+   137		     10  DFHSBA 		       PIC X.
+   138      *                                              x'11'
+   139		 05  DFHEUA-VAL VALUE 018	       PIC S9(4) COMP-4.
+   140		 05  FILLER REDEFINES DFHEUA-VAL.
+   141		     10  FILLER 		       PIC X.
+   142		     10  DFHEUA 		       PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\SMADDSTF.COB
+
+
+   143      *                                              x'12'
+   144		 05  DFHIC-VAL VALUE 019	       PIC S9(4) COMP-4.
+   145		 05  FILLER REDEFINES DFHIC-VAL.
+   146		     10  FILLER 		       PIC X.
+   147		     10  DFHIC			       PIC X.
+   148      *                                              X'13'.
+   149		 05  DFHSF-VAL VALUE 029	       PIC S9(4) COMP-4.
+   150		 05  FILLER REDEFINES DFHSF-VAL.
+   151		     10  FILLER 		       PIC X.
+   152		     10  DFHSF			       PIC X.
+   153      *                                              X'1D'.
+   154		 05  DFHPT-VAL VALUE 005	       PIC S9(4) COMP-4.
+   155		     88 DFHPT-VAL-EBCDIC	       VALUE 5.
+   156		     88 DFHPT-VAL-ASCII 	       VALUE 9.
+   157		 05  FILLER REDEFINES DFHPT-VAL.
+   158		     10  FILLER 		       PIC X.
+   159		     10  DFHPT			       PIC X.
+   160      *                                              EBCDIC X'05'.
+   161      *                                              ASCII  X'09'.
+   162		 05  DFHRA-VAL VALUE 060	       PIC S9(4) COMP-4.
+   163		     88 DFHRA-VAL-EBCDIC	       VALUE 60.
+   164		     88 DFHRA-VAL-ASCII 	       VALUE 20.
+   165		 05  FILLER REDEFINES DFHRA-VAL.
+   166		     10  FILLER 		       PIC X.
+   167		     10  DFHRA			       PIC X.
+   168      *                                              EBCDIC x'3C'
+   169      *                                              ASCII  x'14'
+   170		 05  DFHSFE-VAL VALUE 041	       PIC S9(4) COMP-4.
+   171		     88 DFHSFE-VAL-EBCDIC	       VALUE 41.
+   172		     88 DFHSFE-VAL-ASCII	       VALUE 31.
+   173		 05  FILLER REDEFINES DFHSFE-VAL.
+   174		     10  FILLER 		       PIC X.
+   175		     10  DFHSFE 		       PIC X.
+   176      *                                              EBCDIC x'29'
+   177      *                                              ASCII  x'1F'
+   178		 05  DFHMF-VAL VALUE 044	       PIC S9(4) COMP-4.
+   179		     88 DFHMF-VAL-EBCDIC	       VALUE 44.
+   180		     88 DFHMF-VAL-ASCII 	       VALUE 23.
+   181		 05  FILLER REDEFINES DFHMF-VAL.
+   182		     10  FILLER 		       PIC X.
+   183		     10  DFHMF			       PIC X.
+   184      *                                              EBCDIC x'2C'
+   185      *                                              ASCII  x'17'
+   186	    *
+   187	    ******************************************************************
+   188	    *	 unsupported 327X Data Stream order codes
+   189	    *
+   190		 05  DFHSA-VAL VALUE 040	       PIC S9(4) COMP-4.
+   191		     88 DFHSA-VAL-EBCDIC	       VALUE 40.
+   192		     88 DFHSA-VAL-ASCII 	       VALUE 21.
+   193		 05  FILLER REDEFINES DFHSA-VAL.
+   194		     10  FILLER 		       PIC X.
+   195		     10  DFHSA			       PIC X.
+   196      *                                              EBCDIC x'28'
+   197      *                                              ASCII  x'15'
+   198		 05  DFHGE-VAL VALUE 008	       PIC S9(4) COMP-4.
+   199		 05  FILLER REDEFINES DFHGE-VAL.
+   200		     10  FILLER 		       PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\SMADDSTF.COB
+
+
+   201		     10  DFHGE			       PIC X.
+   202      *                                              X'08'.
+   203	    *
+   204	    ******************************************************************
+   205	    *	 SFE and MF supported attribute types
+   206	    *
+   207           05  DFHCOLOR                          PIC X VALUE 'ƒ'.
+   208      *                                              EBCDIC x'42'
+   209      *                                              ASCII  x'83'
+   210           05  DFHHLT                            PIC X VALUE 'Ö'.
+   211      *                                              EBCDIC x'41'
+   212      *                                              ASCII  x'D6'
+   213           05  DFH3270                           PIC X VALUE '{'.
+   214	    *
+   215	    *	 supported for SEND TEXT command and printer terminal
+   216	    *
+   217		 05  DFHBMPNL-VAL VALUE 021	       PIC S9(4) COMP-4.
+   218		     88 DFHBMPNL-VAL-EBCDIC	       VALUE 21.
+   219		     88 DFHBMPNL-VAL-ASCII	       VALUE 10.
+   220		 05  FILLER REDEFINES DFHBMPNL-VAL.
+   221		     10  FILLER 		       PIC X.
+   222		     10  DFHBMPNL		       PIC X.
+   223      *                                              EBCDIC X'15'.
+   224      *                                              ASCII  X'0A'.
+   225	    *
+   226	    ******************************************************************
+   227	    *	 Printer terminal data stream only
+   228	    *
+   229		 05  DFHBMPFF-VAL VALUE 012	       PIC S9(4) COMP-4.
+   230		 05  FILLER REDEFINES DFHBMPFF-VAL.
+   231		     10  FILLER 		       PIC X.
+   232		     10  DFHBMPFF		       PIC X.
+   233      *                                              X'0C'.
+   234		 05  DFHBMPCR-VAL VALUE 013	       PIC S9(4) COMP-4.
+   235		 05  FILLER REDEFINES DFHBMPCR-VAL.
+   236		     10  FILLER 		       PIC X.
+   237		     10  DFHBMPCR		       PIC X.
+   238      *                                              X'0D'.
+   239		 05  DFHBMPEM-VAL VALUE 025	       PIC S9(4) COMP-4.
+   240		 05  FILLER REDEFINES DFHBMPEM-VAL.
+   241		     10  FILLER 		       PIC X.
+   242		     10  DFHBMPEM		       PIC X.
+   243      *                                              X'19'.
+   244	    *
+   245	    ******************************************************************
+   246	    *	 unsupported Miscellaneous attributes and constants
+   247	    *
+   248		 05  DFHALL			       PIC X VALUE LOW-VALUES.
+   249           05  DFHBASE                           PIC X VALUE '0'.
+   250		 05  DFHBMDET			       PIC X VALUE LOW-VALUES.
+   251		 05  DFHBMPSOSI-VAL VALUE 3599	       PIC S9(4) COMP-4.
+   252		 05  FILLER REDEFINES DFHBMPSOSI-VAL.
+   253		     10  DFHBMPSO		       PIC X.
+   254      *                                              X'0E'.
+   255		     10  DFHBMPSI		       PIC X.
+   256      *                                              X'0F'.
+   257		 05  DFHDFT VALUE HIGH-VALUES	       PIC X.
+   258           05  DFHERROR                          PIC X VALUE '¶'.CA-Realia CACXPREP D:\work\CAWB30-HO\SMADDSTF.COB
+
+
+   259      *                                              EBCDIC X'1A'.
+   260      *                                              ASCII  X'B6'.
+   261           05  DFHFIL                            PIC X VALUE '4'.
+   262           05  DFHMENT                           PIC X VALUE '2'.
+   263           05  DFHMET                            PIC X VALUE '3'.
+   264           05  DFHMFE                            PIC X VALUE '6'.
+   265           05  DFHMFET                           PIC X VALUE '7'.
+   266           05  DFHMFT                            PIC X VALUE '5'.
+   267           05  DFHMT                             PIC X VALUE '1'.
+   268           05  DFHOUTLN                          PIC X VALUE 'B'.
+   269           05  DFHPS                             PIC X VALUE '„'.
+   270      *                                              EBCDIC x'43'
+   271      *                                              ASCII  x'84'
+   272           05  DFHVAL                            PIC X VALUE 'A'.
+   273	    *
+   274		 05  DFHSUB-VAL   VALUE 063	       PIC S9(4) COMP-4.
+   275		     88 DFHSUB-VAL-EBCDIC	       VALUE 63.
+   276		     88 DFHSUB-VAL-ASCII	       VALUE 26.
+   277		 05  FILLER REDEFINES DFHSUB-VAL.
+   278		     10  FILLER 		       PIC X.
+   279		     10  DFHSUB 		       PIC X.
+   280      *                                              EBCDIC X'3F'.
+   281      *                                              ASCII  X'1A'.
+   282	    *
+   283		 05  DFHFM-VAL	  VALUE 030	       PIC S9(4) COMP-4.
+   284		 05  FILLER REDEFINES DFHFM-VAL.
+   285		     10  FILLER 		       PIC X.
+   286		     10  DFHFM			       PIC X.
+   287      *                                              EBCDIC X'1E'.
+   288		 05  DFHEO VALUE HIGH-VALUE	       PIC X.
+   147	    *$PP-END-COPY
+   148
+   149	     LINKAGE SECTION.
+   150	     01  DFHCOMMAREA			       PIC X(10).
+   151	    *
+   152	     PROCEDURE DIVISION 					      REALCICS
+   153	     100-PROCESS.
+   154		     EXEC CICS IGNORE CONDITION ERROR END-EXEC
+   155		      MOVE 1 TO I.
+   156
+   157		      PERFORM 30 TIMES
+   158
+   159			   MOVE Ticket-ID(I)	   TO
+   160				WS-REC-KEY
+   161			   MOVE Requestor(I)	   TO
+   162			       WS-REC-Requestor
+   163			   MOVE TKT-STAT(I)	   TO
+   164			       WS-REC-Status
+   165			   MOVE Ticket-Title	    TO
+   166			       WS-REC-Title
+   167			   MOVE Ticket-Description  TO
+   168			       WS-REC-Description
+   169			   MOVE Last-Update	    TO
+   170			       WS-REC-Last-Update
+   171			   MOVE Last-Update-by	    TO
+   172			       WS-REC-Last-Update-by
+   173			   MOVE Last-Update-Remarks TO
+   174			       WS-REC-Update-RemarksCA-Realia CACXPREP D:\work\CAWB30-HO\SMADDSTF.COB
+
+
+   175
+   176                    EXEC CICS WRITE FILE('STF001C')
+   177			       FROM (WS-REC)
+   178			       RIDFLD (WS-REC-KEY)
+   179			       LENGTH (+228)
+   180			  END-EXEC
+   181			  IF EIBRESP NOT = +0
+   182			  EXEC CICS SEND TEXT
+   183				   FROM(WS-INVALID-RESP)
+   184			  END-EXEC
+   185			  END-IF
+   186			  ADD 1 TO I
+   187		      END-PERFORM
+   188		      EXEC CICS RETURN
+   189		      END-EXEC.
+   190
+CA-Realia CACXPREP D:\work\CAWB30-HO\SMADDSTF.COB
+
+
+		Options Summary
+
+		      CICS 4.1
+		      LANGLVL(2)
+		      SPACE(1)
+		      FLAG(I)
+		      SOURCE
+		    NOVBREF
+		      OPTIONS
+		      EBCDIC
+		    DIALECT-VS2
+		      PPCODE
+		      DCHK
+
+		Source Lines Translated:     542
+		Translation Time:	     .01 sec
+		Translation Speed:	  420000 lines per min

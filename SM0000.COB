@@ -64,16 +64,19 @@
            PERFORM 300-VERIFY-USER
            
            IF EIBTRNID = 'SM00'
+              
               MOVE DFHCOMMAREA TO WS-COMMAREA
-              MOVE 'SM0000' TO WS-PGMID
-              MOVE WS-TYPE TO USR-TYPE
-              MOVE WS-USERID TO USERID
-              IF EIBCALEN NOT = +0
-                 PERFORM 200-REC-MAP
-              ELSE
-                 MOVE 'ENTER OPTION AND PRESS ENTER' TO ERRMSGO 
-                 PERFORM 110-VERIFY-ROLE
-              END-IF   
+             
+                 MOVE 'SM0000' TO WS-PGMID
+                 MOVE WS-TYPE TO USR-TYPE
+                 MOVE WS-USERID TO USERID
+                 IF EIBCALEN NOT = +0
+                    PERFORM 200-REC-MAP
+                 ELSE
+                    MOVE 'ENTER OPTION AND PRESS ENTER' TO ERRMSGO 
+                    PERFORM 110-VERIFY-ROLE
+                 END-IF   
+              
            ELSE
               MOVE SPACES TO ERRMSGO
               EXEC CICS SEND TEXT
@@ -167,12 +170,12 @@
                 PERFORM 111-NEW-MAP 
            WHEN 'NNNN'
                 MOVE SPACES TO OPTN01I
-                MOVE SPACES TO OPTN02I
-                MOVE SPACES TO OPTN03I
-                MOVE SPACES TO OPTN04I
-                MOVE SPACES TO OPTN05I
-                MOVE SPACE TO OPTN06I
-                MOVE SPACES TO OPTN07I 
+                               OPTN02I
+                               OPTN03I
+                               OPTN04I
+                               OPTN05I
+                               OPTN06I
+                               OPTN07I 
                 PERFORM 111-NEW-MAP 
            WHEN OTHER
                 MOVE SPACES TO ERRMSGO

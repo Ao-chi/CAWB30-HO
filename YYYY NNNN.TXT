@@ -132,3 +132,6 @@ Service Provider	1 Search Ticket
 	         10 FILLER REDEFINES DETL-SELECTF   PIC X.
                 15 DETL-SELECTA			     PIC X.
 	         10 DETL-SELECTI				     PIC X(001).
+
+              RETURN BACK TO SM000
+              OCCURS

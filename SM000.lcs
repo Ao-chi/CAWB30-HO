@@ -1,4 +1,4 @@
-CA-Realia CICS Ver:6.0.27  SM000.bms                                                                     14NOV23 20:30:45 PAGE  1
+CA-Realia CICS Ver:6.0.27  SM000.bms                                                                     16NOV23 14:45:20 PAGE  1
 
     1          PRINT NOGEN
     2 SM00S    DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      C
@@ -39,7 +39,7 @@
    37          DFHMSD TYPE=FINAL
       SM000 loaded with 1 MAPS, 18 FIELDS and 213 Bytes of Literals
 
-   38          ENDCA-Realia CICS Ver:6.0.27  SM000.bms                                                                     14NOV23 20:30:45 PAGE  2
+   38          ENDCA-Realia CICS Ver:6.0.27  SM000.bms                                                                     16NOV23 14:45:20 PAGE  2
 
       COBOL COPY file generated
 
