@@ -12,7 +12,7 @@
       *    WORKING STORAGE     *
       *------------------------*
        WORKING-STORAGE SECTION.
-           COPY SM0001.
+           COPY SM01S.
       *--------------------*     
       * COPYBOOK REDEFINES *
       *--------------------*
@@ -44,7 +44,8 @@
                     20  SLASH2                    PIC X.
                     20  DETAIL-YYYY               PIC X(04). 
                  15 FILLER4                       PIC X(02).
-                 15 DETAILS-UPD-BY                PIC X(08).           
+                 15 DETAILS-UPD-BY                PIC X(08).   
+           05 FILLER                              PIC X(65).
            COPY DFHBMSCA.
            COPY DFHAID.
 
@@ -83,6 +84,9 @@
        01  WS-DATE                               PIC 9(7).
        01  WS-DATE-X REDEFINES WS-DATE           PIC X(7).
        01  WS-LENGTH                             PIC S9(4) COMP.
+      *--------------------------------------------------------------*
+      *               COMMAREA WORKING STORAGE                       *
+      *--------------------------------------------------------------*
        01  WS-COMMAREA.
            05 WS-PROG-STATE                      PIC X(15).
            05 WS-PGMID                           PIC X(06).
@@ -131,17 +135,17 @@
            
            MOVE DFHCOMMAREA TO WS-COMMAREA
            PERFORM 300-BROWSE-TICKET
-           IF WS-PGMID = 'SM0000'
+           IF WS-PGMID = 'SM000'
                IF WS-STATE NOT = LOW-VALUES
                   PERFORM 200-REC-MAP
                ELSE
-                   MOVE 'SELECT TICKET AND PRESS ENTER' TO ERRMSG1I 
+                   MOVE 'SELECT TICKET AND PRESS ENTER' TO ERRMSG1O 
                    MOVE 1 TO WS-STATE
                    PERFORM 111-CREATE-MAP
 
                END-IF
            ELSE 
-               MOVE SPACES TO ERRMSG1I
+               MOVE SPACES TO ERRMSG1O
                MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                EXEC CICS SEND TEXT
                        FROM (WS-INVALID-ACCESS)
@@ -157,15 +161,15 @@
 
        110-DATE-TIME.
            MOVE EIBDATE TO WS-DATE.
-           MOVE WS-DATE-X TO DATE1I.
+           MOVE WS-DATE-X TO DATE1O.
            EXEC CICS ASKTIME
                 ABSTIME    (WS-TIME)
            END-EXEC
            EXEC CICS FORMATTIME
                 ABSTIME    (WS-TIME)
                 DATESEP    ('/')
-                MMDDYYYY   (DATE1I)
-                TIME       (TIME1I)
+                MMDDYYYY   (DATE1O)
+                TIME       (TIME1O)
                 TIMESEP    (':')
            END-EXEC
            MOVE DFHBMASB TO TIME1A
@@ -178,7 +182,9 @@
            MOVE DFHUNIMD TO TITLEA
            MOVE DFHUNIMD TO STATUSA
            MOVE LENGTH OF SM001MO TO WS-LENGTH
-           MOVE WS-PAGE-NO TO PAGEI
+           PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL WS-INDEX > 11
+                   MOVE '-' TO DETL-SELECTI(WS-INDEX)            
+           END-PERFORM            
            MOVE -1 TO TITLEL
            EXEC CICS SEND
                 MAP('SM001M')
@@ -198,12 +204,12 @@
        200-REC-MAP.
            EXEC CICS RECEIVE
                 MAP('SM001M')
-                MAPSET('SM0001')
+                MAPSET('SM01S')
                 INTO (SM001MI)
                 RESP(WS-RETNCODE)
            END-EXEC
            IF EIBRESP = DFHRESP(MAPFAIL)
-              MOVE WS-MAPFAIL TO ERRMSG1I
+              MOVE WS-MAPFAIL TO ERRMSG1O
               PERFORM 111-CREATE-MAP
            END-IF
               PERFORM 500-CHECK-EIBAID.
@@ -220,17 +226,33 @@
                         COMMAREA (WS-COMMAREA)
                         LENGTH (WS-LENGTH)
                    END-EXEC
-                   MOVE WS-PROG-STATE TO ERRMSG1I
+                   MOVE WS-PROG-STATE TO ERRMSG1O
                 ELSE
-                   MOVE WS-INVALID-ACCESS TO ERRMSG1I
+                   MOVE WS-INVALID-ACCESS TO ERRMSG1O
                 END-IF   
            WHEN DFHPF3
-                MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-                EXEC CICS XCTL 
-                     PROGRAM('SM0000')
-                     COMMAREA(WS-COMMAREA)
-                     LENGTH(WS-LENGTH)
-                END-EXEC
+      *         MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+      *         MOVE 'SM001' TO WS-PGMID
+      *         MOVE LOW-VALUES TO WS-PROG-STATE
+      *         EXEC CICS XCTL 
+      *              PROGRAM('SM002')
+      *              COMMAREA(WS-COMMAREA)
+      *              LENGTH(WS-LENGTH)
+      *         END-EXEC
+                MOVE 'F3 PRESSED' TO ERRMSG1O
+           WHEN DFHPF5
+                MOVE 'PF5 PRESSED' TO ERRMSG1O
+           WHEN DFHPF7         
+                MOVE 'MOVE UP' TO ERRMSG1O
+                IF PAGEI = 1
+                   MOVE 'THIS IS THE FIRST PAGE' TO ERRMSG1O
+                ELSE 
+                   CONTINUE
+                END-IF   
+           WHEN DFHPF8         
+                MOVE 'MOVE DOWN' TO ERRMSG1O 
+           WHEN DFHPF12         
+                MOVE 'RESET' TO ERRMSG1O
            WHEN DFHENTER 
                 PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL 
                        WS-INDEX > 11
@@ -242,7 +264,7 @@
                           COMMAREA (WS-COMMAREA)
                           LENGTH (WS-LENGTH)
                      END-EXEC
-                     MOVE WS-PROG-STATE TO ERRMSG1I
+                     MOVE WS-PROG-STATE TO ERRMSG1O
                 WHEN 'C'
                      MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                      EXEC CICS LINK 
@@ -250,7 +272,7 @@
                           COMMAREA (WS-COMMAREA)
                           LENGTH (WS-LENGTH)
                      END-EXEC
-                     MOVE WS-PROG-STATE TO ERRMSG1I  
+                     MOVE WS-PROG-STATE TO ERRMSG1O  
                 WHEN 'A'
                      MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                      EXEC CICS LINK 
@@ -258,7 +280,7 @@
                           COMMAREA (WS-COMMAREA)
                           LENGTH (WS-LENGTH)
                      END-EXEC
-                     MOVE WS-PROG-STATE TO ERRMSG1I  
+                     MOVE WS-PROG-STATE TO ERRMSG1O  
                 WHEN 'X'
                      MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                      EXEC CICS LINK 
@@ -266,14 +288,14 @@
                           COMMAREA (WS-COMMAREA)
                           LENGTH (WS-LENGTH)
                      END-EXEC
-                     MOVE WS-PROG-STATE TO ERRMSG1I   
+                     MOVE WS-PROG-STATE TO ERRMSG1O   
                 WHEN OTHER
                   MOVE 'INVALID VALUE. PLEASE CORRECT HIGHLIGHT FIELDS'
-                     TO ERRMSG1I                   
+                     TO ERRMSG1O                   
                 END-EVALUATE    
                 END-PERFORM
            WHEN OTHER
-                MOVE 'INAVLID PFKEY PRESSED' TO ERRMSG1I     
+                MOVE 'INAVLID PFKEY PRESSED' TO ERRMSG1O     
            END-EVALUATE.     
        500-EXIT.
            EXIT.    
@@ -291,7 +313,7 @@
            IF WS-RETNCODE2 = DFHRESP(NORMAL)
               PERFORM 310-READ-NEXT
            ELSE
-              MOVE 'NO DATA AVAILABLE' TO ERRMSG1I
+              MOVE 'NO DATA AVAILABLE' TO ERRMSG1O
            END-IF   
 
            EXEC CICS ENDBR  

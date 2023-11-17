@@ -78,9 +78,9 @@
 	   05 WS-PROG-STATE			 PIC X(15).
 
       *
-      P    COPY SM000.
-      *$PP-START-COPY D:\work\CAWB30-HO\SM000.COB
-      * SYMBOLIC MAP of SM000 Created by CACXBMS Version 6.0.27
+      P    COPY SM00S.
+      *$PP-START-COPY D:\work\CAWB30-HO\SM00S.COB
+      * SYMBOLIC MAP of SM00S Created by CACXBMS Version 6.0.27
        01  SM00MI.
 	   02  FILLER				      PIC X(12).
 	   02  OPTN01L				      PIC S9(4) COMP.

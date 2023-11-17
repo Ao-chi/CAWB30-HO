@@ -30,9 +30,9 @@
       *    WORKING STORAGE     *
       *------------------------*
        WORKING-STORAGE SECTION.
-      P    COPY SM0001.
-      *$PP-START-COPY D:\work\CAWB30-HO\SM0001.COB
-      * SYMBOLIC MAP of SM0001 Created by CACXBMS Version 6.0.27
+      P    COPY SM01S.
+      *$PP-START-COPY D:\work\CAWB30-HO\SM01S.COB
+      * SYMBOLIC MAP of SM01S Created by CACXBMS Version 6.0.27
       *$PP-NOLIST CICS HA						REALCICS
        01  DFH-RETURN-STATUS PIC S9(4) COMP-5.				REALCICS
        01  CICSICB.							REALCICS
@@ -174,62 +174,62 @@
 	   02  DETL1F				      PIC X.
 	   02  FILLER REDEFINES DETL1F.
 	       03  DETL1A			      PIC X.
-	   02  DETL1I				      PIC X(069).
+	   02  DETL1I				      PIC X(070).
 	   02  DETL2L				      PIC S9(4) COMP.
 	   02  DETL2F				      PIC X.
 	   02  FILLER REDEFINES DETL2F.
 	       03  DETL2A			      PIC X.
-	   02  DETL2I				      PIC X(069).
+	   02  DETL2I				      PIC X(070).
 	   02  DETL3L				      PIC S9(4) COMP.
 	   02  DETL3F				      PIC X.
 	   02  FILLER REDEFINES DETL3F.
 	       03  DETL3A			      PIC X.
-	   02  DETL3I				      PIC X(069).
+	   02  DETL3I				      PIC X(070).
 	   02  DETL4L				      PIC S9(4) COMP.
 	   02  DETL4F				      PIC X.
 	   02  FILLER REDEFINES DETL4F.
 	       03  DETL4A			      PIC X.
-	   02  DETL4I				      PIC X(069).
+	   02  DETL4I				      PIC X(070).
 	   02  DETL5L				      PIC S9(4) COMP.
 	   02  DETL5F				      PIC X.
 	   02  FILLER REDEFINES DETL5F.
 	       03  DETL5A			      PIC X.
-	   02  DETL5I				      PIC X(069).
+	   02  DETL5I				      PIC X(070).
 	   02  DETL6L				      PIC S9(4) COMP.
 	   02  DETL6F				      PIC X.
 	   02  FILLER REDEFINES DETL6F.
 	       03  DETL6A			      PIC X.
-	   02  DETL6I				      PIC X(069).
+	   02  DETL6I				      PIC X(070).
 	   02  DETL7L				      PIC S9(4) COMP.
 	   02  DETL7F				      PIC X.
 	   02  FILLER REDEFINES DETL7F.
 	       03  DETL7A			      PIC X.
-	   02  DETL7I				      PIC X(069).
+	   02  DETL7I				      PIC X(070).
 	   02  DETL8L				      PIC S9(4) COMP.
 	   02  DETL8F				      PIC X.
 	   02  FILLER REDEFINES DETL8F.
 	       03  DETL8A			      PIC X.
-	   02  DETL8I				      PIC X(069).
+	   02  DETL8I				      PIC X(070).
 	   02  DETL9L				      PIC S9(4) COMP.
 	   02  DETL9F				      PIC X.
 	   02  FILLER REDEFINES DETL9F.
 	       03  DETL9A			      PIC X.
-	   02  DETL9I				      PIC X(069).
+	   02  DETL9I				      PIC X(070).
 	   02  DETL10L				      PIC S9(4) COMP.
 	   02  DETL10F				      PIC X.
 	   02  FILLER REDEFINES DETL10F.
 	       03  DETL10A			      PIC X.
-	   02  DETL10I				      PIC X(069).
+	   02  DETL10I				      PIC X(070).
 	   02  DETL11L				      PIC S9(4) COMP.
 	   02  DETL11F				      PIC X.
 	   02  FILLER REDEFINES DETL11F.
 	       03  DETL11A			      PIC X.
-	   02  DETL11I				      PIC X(069).
+	   02  DETL11I				      PIC X(070).
 	   02  ERRMSG1L 			      PIC S9(4) COMP.
 	   02  ERRMSG1F 			      PIC X.
 	   02  FILLER REDEFINES ERRMSG1F.
 	       03  ERRMSG1A			      PIC X.
-	   02  ERRMSG1I 			      PIC X(071).
+	   02  ERRMSG1I 			      PIC X(070).
        01  SM001MO REDEFINES SM001MI.
 	   02  FILLER				      PIC X(12).
 	   02  FILLER				      PIC XX.
@@ -288,40 +288,40 @@
 	   02  OPTN11O				      PIC X(001).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  DETL1O				      PIC X(069).
+	   02  DETL1O				      PIC X(070).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  DETL2O				      PIC X(069).
+	   02  DETL2O				      PIC X(070).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  DETL3O				      PIC X(069).
+	   02  DETL3O				      PIC X(070).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  DETL4O				      PIC X(069).
+	   02  DETL4O				      PIC X(070).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  DETL5O				      PIC X(069).
+	   02  DETL5O				      PIC X(070).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  DETL6O				      PIC X(069).
+	   02  DETL6O				      PIC X(070).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  DETL7O				      PIC X(069).
+	   02  DETL7O				      PIC X(070).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  DETL8O				      PIC X(069).
+	   02  DETL8O				      PIC X(070).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  DETL9O				      PIC X(069).
+	   02  DETL9O				      PIC X(070).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  DETL10O				      PIC X(069).
+	   02  DETL10O				      PIC X(070).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  DETL11O				      PIC X(069).
+	   02  DETL11O				      PIC X(070).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  ERRMSG1O 			      PIC X(071).
+	   02  ERRMSG1O 			      PIC X(070).
       *$PP-END-COPY
       *--------------------*
       * COPYBOOK REDEFINES *
@@ -355,6 +355,7 @@
 		    20	DETAIL-YYYY		  PIC X(04).
 		 15 FILLER4			  PIC X(02).
 		 15 DETAILS-UPD-BY		  PIC X(08).
+	   05 FILLER				  PIC X(65).
       P    COPY DFHBMSCA.
       *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHBMSCA.COB
        01  DFHBMSCA.
@@ -741,6 +742,9 @@
        01  WS-DATE				 PIC 9(7).
        01  WS-DATE-X REDEFINES WS-DATE		 PIC X(7).
        01  WS-LENGTH				 PIC S9(4) COMP.
+      *--------------------------------------------------------------*
+      * 	      COMMAREA WORKING STORAGE			     *
+      *--------------------------------------------------------------*
        01  WS-COMMAREA.
 	   05 WS-PROG-STATE			 PIC X(15).
 	   05 WS-PGMID				 PIC X(06).
@@ -850,7 +854,7 @@
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 128 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 132 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '0' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE ' ' TO DFH-DATA-CLASS (02)                              REALCICS
@@ -865,17 +869,17 @@
 
 	   MOVE DFHCOMMAREA TO WS-COMMAREA
 	   PERFORM 300-BROWSE-TICKET
-           IF WS-PGMID = 'SM0000'
+           IF WS-PGMID = 'SM000'
 	       IF WS-STATE NOT = LOW-VALUES
 		  PERFORM 200-REC-MAP
 	       ELSE
-                   MOVE 'SELECT TICKET AND PRESS ENTER' TO ERRMSG1I
+                   MOVE 'SELECT TICKET AND PRESS ENTER' TO ERRMSG1O
 		   MOVE 1 TO WS-STATE
 		   PERFORM 111-CREATE-MAP
 
 	       END-IF
 	   ELSE
-	       MOVE SPACES TO ERRMSG1I
+	       MOVE SPACES TO ERRMSG1O
 	       MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
       *$PP-DEBUG							REALCICS
       P        EXEC CICS SEND TEXT
@@ -885,7 +889,7 @@
       P 	  END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 146 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 150 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '1' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE ' ' TO DFH-DATA-CLASS (02)                              REALCICS
@@ -917,7 +921,7 @@
       P        END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 151 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 155 TO DFH-SOURCE-LINE-NUM				REALCICS
            MOVE X'0E08' TO DFH-COMMAND EIBFN                            REALCICS
 	   MOVE 000 TO DFH-VARS-COUNT					REALCICS
            CALL 'CICS_Exec_Std' USING CICSICB GIVING DFH-RETURN-STATUS  REALCICS
@@ -934,14 +938,14 @@
 
        110-DATE-TIME.
 	   MOVE EIBDATE TO WS-DATE.
-	   MOVE WS-DATE-X TO DATE1I.
+	   MOVE WS-DATE-X TO DATE1O.
       *$PP-DEBUG							REALCICS
       P    EXEC CICS ASKTIME
       P 	ABSTIME    (WS-TIME)
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 161 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 165 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '1' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE 'T ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -960,13 +964,13 @@
       P    EXEC CICS FORMATTIME
       P 	ABSTIME    (WS-TIME)
       P         DATESEP    ('/')
-      P 	MMDDYYYY   (DATE1I)
-      P 	TIME	   (TIME1I)
+      P 	MMDDYYYY   (DATE1O)
+      P 	TIME	   (TIME1O)
       P         TIMESEP    (':')
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 164 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 168 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '1' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE 'T ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -981,13 +985,13 @@
 	   MOVE 001 TO DFH-FLAG (22)					REALCICS
            MOVE '1' TO DFH-DATA-TYPE (22)                               REALCICS
            MOVE 'A ' TO DFH-DATA-CLASS (22)                             REALCICS
-	   SET DFH-ADDR (22) TO ADDRESS OF DATE1I			REALCICS
-	   ADD 0 LENGTH OF DATE1I GIVING DFH-SIZE (22)			REALCICS
+	   SET DFH-ADDR (22) TO ADDRESS OF DATE1O			REALCICS
+	   ADD 0 LENGTH OF DATE1O GIVING DFH-SIZE (22)			REALCICS
 	   MOVE 001 TO DFH-FLAG (15)					REALCICS
            MOVE '1' TO DFH-DATA-TYPE (15)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (15)                             REALCICS
-	   SET DFH-ADDR (15) TO ADDRESS OF TIME1I			REALCICS
-	   ADD 0 LENGTH OF TIME1I GIVING DFH-SIZE (15)			REALCICS
+	   SET DFH-ADDR (15) TO ADDRESS OF TIME1O			REALCICS
+	   ADD 0 LENGTH OF TIME1O GIVING DFH-SIZE (15)			REALCICS
 	   MOVE 001 TO DFH-FLAG (17)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (17)                               REALCICS
            MOVE '1 ' TO DFH-DATA-CLASS (17)                             REALCICS
@@ -1013,7 +1017,9 @@
 	   MOVE DFHUNIMD TO TITLEA
 	   MOVE DFHUNIMD TO STATUSA
 	   MOVE LENGTH OF SM001MO TO WS-LENGTH
-	   MOVE WS-PAGE-NO TO PAGEI
+	   PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL WS-INDEX > 11
+                   MOVE '-' TO DETL-SELECTI(WS-INDEX)
+	   END-PERFORM
 	   MOVE -1 TO TITLEL
       *$PP-DEBUG							REALCICS
       P    EXEC CICS SEND
@@ -1026,7 +1032,7 @@
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 183 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 189 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '7 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1075,7 +1081,7 @@
       P    END-EXEC.
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 191 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 197 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '4 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1104,13 +1110,13 @@
       *$PP-DEBUG							REALCICS
       P    EXEC CICS RECEIVE
       P         MAP('SM001M')
-      P         MAPSET('SM0001')
+      P         MAPSET('SM01S')
       P 	INTO (SM001MI)
       P 	RESP(WS-RETNCODE)
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 199 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 205 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '7 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1120,7 +1126,7 @@
 	   MOVE 001 TO DFH-FLAG (03)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (03)                               REALCICS
            MOVE '7 ' TO DFH-DATA-CLASS (03)                             REALCICS
-           MOVE 'SM0001' TO DFH-DATA7 (03)                              REALCICS
+           MOVE 'SM01S' TO DFH-DATA7 (03)                               REALCICS
 	   SET DFH-ADDR (03) TO ADDRESS OF DFH-DATA7 (03)		REALCICS
 	   ADD 0 LENGTH OF DFH-DATA7 (03) GIVING DFH-SIZE (03)		REALCICS
 	   MOVE 001 TO DFH-FLAG (04)					REALCICS
@@ -1150,7 +1156,7 @@
       P    IF EIBRESP = DFHRESP(MAPFAIL)
       *$PP-END-INSERT CICS NA						REALCICS
 	   IF EIBRESP = 	036					REALCICS
-	      MOVE WS-MAPFAIL TO ERRMSG1I
+	      MOVE WS-MAPFAIL TO ERRMSG1O
 	      PERFORM 111-CREATE-MAP
 	   END-IF
 	      PERFORM 500-CHECK-EIBAID.
@@ -1170,7 +1176,7 @@
       P 	   END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 218 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 224 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1198,47 +1204,33 @@
 	   ELSE IF DFH-RETURN-STATUS > 0 PERFORM DFH-GOTO-HANDLE	REALCICS
 	       END-IF END-IF						REALCICS
       *$PP-LIST 							REALCICS
-		   MOVE WS-PROG-STATE TO ERRMSG1I
+		   MOVE WS-PROG-STATE TO ERRMSG1O
 		ELSE
-		   MOVE WS-INVALID-ACCESS TO ERRMSG1I
+		   MOVE WS-INVALID-ACCESS TO ERRMSG1O
 		END-IF
 	   WHEN DFHPF3
-		MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-      *$PP-DEBUG							REALCICS
-      P 	EXEC CICS XCTL
-      P              PROGRAM('SM0000')
-      P 	     COMMAREA(WS-COMMAREA)
-      P 	     LENGTH(WS-LENGTH)
-      P 	END-EXEC
-      *$PP-NOLIST							REALCICS
-           MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 229 TO DFH-SOURCE-LINE-NUM				REALCICS
-	   MOVE 001 TO DFH-FLAG (02)					REALCICS
-           MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
-           MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
-           MOVE 'SM0000' TO DFH-DATA8 (02)                              REALCICS
-	   SET DFH-ADDR (02) TO ADDRESS OF DFH-DATA8 (02)		REALCICS
-	   ADD 0 LENGTH OF DFH-DATA8 (02) GIVING DFH-SIZE (02)		REALCICS
-	   MOVE 001 TO DFH-FLAG (03)					REALCICS
-           MOVE '1' TO DFH-DATA-TYPE (03)                               REALCICS
-           MOVE ' ' TO DFH-DATA-CLASS (03)                              REALCICS
-	   SET DFH-ADDR (03) TO ADDRESS OF WS-COMMAREA			REALCICS
-	   ADD 0 LENGTH OF WS-COMMAREA GIVING DFH-SIZE (03)		REALCICS
-	   MOVE 001 TO DFH-FLAG (05)					REALCICS
-           MOVE '8' TO DFH-DATA-TYPE (05)                               REALCICS
-           MOVE 'H ' TO DFH-DATA-CLASS (05)                             REALCICS
-	   ADD 0 WS-LENGTH GIVING DFH-DATAH (05)			REALCICS
-	   SET DFH-ADDR (05) TO ADDRESS OF DFH-DATAH (05)		REALCICS
-	   ADD 0 LENGTH OF DFH-DATAH (05) GIVING DFH-SIZE (05)		REALCICS
-           MOVE X'0E04' TO DFH-COMMAND EIBFN                            REALCICS
-	   MOVE 005 TO DFH-VARS-COUNT					REALCICS
-           CALL 'CICS_Exec_Std' USING CICSICB GIVING DFH-RETURN-STATUS  REALCICS
-           IF DFH-RETURN-STATUS = -1 CALL 'CICS_Link_Abend' USING       REALCICS
-	       CICSICB END-IF						REALCICS
-	   IF DFH-RETURN-STATUS < 0 STOP RUN				REALCICS
-	   ELSE IF DFH-RETURN-STATUS > 0 PERFORM DFH-GOTO-HANDLE	REALCICS
-	       END-IF END-IF						REALCICS
-      *$PP-LIST 							REALCICS
+      * 	MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+      *         MOVE 'SM001' TO WS-PGMID
+      * 	MOVE LOW-VALUES TO WS-PROG-STATE
+      * 	EXEC CICS XCTL
+      *              PROGRAM('SM002')
+      * 	     COMMAREA(WS-COMMAREA)
+      * 	     LENGTH(WS-LENGTH)
+      * 	END-EXEC
+                MOVE 'F3 PRESSED' TO ERRMSG1O
+	   WHEN DFHPF5
+                MOVE 'PF5 PRESSED' TO ERRMSG1O
+	   WHEN DFHPF7
+                MOVE 'MOVE UP' TO ERRMSG1O
+		IF PAGEI = 1
+                   MOVE 'THIS IS THE FIRST PAGE' TO ERRMSG1O
+		ELSE
+		   CONTINUE
+		END-IF
+	   WHEN DFHPF8
+                MOVE 'MOVE DOWN' TO ERRMSG1O
+	   WHEN DFHPF12
+                MOVE 'RESET' TO ERRMSG1O
 	   WHEN DFHENTER
 		PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL
 		       WS-INDEX > 11
@@ -1253,7 +1245,7 @@
       P 	     END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 240 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 262 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1281,7 +1273,7 @@
 	   ELSE IF DFH-RETURN-STATUS > 0 PERFORM DFH-GOTO-HANDLE	REALCICS
 	       END-IF END-IF						REALCICS
       *$PP-LIST 							REALCICS
-		     MOVE WS-PROG-STATE TO ERRMSG1I
+		     MOVE WS-PROG-STATE TO ERRMSG1O
                 WHEN 'C'
 		     MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
       *$PP-DEBUG							REALCICS
@@ -1292,7 +1284,7 @@
       P 	     END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 248 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 270 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1320,7 +1312,7 @@
 	   ELSE IF DFH-RETURN-STATUS > 0 PERFORM DFH-GOTO-HANDLE	REALCICS
 	       END-IF END-IF						REALCICS
       *$PP-LIST 							REALCICS
-		     MOVE WS-PROG-STATE TO ERRMSG1I
+		     MOVE WS-PROG-STATE TO ERRMSG1O
                 WHEN 'A'
 		     MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
       *$PP-DEBUG							REALCICS
@@ -1331,7 +1323,7 @@
       P 	     END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 256 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 278 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1359,7 +1351,7 @@
 	   ELSE IF DFH-RETURN-STATUS > 0 PERFORM DFH-GOTO-HANDLE	REALCICS
 	       END-IF END-IF						REALCICS
       *$PP-LIST 							REALCICS
-		     MOVE WS-PROG-STATE TO ERRMSG1I
+		     MOVE WS-PROG-STATE TO ERRMSG1O
                 WHEN 'X'
 		     MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
       *$PP-DEBUG							REALCICS
@@ -1370,7 +1362,7 @@
       P 	     END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 264 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 286 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1398,14 +1390,14 @@
 	   ELSE IF DFH-RETURN-STATUS > 0 PERFORM DFH-GOTO-HANDLE	REALCICS
 	       END-IF END-IF						REALCICS
       *$PP-LIST 							REALCICS
-		     MOVE WS-PROG-STATE TO ERRMSG1I
+		     MOVE WS-PROG-STATE TO ERRMSG1O
 		WHEN OTHER
                   MOVE 'INVALID VALUE. PLEASE CORRECT HIGHLIGHT FIELDS'
-		     TO ERRMSG1I
+		     TO ERRMSG1O
 		END-EVALUATE
 		END-PERFORM
 	   WHEN OTHER
-                MOVE 'INAVLID PFKEY PRESSED' TO ERRMSG1I
+                MOVE 'INAVLID PFKEY PRESSED' TO ERRMSG1O
 	   END-EVALUATE.
        500-EXIT.
 	   EXIT.
@@ -1422,7 +1414,7 @@
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 282 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 304 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1466,7 +1458,7 @@
 	   IF WS-RETNCODE2 =	     000				REALCICS
 	      PERFORM 310-READ-NEXT
 	   ELSE
-              MOVE 'NO DATA AVAILABLE' TO ERRMSG1I
+              MOVE 'NO DATA AVAILABLE' TO ERRMSG1O
 	   END-IF
 
       *$PP-DEBUG							REALCICS
@@ -1475,7 +1467,7 @@
       P    END-EXEC.
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 297 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 319 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1508,7 +1500,7 @@
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 305 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 327 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1559,7 +1551,7 @@
        DFH-END SECTION. 						REALCICS
        DFH-CALL-END.							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 323 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 345 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE LOW-VALUE TO DFH-COMMAND				REALCICS
            CALL 'CICS_Module_End' USING CICSICB GIVING                  REALCICS
 	       DFH-RETURN-STATUS					REALCICS

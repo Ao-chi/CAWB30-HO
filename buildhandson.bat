@@ -37,21 +37,27 @@ call csdin HANDSON
 if errorlevel 1 goto builderr
 rem
 rem Generate Sample System Maps
-if exist SM000.bin erase SM000.bin
-if exist SM000.cob erase SM000.cob
+if exist SM00S.bin erase SM00S.bin
+if exist SM00S.cob erase SM00S.cob
 if exist SM01S.bin erase SM01S.bin
 if exist SM01S.cob erase SM01S.cob
+if exist UA002S.bin erase UA002S.bin
+if exist UA002S.cob erase UA002S.cob
 set _step=3
-call bms SM000
+call bms SM00S
 call bms SM01S
+call bms UA002S
 if errorlevel 1 goto builderr
 rem Generate Sample System Programs: Translate, Compile, and Link
-if exist SMADDSTF.dll erase SMADDSTF.dll
-if exist SMADDSTF.obj erase SMADDSTF.obj
-call cicstran SMADDSTF /hvw
-if exist SM0000.dll erase SM0000.dll
-if exist SM0000.obj erase SM0000.obj
-call cicstran SM0000 /hvw
+rem if exist SMADDSTF.dll erase SMADDSTF.dll
+rem if exist SMADDSTF.obj erase SMADDSTF.obj
+rem call cicstran SMADDSTF /hvw
+REM if exist STFADD.dll erase STFADD.dll
+REM if exist STFADD.obj erase STFADD.obj
+REM call cicstran STFADD /hvw
+if exist SM000.dll erase SM000.dll
+if exist SM000.obj erase SM000.obj
+call cicstran SM000 /hvw
 if exist SM001.dll erase SM001.dll
 if exist SM001.obj erase SM001.obj
 call cicstran SM001 /hvw
@@ -73,6 +79,9 @@ call cicstran SM006 /hvw
 if exist UA001.dll erase UA001.dll
 if exist UA001.obj erase UA001.obj
 call cicstran UA001 /hvw
+if exist UA002.dll erase UA002.dll
+if exist UA002.obj erase UA002.obj
+call cicstran UA002 /hvw
 if errorlevel 1 goto builderr
 goto end
 :builderr

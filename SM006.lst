@@ -14,8 +14,8 @@
     77	      01  WS-COMMAREA.
     78		  05 WS-PROG-STATE			PIC X(15).
     79
-    80		  COPY SM000.
-    82	     * SYMBOLIC MAP of SM000 Created by CACXBMS Version 6.0.27
+    80		  COPY SM00S.
+    82	     * SYMBOLIC MAP of SM00S Created by CACXBMS Version 6.0.27
     83	      01  SM00MI.
     84		  02  FILLER				     PIC X(12).
     85		  02  OPTN01L				     PIC S9(4) COMP.
@@ -477,5 +477,5 @@ DEBUGXREF	  DIALECT-VS2
 			Compilation time (mm:ss.ss):  0:00.01
 			Compilation speed (lines/minute): 38000
 
-			Compilation date (yy/mm/dd): 23/11/16
-			     Time of day (hh:mm:ss): 14:45:21
+			Compilation date (yy/mm/dd): 23/11/17
+			     Time of day (hh:mm:ss): 11:28:59

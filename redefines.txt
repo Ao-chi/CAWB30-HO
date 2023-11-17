@@ -1,0 +1,68 @@
+       01  WS-DETAIL-LINE REDEFINES SM001MI.
+           05  FILLER                  PIC X(109).
+           05  DETAIL-OPTION           OCCURS 11.
+               10  DETAIL-OPTIONL      PIC S9(4) COMP.
+               10  DETAIL-OPTIONF      PIC X.
+               10  FILLER REDEFINES DETAIL-OPTIONF.
+                   15 DETAIL-OPTIONA   PIC X.
+               10  DETAIL-OPTIONI      PIC X(001).
+           05 DETAIL-DETAIL            OCCURS 11.       
+               10  DETAIL-DETAILL      PIC S9(4) COMP.
+               10  DETAIL-DETAILF      PIC X.
+               10  FILLER REDEFINES DETAIL-DETAILF.
+                   15  DETAIL-DETAILA  PIC X. 
+               10  DETAIL-DETAILI. 
+                   15  DETAIL-NUMBER   PIC 9(06).
+                   15  FILLER1         PIC X(03).
+                   15  DETAIL-TITLE    PIC X(25).
+                   15  FILLER2         PIC X(01). 
+                   15  DETAIL-STATUS   PIC X(10).
+                   15  FILLER3         PIC X(04). 
+                   15  DETAIL-LUPDATE.
+                       20  DETAIL-DD   PIC X(02).
+                       20  DETAIL-MM   PIC X(02).
+                       20  DETAIL-YYYY PIC X(04).
+                   15  FILLER4         PIC X(04). 
+                   15  DETAIL-LUPDBY   PIC X(08). 
+               10  DETAIL-DETAIL2  REDEFINES DETAIL-DETAILI PIC X(69).        
+           05  FILLER                  PIC X(64). 
+
+           
+
+           05  FILLER				              PIC X(12).
+	       05  DETL-DATE1L				          PIC S9(4) COMP.
+	       05  DETL-DATE1F                        PIC X.
+	       05  FILLER REDEFINES DETL-DATE1F.
+	           10  DETL-DATE1A			          PIC X.
+	       05  DETL-DATE1I				          PIC X(010).
+	       05  DETL-PAGEL				          PIC S9(4) COMP.
+	       05  DETL-PAGEF				          PIC X.
+	       05  FILLER REDEFINES DETL-PAGEF.
+	           10  DETL-PAGEA			          PIC X.
+	       05  DETL-PAGEI				          PIC X(003).
+	       05  DETL-TIME1L				          PIC S9(4) COMP.
+	       05  DETL-TIME1F				          PIC X.
+	       05  FILLER REDEFINES DETL-TIME1F.
+	           10  DETL-TIME1A			          PIC X.
+	       05  DETL-TIME1I				          PIC X(008).
+	       05  DETL-TITLEL				          PIC S9(4) COMP.
+	       05  DETL-TITLEF				          PIC X.
+	       05  FILLER REDEFINES DETL-TITLEF.
+	           10  DETL-TITLEA			          PIC X.
+	       05  DETL-TITLEI				          PIC X(010).
+	       05  DETL-STATUSL				          PIC S9(4) COMP.
+	       05  DETL-STATUSF				          PIC X.
+	       05  FILLER REDEFINES DETL-STATUSF.
+	           10  DETL-STATUSA			          PIC X.
+	       05  DETL-STATUSI				          PIC X(010).
+	       05  DETL-TODATEL				          PIC S9(4) COMP.
+	       05  DETL-TODATEF				          PIC X.
+	       05  FILLER REDEFINES DETL-TODATEF.
+	           10  DETL-TODATEA			          PIC X.
+	       05  DETL-TODATEI				          PIC X(010).
+	       05  DETL-FRDATEL				          PIC S9(4) COMP.
+	       05  DETL-FRDATEF				          PIC X.
+	       05  FILLER REDEFINES DETL-FRDATEF.
+	           10  DETL-FRDATEA			          PIC X.
+	       05  DETL-FRDATEI				          PIC X(010).
+	       05  FILLER                             PIC X(07).

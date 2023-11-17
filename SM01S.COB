@@ -36,11 +36,6 @@
 	   02  FILLER REDEFINES FRDATEF.
 	       03  FRDATEA			      PIC X.
 	   02  FRDATEI				      PIC X(010).
-	   02  ERRMSG1L 			      PIC S9(4) COMP.
-	   02  ERRMSG1F 			      PIC X.
-	   02  FILLER REDEFINES ERRMSG1F.
-	       03  ERRMSG1A			      PIC X.
-	   02  ERRMSG1I 			      PIC X(071).
 	   02  OPTN1L				      PIC S9(4) COMP.
 	   02  OPTN1F				      PIC X.
 	   02  FILLER REDEFINES OPTN1F.
@@ -151,6 +146,11 @@
 	   02  FILLER REDEFINES DETL11F.
 	       03  DETL11A			      PIC X.
 	   02  DETL11I				      PIC X(070).
+	   02  ERRMSG1L 			      PIC S9(4) COMP.
+	   02  ERRMSG1F 			      PIC X.
+	   02  FILLER REDEFINES ERRMSG1F.
+	       03  ERRMSG1A			      PIC X.
+	   02  ERRMSG1I 			      PIC X(070).
        01  SM001MO REDEFINES SM001MI.
 	   02  FILLER				      PIC X(12).
 	   02  FILLER				      PIC XX.
@@ -174,9 +174,6 @@
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  FRDATEO				      PIC X(010).
-	   02  FILLER				      PIC XX.
-	   02  FILLER				      PIC X.
-	   02  ERRMSG1O 			      PIC X(071).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  OPTN1O				      PIC X(001).
@@ -243,3 +240,6 @@
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  DETL11O				      PIC X(070).
+	   02  FILLER				      PIC XX.
+	   02  FILLER				      PIC X.
+	   02  ERRMSG1O 			      PIC X(070).

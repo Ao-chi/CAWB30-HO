@@ -14,7 +14,7 @@
        01  WS-COMMAREA.
            05 WS-PROG-STATE                      PIC X(15).
 
-           COPY SM000.
+           COPY SM00S.
            COPY DFHBMSCA.
 
        LINKAGE SECTION.
