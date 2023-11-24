@@ -48,22 +48,22 @@
    111	      01  K				PIC 9(03).
    112	      01  WS-MASS-REC.
    113		  05 FILLER	PIC X(25)    VALUE
-   114               '000006 ISCB110 ONGOING   '.
+   114               '000006 ISCB101 ONGOING   '.
    115		  05 FILLER	PIC X(25)    VALUE
-   116               '000007 ISCB110 APPROVED  '.
+   116               '000007 ISCB102 APPROVED  '.
    117		  05 FILLER	PIC X(25)    VALUE
-   118               '000008 ISCB110 ONGOING   '.
+   118               '000008 ISCB103 ONGOING   '.
    119		  05 FILLER	PIC X(25)    VALUE
-   120               '000009 ISCB110 COMPLETED '.
+   120               '000009 ISCB104 COMPLETED '.
    121		  05 FILLER	PIC X(25)    VALUE
-   122               '000010 ISCB110 CLOSED    '.
-   123		  05 FILLER	PIC X(25)    VALUE   124               '000011 ISCB110 APPROVED  '.
+   122               '000010 ISCB105 CLOSED    '.
+   123		  05 FILLER	PIC X(25)    VALUE   124               '000011 ISCB106 APPROVED  '.
    125		  05 FILLER	PIC X(25)    VALUE
-   126               '000012 ISCB110 COMPLETED '.
+   126               '000012 ISCB107 COMPLETED '.
    127		  05 FILLER	PIC X(25)    VALUE
-   128               '000013 ISCB110 APPROVED  '.
+   128               '000013 ISCB108 APPROVED  '.
    129		  05 FILLER	PIC X(25)    VALUE
-   130               '000014 ISCB110 CLOSED    '.
+   130               '000014 ISCB109 CLOSED    '.
    131		  05 FILLER	PIC X(25)    VALUE
    132               '000015 ISCB110 CREATED   '.
    133		  05 FILLER	PIC X(25)    VALUE
@@ -140,7 +140,7 @@
    205
    206
    207	     *
-   208		  COPY DFHAID.
+   208		   COPY DFHAID.
    210	      01  DFHAID.
    211	     *
    212	     * CA-Realia CICS 6.0 Computer Associates International, Inc.
@@ -521,7 +521,7 @@
    598	      PROCEDURE DIVISION					       R
    600		  USING DFHEIBLK DFHCOMMAREA.				       R
    625	      100-PROCESS.
-   627		      EXEC CICS IGNORE CONDITION ERROR END-EXEC
+   627		       EXEC CICS IGNORE CONDITION ERROR END-EXEC
    642		       MOVE 1 TO I.
    643
    644		       PERFORM 30 TIMES
@@ -547,16 +547,17 @@
    666				RIDFLD (WS-REC-KEY)
    667				LENGTH (+228)
    668			   END-EXEC
-   703			   IF EIBRESP NOT = +0
-   705			   EXEC CICS SEND TEXT
-   706				    FROM(WS-INVALID-RESP)
-   707			   END-EXEC
-   728			   END-IF
-   729			   ADD 1 TO I
-   730		       END-PERFORM
-   732		       EXEC CICS RETURN
-   733		       END-EXEC.
-   747CA-Realia COBOL Version 6.0.45	 D:\work\CAWB30-HO\SMADDSTF.cic        PAGE   11
+   703
+   704			   IF EIBRESP NOT = +0
+   706			   EXEC CICS SEND TEXT
+   707				    FROM(WS-INVALID-RESP)
+   708			   END-EXEC
+   729			   END-IF
+   730			   ADD 1 TO I
+   731		       END-PERFORM
+   733		       EXEC CICS RETURN
+   734		       END-EXEC.
+   748CA-Realia COBOL Version 6.0.45	 D:\work\CAWB30-HO\SMADDSTF.cic        PAGE   11
 
 
 
@@ -585,9 +586,9 @@ DEBUGXREF	  DIALECT-VS2
 
 			Error level limit: W
 
-			Source lines compiled:	     758
-			Compilation time (mm:ss.ss):  0:00.01
-			Compilation speed (lines/minute): 48000
+			Source lines compiled:	     759
+			Compilation time (mm:ss.ss):  0:01.01
+			Compilation speed (lines/minute): 45089
 
-			Compilation date (yy/mm/dd): 23/11/16
-			     Time of day (hh:mm:ss): 17:06:44
+			Compilation date (yy/mm/dd): 23/11/22
+			     Time of day (hh:mm:ss): 22:37:01

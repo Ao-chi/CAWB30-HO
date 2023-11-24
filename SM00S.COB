@@ -45,7 +45,7 @@
 	   02  TICKETF				      PIC X.
 	   02  FILLER REDEFINES TICKETF.
 	       03  TICKETA			      PIC X.
-	   02  TICKETI				      PIC X(001).
+	   02  TICKETI				      PIC X(006).
 	   02  ERRMSGL				      PIC S9(4) COMP.
 	   02  ERRMSGF				      PIC X.
 	   02  FILLER REDEFINES ERRMSGF.
@@ -89,7 +89,7 @@
 	   02  OPTIONO				      PIC X(001).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  TICKETO				      PIC X(001).
+	   02  TICKETO				      PIC X(006).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  ERRMSGO				      PIC X(071).

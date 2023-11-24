@@ -37,16 +37,31 @@ call csdin HANDSON
 if errorlevel 1 goto builderr
 rem
 rem Generate Sample System Maps
-if exist SM00S.bin erase SM00S.bin
-if exist SM00S.cob erase SM00S.cob
+REM if exist SM00S.bin erase SM00S.bin
+REM if exist SM00S.cob erase SM00S.cob
 if exist SM01S.bin erase SM01S.bin
 if exist SM01S.cob erase SM01S.cob
-if exist UA002S.bin erase UA002S.bin
-if exist UA002S.cob erase UA002S.cob
+REM if exist SM02S.bin erase SM02S.bin
+REM if exist SM02S.cob erase SM02S.cob
+if exist SM04S.bin erase SM04S.bin
+if exist SM04S.cob erase SM04S.cob
+if exist SM05S.bin erase SM05S.bin
+if exist SM05S.cob erase SM05S.cob
+REM if exist SM06S.bin erase SM06S.bin
+REM if exist SM06S.cob erase SM06S.cob
+REM if exist UA002S.bin erase UA002S.bin
+REM if exist UA002S.cob erase UA002S.cob
+REM if exist UA001S.bin erase UA001S.bin
+REM if exist UA001S.cob erase UA001S.cob
 set _step=3
-call bms SM00S
+REM call bms SM00S
 call bms SM01S
-call bms UA002S
+REM call bms SM02S
+call bms SM04S
+call bms SM05S
+REM call bms SM06S
+REM call bms UA002S
+REM call bms UA001S
 if errorlevel 1 goto builderr
 rem Generate Sample System Programs: Translate, Compile, and Link
 rem if exist SMADDSTF.dll erase SMADDSTF.dll
@@ -55,6 +70,12 @@ rem call cicstran SMADDSTF /hvw
 REM if exist STFADD.dll erase STFADD.dll
 REM if exist STFADD.obj erase STFADD.obj
 REM call cicstran STFADD /hvw
+REM if exist SM0004.dll erase SM0004.dll
+REM if exist SM0004.obj erase SM0004.obj
+REM call cicstran SM0004 /hvw
+if exist DFHLock.DAT erase DFHLock.DAT
+if exist DFHQueue.DAT erase DFHQueue.DAT
+if exist DFHTEMP.DAT erase DFHTEMP.DAT
 if exist SM000.dll erase SM000.dll
 if exist SM000.obj erase SM000.obj
 call cicstran SM000 /hvw
@@ -64,24 +85,24 @@ call cicstran SM001 /hvw
 if exist SM002.dll erase SM002.dll
 if exist SM002.obj erase SM002.obj
 call cicstran SM002 /hvw
-if exist SM003.dll erase SM003.dll
-if exist SM003.obj erase SM003.obj
-call cicstran SM003 /hvw
-if exist SM004.dll erase SM004.dll
-if exist SM004.obj erase SM004.obj
-call cicstran SM004 /hvw
-if exist SM005.dll erase SM005.dll
-if exist SM005.obj erase SM005.obj
-call cicstran SM005 /hvw
-if exist SM006.dll erase SM006.dll
-if exist SM006.obj erase SM006.obj
-call cicstran SM006 /hvw
-if exist UA001.dll erase UA001.dll
-if exist UA001.obj erase UA001.obj
-call cicstran UA001 /hvw
-if exist UA002.dll erase UA002.dll
-if exist UA002.obj erase UA002.obj
-call cicstran UA002 /hvw
+ if exist SM003.dll erase SM003.dll
+ if exist SM003.obj erase SM003.obj
+ call cicstran SM003 /hvw
+ if exist SM004.dll erase SM004.dll
+ if exist SM004.obj erase SM004.obj
+ call cicstran SM004 /hvw
+ if exist SM005.dll erase SM005.dll
+ if exist SM005.obj erase SM005.obj
+ call cicstran SM005 /hvw
+ if exist SM006.dll erase SM006.dll
+ if exist SM006.obj erase SM006.obj
+ call cicstran SM006 /hvw
+REM  if exist UA001.dll erase UA001.dll
+REM  if exist UA001.obj erase UA001.obj
+REM  call cicstran UA001 /hvw
+REM  if exist UA002.dll erase UA002.dll
+REM  if exist UA002.obj erase UA002.obj
+REM call cicstran UA002 /hvw
 if errorlevel 1 goto builderr
 goto end
 :builderr

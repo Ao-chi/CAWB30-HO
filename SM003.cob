@@ -12,7 +12,8 @@
        01  WS-CURRENT-MAP  VALUE 'SM00S'         PIC X(7).
        01  WS-LENGTH                             PIC S9(4) COMP.
        01  WS-COMMAREA.
-           05 WS-PROG-STATE                      PIC X(15).
+           05 WS-PGMID                           PIC X(06).
+
 
       *
            COPY SM00S.
@@ -20,14 +21,14 @@
            COPY DFHBMSCA.
 
        LINKAGE SECTION.
-       01  DFHCOMMAREA                           PIC X(15).
-
+       01  DFHCOMMAREA.
+           05 DF-PGMID                           PIC X(06).
 
        PROCEDURE DIVISION.
        100-MAIN.
-           MOVE 'SM003 CALLED' TO DFHCOMMAREA
+           MOVE 'SM003' TO DFHCOMMAREA
            EXEC CICS
-            RETURN
+                RETURN
            END-EXEC.
 
        100-EXIT.

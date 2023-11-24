@@ -39,26 +39,39 @@
            'INVALID ACCESS'.
        01  WS-INVALID-USER                       PIC X(20) VALUE 
            'INVALID USER ACCESS'.    
+
        01  WS-COMMAREA.
-           05 WS-PROG-STATE                      PIC X(15).
            05 WS-PGMID                           PIC X(06).
+           05 WS-TICKET-PASSED                   PIC X(07).
            05 USERID.
               10  USERID7                        PIC X(7).
               10  FILLER                         PIC X(1).
            05 USR-TYPE.
-              10 USR-REQUESTOR                   PIC X.
-              10 USR-ADMIN                       PIC X.  
-              10 USR-APPROVER                    PIC X.
-              10 USR-SERVICE                     PIC X.
-           05 WS-STATE                           PIC X.   
+              15 USR-REQUESTOR                   PIC X.
+              15 USR-ADMIN                       PIC X.  
+              15 USR-APPROVER                    PIC X.
+              15 USR-SERVICE                     PIC X.
+           05 WS-STATE                           PIC X.
+   
        77 WS-RETNCODE                            PIC S9(8) COMP.
            COPY SM00S.
            COPY DFHAID.
            COPY DFHBMSCA.
 
        LINKAGE SECTION.
-       01  DFHCOMMAREA                           PIC X(50).
-      *
+        01  DFHCOMMAREA.
+           05 DF-PGMID                           PIC X(06).
+           05 DF-TICKET-PASSED                   PIC X(07).
+           05 DF-USERID.
+              10  DF-USERID7                     PIC X(7).
+              10  FILLER                         PIC X(1).
+           05 DF-USR-TYPE.
+             15 DF-USR-REQUESTOR                 PIC X.
+             15 DF-USR-ADMIN                     PIC X.  
+             15 DF-USR-APPROVER                  PIC X.
+             15 DF-USR-SERVICE                   PIC X.
+           05 DF-STATE                           PIC X.
+
        PROCEDURE DIVISION.
        100-PROCESS.
            EXEC CICS IGNORE CONDITION
@@ -66,17 +79,22 @@
            END-EXEC
            PERFORM 300-VERIFY-USER
            
-           IF EIBTRNID = 'SM00'
+      *    IF EIBTRNID = 'SM00'
               
               MOVE DFHCOMMAREA TO WS-COMMAREA
-             
+           IF WS-PGMID = 'SM000' OR WS-PGMID = 'SM001' OR
+              WS-PGMID = 'SM002' OR WS-PGMID = 'SM003' OR 
+              WS-PGMID = 'SM004' OR WS-PGMID = 'SM005' OR
+              WS-PGMID = 'SM006' OR EIBTRNID = 'SM00'
                  MOVE 'SM000' TO WS-PGMID
                  MOVE WS-TYPE TO USR-TYPE
                  MOVE WS-USERID TO USERID
-                 IF EIBCALEN NOT = +0
+                 IF EIBCALEN NOT = +0 
+      *          IF WS-STATE NOT = LOW-VALUES
                     PERFORM 200-REC-MAP
                  ELSE
                     MOVE 'ENTER OPTION AND PRESS ENTER' TO ERRMSGO 
+                    MOVE 1 TO WS-STATE
                     PERFORM 110-VERIFY-ROLE
                  END-IF   
               
@@ -227,7 +245,7 @@
                 ERASE
            END-EXEC
            EXEC CICS RETURN
-                TRANSID(EIBTRNID)
+                TRANSID('SM00')
                 COMMAREA(WS-COMMAREA)
            END-EXEC.
        110-EXIT.
@@ -248,6 +266,7 @@
            EXIT.
        
        21A-SEARCH-SM001.
+           MOVE LOW-VALUES TO WS-STATE
            MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
            EXEC CICS XCTL
                 PROGRAM('SM001')
@@ -258,57 +277,62 @@
            EXIT.
 
        21B-SUBMIT-SM002.
-           EXEC CICS LINK
+           MOVE LOW-VALUES TO WS-STATE
+           MOVE TICKETI TO WS-TICKET-PASSED
+           MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+           EXEC CICS XCTL
                 PROGRAM('SM002')
                 COMMAREA(WS-COMMAREA)
-                LENGTH(+15)
-                RESP(WS-RETNCODE)
-           END-EXEC
-           MOVE WS-PROG-STATE TO ERRMSGO.
+                LENGTH(WS-LENGTH)
+           END-EXEC.
        21B-EXIT.
            EXIT.
 
        21C-UPDATE-SM003.
+           MOVE TICKETI TO WS-TICKET-PASSED
+           MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
            EXEC CICS LINK
                 PROGRAM('SM003')
                 COMMAREA(WS-COMMAREA)
-                LENGTH(+15)
+                LENGTH(WS-LENGTH)
                 RESP(WS-RETNCODE)
            END-EXEC
-           MOVE WS-PROG-STATE TO ERRMSGO.
+           MOVE 'SM003' TO ERRMSGO.
        21C-EXIT.
            EXIT.
 
        21D-CLOSE-SM004.
+           MOVE TICKETI TO WS-TICKET-PASSED
+           MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
            EXEC CICS LINK
                 PROGRAM('SM004')
                 COMMAREA(WS-COMMAREA)
-                LENGTH(+15)
+                LENGTH(WS-LENGTH)
                 RESP(WS-RETNCODE)
-           END-EXEC
-           MOVE WS-PROG-STATE TO ERRMSGO.
+           END-EXEC.
        21D-EXIT.
            EXIT.
        
        21E-APPROVE-SM005.
+           MOVE TICKETI TO WS-TICKET-PASSED
+           MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
            EXEC CICS LINK
                 PROGRAM('SM005')
                 COMMAREA(WS-COMMAREA)
-                LENGTH(+15)
+                LENGTH(WS-LENGTH)
                 RESP(WS-RETNCODE)
-           END-EXEC
-           MOVE WS-PROG-STATE TO ERRMSGO.
+           END-EXEC.
        21R-EXIT.
            EXIT.
 
        21F-CANCEL-SM006.
+           MOVE TICKETI TO WS-TICKET-PASSED
+           MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
            EXEC CICS LINK
                 PROGRAM('SM006')
                 COMMAREA(WS-COMMAREA)
-                LENGTH(+15)
-                RESP(WS-RETNCODE)
-           END-EXEC
-           MOVE WS-PROG-STATE TO ERRMSGO.
+                LENGTH(WS-LENGTH)
+           END-EXEC.
        21F-EXIT.
            EXIT.
            
@@ -316,10 +340,10 @@
            EXEC CICS LINK
                 PROGRAM('UA001')
                 COMMAREA(WS-COMMAREA)
-                LENGTH(+15)
+                LENGTH(WS-LENGTH)
                 RESP(WS-RETNCODE)
            END-EXEC
-           MOVE WS-PROG-STATE TO ERRMSGO.
+           MOVE 'UA001' TO ERRMSGO.
        21G-EXIT.
            EXIT.
 
@@ -335,7 +359,7 @@
        21H-EXIT.
            EXIT.
        
-       300-VERIFY-USER SECTION.
+       300-VERIFY-USER.
            EXEC CICS ASSIGN 
                USERID(WS-USERID)
            END-EXEC

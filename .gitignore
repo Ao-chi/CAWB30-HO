@@ -12,3 +12,8 @@ SW00P.lst
 SW00P.obj 
 SW00P.sym
 *.LOG
+/BACKUP DFH
+*.dat.meta.json
+*.TXT.meta.json
+sm001 backup.cbl
+dump.txt

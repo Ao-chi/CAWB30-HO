@@ -1,7 +1,6 @@
        CBL XOPTS(COBOL2)
        IDENTIFICATION DIVISION.
        PROGRAM-ID. SM001.
-
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
        SOURCE-COMPUTER.    IBM-PC.
@@ -13,22 +12,21 @@
       *------------------------*
        WORKING-STORAGE SECTION.
            COPY SM01S.
-      *--------------------*     
-      * COPYBOOK REDEFINES *
-      *--------------------*
+      *----------------------------------------------------------------*     
+      *                     COPYBOOK REDEFINES                         *
+      *----------------------------------------------------------------*
        01  DETL-LINE REDEFINES SM001MI.
            05 FILLER                              PIC X(104).
            05 DETL-SELECT                         OCCURS 11.
               10 DETL-SELECTL                     PIC S9(4) COMP.
-              10 DETL-SELECTF				      PIC X.
-	          10 FILLER REDEFINES DETL-SELECTF.
+              10 DETL-SELECTF                     PIC X.
+	           10 FILLER REDEFINES DETL-SELECTF.
                  15 DETL-SELECTA                  PIC X.
-	          10 DETL-SELECTI                     PIC X(001). 
+	           10 DETL-SELECTI                     PIC X(001). 
            05 DETL-DETAIL                         OCCURS 11.
-              10 DETL-DETAILL				      PIC S9(4)
-                 COMP.
-              10 DETL-DETAILF				      PIC X.
-	          10 FILLER REDEFINES DETL-DETAILF.
+              10 DETL-DETAILL                     PIC S9(4) COMP.
+              10 DETL-DETAILF                     PIC X.
+              10 FILLER REDEFINES DETL-DETAILF.
                  15 DETL-DETAILA                  PIC X.
 	          10 DETL-DETAILI. 
                  15 DETAILS-TIX-ID                PIC X(07). 
@@ -44,14 +42,15 @@
                     20  SLASH2                    PIC X.
                     20  DETAIL-YYYY               PIC X(04). 
                  15 FILLER4                       PIC X(02).
-                 15 DETAILS-UPD-BY                PIC X(08).   
+                 15 DETAILS-UPD-BY                PIC X(08).  
            05 FILLER                              PIC X(65).
            COPY DFHBMSCA.
            COPY DFHAID.
 
-       01  WS-CURRENT-MAP  VALUE 'SM01S'         PIC X(7).
+       01  WS-CURRENT-MAP                    PIC X(7) VALUE 'SM01S'.
        01  WS-REC-LENGTH                         PIC S9(4) 
            COMP VALUE +228. 
+       01  WS-QNAME                              PIC X(08).    
        01  WS-KEYB.                       
            05 WS-KEYB6                   PIC X(06) VALUE LOW-VALUES.
            05 FILLER REDEFINES WS-KEYB6.
@@ -70,36 +69,24 @@
            05 WS-LAST-UPD                        PIC X(20).
            05 WS-UPD-BY                          PIC X(08).
            05 WS-UPD-REMARKS                     PIC X(50).
-       01  WS-REC.
-           05 WS-USERID.
-              10  WS-USERID7                     PIC X(7).
-              10  FILLER                         PIC X(1).
-           05 WS-TYPE.
-              10  WS-REQUESTOR                   PIC X.
-              10  WS-ADMIN                       PIC X.  
-              10  WS-APPROVER                    PIC X.
-              10  WS-SERVICE                     PIC X.
-           05 WS-UPDATEDBY                       PIC X(8).
+       01  WS-STF-REC2.                          
+           05 WS-STF-REQ2                        OCCURS 11 PIC X(08).    
+      *01  WS-REC.
+      *    05 WS-USERID.
+      *       10  WS-USERID7                     PIC X(7).
+      *       10  FILLER                         PIC X(1).
+      *    05 WS-TYPE.
+      *       10  WS-REQUESTOR                   PIC X.
+      *       10  WS-ADMIN                       PIC X.  
+      *       10  WS-APPROVER                    PIC X.
+      *       10  WS-SERVICE                     PIC X.
+      *    05 WS-UPDATEDBY                       PIC X(8).
        01  WS-TIME                               PIC 9(15) COMP-3.
        01  WS-DATE                               PIC 9(7).
        01  WS-DATE-X REDEFINES WS-DATE           PIC X(7).
        01  WS-LENGTH                             PIC S9(4) COMP.
-      *--------------------------------------------------------------*
-      *               COMMAREA WORKING STORAGE                       *
-      *--------------------------------------------------------------*
-       01  WS-COMMAREA.
-           05 WS-PROG-STATE                      PIC X(15).
-           05 WS-PGMID                           PIC X(06).
-           05 USERID.
-              10  USERID7                        PIC X(7).
-              10  FILLER                         PIC X(1).
-           05 USR-TYPE.
-             15 USR-REQUESTOR                    PIC X.
-             15 USR-ADMIN                        PIC X.  
-             15 USR-APPROVER                     PIC X.
-             15 USR-SERVICE                      PIC X.
-           05 WS-STATE                           PIC X.
-
+       01  WS-FLAG                               PIC X    VALUE 'N'.
+       01  WS-SELECTED-VALUE                     PIC X.
        01  WS-COUNTERS.
            05 WS-INDEX                           PIC 9(02).   
        01  WS-ERRMSGS.
@@ -117,36 +104,116 @@
               'THIS IS THE FIRST PAGE'.
            05 WS-LAST-PAGE                       PIC X(21) VALUE
               'THIS IS THE LAST PAGE'.
+           05 WS-INVALID-VALUE                   PIC X(46) VALUE
+              'INVALID VALUE. PLEASE CORRECT HIGHLIGHT FIELDS'.   
                     
-       01  WS-PAGE-NO                            PIC 9(03) VALUE 1.
-       77 WS-RETNCODE        PIC S9(8) COMP.
-       77 WS-RETNCODE2        PIC S9(8) COMP.
-      *------------------------*
-      *    LINKAGE SECTION     *
-      *------------------------*
+       77 WS-RETNCODE                            PIC S9(8) COMP.
+       77 WS-RETNCODE2                           PIC S9(8) COMP.
+       01  WS-LASTPAGE                           PIC X(1).
+       01  WS-FIRSTPAGE                          PIC X(1).
+       01  WS-PAGE-CTR                           PIC 9(02).
+       01  WS-COMMAREA.
+           05 WS-PGMID                           PIC X(06).
+           05 WS-TICKET-PASSED                   PIC X(07).
+           05 USERID.
+              10  USERID7                        PIC X(7).
+              10  FILLER                         PIC X(1).
+           05 USR-TYPE.
+             15 USR-REQUESTOR                    PIC X.
+             15 USR-ADMIN                        PIC X.  
+             15 USR-APPROVER                     PIC X.
+             15 USR-SERVICE                      PIC X.
+           05 WS-STF01-REC.
+              10 WS-STF01-ID                     PIC X(07).
+              10 FILL1                           PIC X(03).
+              10 WS-STF01-TITLE                  PIC X(25).
+              10 FILL2                           PIC X(01).
+              10 WS-STF01-STATUS                 PIC X(10).
+              10 FILL3                           PIC X(04). 
+              10 WS-STF01-LAST-UPD               PIC X(10).
+              10 FILL4                           PIC X(02). 
+              10 WS-STF01-LAST-UPDBY             PIC X(8).
+              10 WS-STF01-REQ                    PIC X(8).
+           05 WS-PGMNAME                         PIC  X(6).
+           05 WS-DFHSTATE                        PIC X(15). 
+           05 WS-TRANS                           PIC X(04).  
+           05 WS-LUSER                           PIC 9(03).
+           05 WS-FUSER                           PIC X(07).
+           05 WS-PAGE                            PIC 9(02).
+           05 WS-PAGE-END                        PIC 9(01).
+           05 WS-STATE                           PIC X.
+           05 WS-QITEM                           PIC S9(4) COMP.
+           05 WS-QITEM-START                     PIC S9(4) COMP.
+           05 WS-QITEM-END                       PIC S9(4) COMP.
+           05 WS-QITEM-PAGE                      PIC S9(4) COMP.      
+      *----------------------------------------------------------------*
+      *                          LINKAGE SECTION                       *
+      *----------------------------------------------------------------*
        LINKAGE SECTION.
-       01  DFHCOMMAREA                           PIC X(50).
+       01  DFHCOMMAREA.
+           05 DF-PGMID                           PIC X(06).
+           05 DF-TICKET-PASSED                   PIC X(07).
+           05 DF-USERID.
+              10  DF-USERID7                     PIC X(7).
+              10  FILLER                         PIC X(1).
+           05 DF-USR-TYPE.
+             15 DF-USR-REQUESTOR                 PIC X.
+             15 DF-USR-ADMIN                     PIC X.  
+             15 DF-USR-APPROVER                  PIC X.
+             15 DF-USR-SERVICE                   PIC X.
+           05 DF-STF01-REC.
+              10 DF-STF01-ID                     PIC X(07).
+              10 DF-FILLER                       PIC X(03).
+              10 DF-STF01-TITLE                  PIC X(25). 
+              10 DF-FILLER                       PIC X(01).
+              10 DF-STF01-STATUS                 PIC X(10).
+              10 DF-FILLER                       PIC X(04).
+              10 DF-STF01-LAST-UPD               PIC X(10). 
+              10 DF-FILLER4                      PIC X(02). 
+              10 DF-STF01-LAST-UPDBY             PIC X(8). 
+              10 DF-STF01-REQ                    PIC X(8).
+           05 DF-PGMNAME                         PIC X(6).
+           05 DFHSTATE                           PIC X(15).
+           05 DF-TRANS                           PIC X(04).  
+           05 DF-LUSER                           PIC 9(03).
+           05 DF-FUSER                           PIC X(07).
+           05 DF-PAGE                            PIC 9(02).
+           05 DF-PAGE-END                        PIC 9(01).
+           05 DF-STATE                           PIC X. 
+           05 DF-QITEM                           PIC S9(4) COMP.
+           05 DF-QITEM-START                     PIC S9(4) COMP.
+           05 DF-QITEM-END                       PIC S9(4) COMP.
+           05 DF-QITEM-PAGE                      PIC S9(4) COMP.
+
 
        PROCEDURE DIVISION.
        100-MAIN.
-           EXEC CICS IGNORE CONDITION
-                     ERROR
-           END-EXEC
-           
            MOVE DFHCOMMAREA TO WS-COMMAREA
-           PERFORM 300-BROWSE-TICKET
-           IF WS-PGMID = 'SM000'
-               IF WS-STATE NOT = LOW-VALUES
+           STRING EIBTRMID DELIMITED BY SIZE
+	             'SM01' DELIMITED BY SIZE
+                  INTO WS-QNAME 
+           EXEC CICS
+             IGNORE CONDITION ERROR
+           END-EXEC
+
+           IF WS-PGMID = 'SM000' OR WS-PGMID = 'SM001' OR
+              WS-PGMID = 'SM002' OR WS-PGMID = 'SM003' OR 
+              WS-PGMID = 'SM004' OR WS-PGMID = 'SM005' OR
+              WS-PGMID = 'SM006'
+               IF EIBCALEN NOT = +26
                   PERFORM 200-REC-MAP
                ELSE
                    MOVE 'SELECT TICKET AND PRESS ENTER' TO ERRMSG1O 
                    MOVE 1 TO WS-STATE
+                   MOVE 1 TO WS-PAGE
+                   MOVE WS-PAGE TO PAGEO
+                   PERFORM 900-MOVE-FILES-TO-Q
+                   PERFORM 600-MOVE-Q-TO-SCREEN
                    PERFORM 111-CREATE-MAP
-
                END-IF
            ELSE 
                MOVE SPACES TO ERRMSG1O
-               MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+               MOVE LENGTH OF WS-INVALID-ACCESS TO WS-LENGTH
                EXEC CICS SEND TEXT
                        FROM (WS-INVALID-ACCESS)
                        LENGTH (WS-LENGTH)
@@ -181,10 +248,7 @@
            PERFORM 110-DATE-TIME
            MOVE DFHUNIMD TO TITLEA
            MOVE DFHUNIMD TO STATUSA
-           MOVE LENGTH OF SM001MO TO WS-LENGTH
-           PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL WS-INDEX > 11
-                   MOVE '-' TO DETL-SELECTI(WS-INDEX)            
-           END-PERFORM            
+           MOVE LENGTH OF SM001MO TO WS-LENGTH     
            MOVE -1 TO TITLEL
            EXEC CICS SEND
                 MAP('SM001M')
@@ -210,9 +274,12 @@
            END-EXEC
            IF EIBRESP = DFHRESP(MAPFAIL)
               MOVE WS-MAPFAIL TO ERRMSG1O
+              PERFORM 600-MOVE-Q-TO-SCREEN  
               PERFORM 111-CREATE-MAP
            END-IF
-              PERFORM 500-CHECK-EIBAID.
+              PERFORM 500-CHECK-EIBAID
+              PERFORM 600-MOVE-Q-TO-SCREEN  
+              PERFORM 111-CREATE-MAP.
        200-EXIT.
            EXIT.    
 
@@ -226,119 +293,266 @@
                         COMMAREA (WS-COMMAREA)
                         LENGTH (WS-LENGTH)
                    END-EXEC
-                   MOVE WS-PROG-STATE TO ERRMSG1O
+                   MOVE 'SM002' TO ERRMSG1O
                 ELSE
                    MOVE WS-INVALID-ACCESS TO ERRMSG1O
                 END-IF   
            WHEN DFHPF3
-      *         MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-      *         MOVE 'SM001' TO WS-PGMID
-      *         MOVE LOW-VALUES TO WS-PROG-STATE
-      *         EXEC CICS XCTL 
-      *              PROGRAM('SM002')
+                MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+                MOVE 'SM001' TO WS-PGMID
+                MOVE LOW-VALUES TO WS-STATE
+                EXEC CICS 
+                    SEND CONTROL 
+                    ERASE
+                END-EXEC
+                EXEC CICS DELETEQ TS
+                     QUEUE(WS-QNAME)
+                END-EXEC 
+                EXEC CICS XCTL 
+                     PROGRAM('SM000')
       *              COMMAREA(WS-COMMAREA)
       *              LENGTH(WS-LENGTH)
-      *         END-EXEC
-                MOVE 'F3 PRESSED' TO ERRMSG1O
+                END-EXEC
            WHEN DFHPF5
                 MOVE 'PF5 PRESSED' TO ERRMSG1O
            WHEN DFHPF7         
-                MOVE 'MOVE UP' TO ERRMSG1O
-                IF PAGEI = 1
-                   MOVE 'THIS IS THE FIRST PAGE' TO ERRMSG1O
-                ELSE 
-                   CONTINUE
-                END-IF   
+                PERFORM 510-PF7-PAGE-UP
+
            WHEN DFHPF8         
-                MOVE 'MOVE DOWN' TO ERRMSG1O 
+                PERFORM 520-PF8-PAGE-DOWN
+
            WHEN DFHPF12         
-                MOVE 'RESET' TO ERRMSG1O
+                PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL WS-INDEX > 11
+                   MOVE LOW-VALUES TO DETL-SELECTI(WS-INDEX)
+                END-PERFORM
+                PERFORM 600-MOVE-Q-TO-SCREEN
+                PERFORM 111-CREATE-MAP
            WHEN DFHENTER 
-                PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL 
-                       WS-INDEX > 11
-                EVALUATE DETL-SELECTI(WS-INDEX)
-                WHEN 'U'
-                     MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-                     EXEC CICS LINK 
-                          PROGRAM ('SM003')
-                          COMMAREA (WS-COMMAREA)
-                          LENGTH (WS-LENGTH)
-                     END-EXEC
-                     MOVE WS-PROG-STATE TO ERRMSG1O
-                WHEN 'C'
-                     MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-                     EXEC CICS LINK 
-                          PROGRAM ('SM004')
-                          COMMAREA (WS-COMMAREA)
-                          LENGTH (WS-LENGTH)
-                     END-EXEC
-                     MOVE WS-PROG-STATE TO ERRMSG1O  
-                WHEN 'A'
-                     MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-                     EXEC CICS LINK 
-                          PROGRAM ('SM005')
-                          COMMAREA (WS-COMMAREA)
-                          LENGTH (WS-LENGTH)
-                     END-EXEC
-                     MOVE WS-PROG-STATE TO ERRMSG1O  
-                WHEN 'X'
-                     MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-                     EXEC CICS LINK 
-                          PROGRAM ('SM006')
-                          COMMAREA (WS-COMMAREA)
-                          LENGTH (WS-LENGTH)
-                     END-EXEC
-                     MOVE WS-PROG-STATE TO ERRMSG1O   
-                WHEN OTHER
-                  MOVE 'INVALID VALUE. PLEASE CORRECT HIGHLIGHT FIELDS'
-                     TO ERRMSG1O                   
-                END-EVALUATE    
+                PERFORM 600-MOVE-Q-TO-SCREEN
+                MOVE 1 TO WS-INDEX
+                MOVE SPACES TO WS-SELECTED-VALUE
+                PERFORM UNTIL WS-INDEX > 11  
+                   IF DETL-SELECTI(WS-INDEX) NOT = '-' AND 
+                      DETL-SELECTI(WS-INDEX) NOT = SPACES AND
+                      DETL-SELECTI(WS-INDEX) NOT = LOW-VALUES
+                    IF WS-SELECTED-VALUE = SPACES 
+                       OR WS-SELECTED-VALUE = '-'
+                       MOVE DETL-SELECTI(WS-INDEX) TO WS-SELECTED-VALUE
+                       MOVE DETL-DETAILI(WS-INDEX) TO WS-STF01-REC
+                       MOVE WS-STF-REQ2(WS-INDEX) TO 
+                            WS-STF01-REQ
+                       EVALUATE WS-SELECTED-VALUE
+                        WHEN 'U'
+                            IF WS-STF01-STATUS = 'APPROVED' OR 
+                               'ONGOING'
+                               IF USR-REQUESTOR = 'Y'  OR 
+                                  USR-SERVICE = 'Y'  
+                                  IF WS-STF01-REQ = USERID
+                                     MOVE LENGTH OF WS-COMMAREA TO 
+                                       WS-LENGTH
+                                     EXEC CICS LINK 
+                                          PROGRAM ('SM003')
+                                          COMMAREA (WS-COMMAREA)
+                                          LENGTH (WS-LENGTH)
+                                     END-EXEC
+                                     MOVE 'SM003' TO ERRMSG1O
+                                  ELSE 
+                                     MOVE WS-INVALID-TIX-ACC TO ERRMSG1O   
+                                  END-IF
+                               ELSE
+                                   MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                               END-IF   
+                            ELSE
+                                MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                            END-IF
+                        WHEN 'C'
+                             IF WS-STF01-STATUS = 'COMPLETED'
+                                IF WS-STF01-REQ = USERID
+                                   MOVE LENGTH OF WS-COMMAREA 
+                                        TO WS-LENGTH
+                                   EXEC CICS LINK 
+                                        PROGRAM ('SM004')
+                                        COMMAREA (WS-COMMAREA)
+                                        LENGTH (WS-LENGTH)
+                                   END-EXEC
+                                   MOVE 'SM004' TO ERRMSG1O  
+                                ELSE 
+                                   MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                                END-IF   
+                             ELSE
+                                MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                             END-IF   
+                        WHEN 'A'
+                             IF WS-STF01-STATUS = 'CREATED' 
+                                IF WS-STF01-REQ = USERID
+                                   MOVE LENGTH OF WS-COMMAREA 
+                                        TO WS-LENGTH
+                                   EXEC CICS LINK 
+                                        PROGRAM ('SM005')
+                                        COMMAREA (WS-COMMAREA)
+                                        LENGTH (WS-LENGTH)
+                                   END-EXEC
+                                   MOVE 'SM005' TO ERRMSG1O
+                                ELSE
+                                   MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                                END-IF   
+                              ELSE
+                                MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                              END-IF    
+                        WHEN 'X'
+                             IF WS-STF01-REQ = USERID
+                                MOVE LENGTH OF WS-COMMAREA 
+                                     TO WS-LENGTH
+                                EXEC CICS LINK 
+                                     PROGRAM ('SM006')
+                                     COMMAREA (WS-COMMAREA)
+                                     LENGTH (WS-LENGTH)
+                                END-EXEC
+                                MOVE 'SM006' TO ERRMSG1O   
+                             ELSE
+                                MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                             END-IF   
+                        WHEN OTHER
+                             MOVE DFHBMBRY TO DETL-DETAILI(WS-INDEX)
+                             MOVE WS-INVALID-VALUE TO ERRMSG1O 
+                             PERFORM 600-MOVE-Q-TO-SCREEN  
+                             PERFORM 111-CREATE-MAP            
+                       END-EVALUATE  
+                    ELSE 
+                      MOVE 'NO MULTIPLE SELECTED IS ALLOWED' TO ERRMSG1O
+                      PERFORM 600-MOVE-Q-TO-SCREEN
+                      PERFORM 111-CREATE-MAP    
+
+                    END-IF
+                 END-IF  
+                   ADD 1 TO WS-INDEX  
+                   
                 END-PERFORM
            WHEN OTHER
-                MOVE 'INAVLID PFKEY PRESSED' TO ERRMSG1O     
+                MOVE 'INAVLID PFKEY PRESSED' TO ERRMSG1O  
+                PERFORM 600-MOVE-Q-TO-SCREEN  
+                PERFORM 111-CREATE-MAP 
            END-EVALUATE.     
        500-EXIT.
            EXIT.    
-
-       300-BROWSE-TICKET.
-           EXEC CICS STARTBR 
-                FILE('STF001C')
-                RIDFLD(WS-KEYB)
-                KEYLENGTH(07)
-                RESP2(WS-RETNCODE2)
-                RESP(WS-RETNCODE)
-                GTEQ
-           END-EXEC
-
-           IF WS-RETNCODE2 = DFHRESP(NORMAL)
-              PERFORM 310-READ-NEXT
+    
+       510-PF7-PAGE-UP.
+           SUBTRACT 11 FROM WS-QITEM-PAGE
+           IF WS-QITEM-PAGE = WS-QITEM-START OR 
+              WS-QITEM-PAGE <  WS-QITEM-START
+              MOVE 'THIS IS THE FIRST PAGE' TO ERRMSG1O
+              MOVE 1 TO WS-PAGE
+              MOVE WS-QITEM-START TO WS-QITEM-PAGE
            ELSE
-              MOVE 'NO DATA AVAILABLE' TO ERRMSG1O
-           END-IF   
-
-           EXEC CICS ENDBR  
-                FILE('STF001')
-           END-EXEC.
-       300-EXIT.
+             SUBTRACT 1 FROM WS-PAGE 
+             MOVE WS-PAGE TO PAGEO
+           END-IF
+           MOVE WS-PAGE TO PAGEO
+           PERFORM 600-MOVE-Q-TO-SCREEN   
+           PERFORM 111-CREATE-MAP.
+       510-EXIT.
            EXIT.    
+       
 
-       310-READ-NEXT.
-           PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL WS-INDEX > 11
-           EXEC CICS READNEXT 
-                     FILE('STF001C')
-                     RIDFLD(WS-KEYB)
-                     INTO(WS-STF-REC)
-                     LENGTH(WS-REC-LENGTH)
-                     KEYLENGTH(07)
-                     RESP2(WS-RETNCODE2)
+       520-PF8-PAGE-DOWN.
+           ADD 11 TO WS-QITEM-PAGE
+           IF WS-QITEM-PAGE > WS-QITEM-END 
+              SUBTRACT 11 FROM WS-QITEM-PAGE
+              MOVE 'THIS IS THE LAST PAGE' TO ERRMSG1O
+           ELSE
+              MOVE 'SELECT OPTION AND PRESS ENTER' TO ERRMSG1O
+              ADD 1 TO WS-PAGE
+              MOVE WS-PAGE TO PAGEO
+              PERFORM 600-MOVE-Q-TO-SCREEN
+           END-IF.   
+           PERFORM 111-CREATE-MAP.
+       520-EXIT.
+           EXIT.
+
+       600-MOVE-Q-TO-SCREEN.
+            MOVE WS-QITEM-PAGE TO WS-QITEM
+            EXEC CICS READQ TS
+                      QUEUE(WS-QNAME)
+                      INTO (WS-STF-REC)
+                      LENGTH(WS-REC-LENGTH)
+                      ITEM (WS-QITEM)
+             END-EXEC  
+          
+            MOVE 1 TO WS-INDEX
+
+            PERFORM UNTIL WS-INDEX > 11
+                IF EIBRESP = DFHRESP(NORMAL) AND 
+                   WS-QITEM <= WS-QITEM-END  
+                   MOVE WS-TICKET-ID TO DETAILS-TIX-ID(WS-INDEX)
+                   MOVE WS-TICKET-REQ TO WS-STF-REQ2(WS-INDEX)
+                   MOVE WS-TICKET-STAT TO DETAILS-TIX-STAT(WS-INDEX)
+                   MOVE WS-TICKET-TITLE TO DETAILS-TIX-TITLE(WS-INDEX)
+                   MOVE WS-UPD-BY TO DETAILS-UPD-BY(WS-INDEX)
+                   MOVE WS-LAST-UPD TO DETAILS-LAST-UPD(WS-INDEX)
+                   ADD 1 TO WS-INDEX
+                   ADD 1 TO WS-QITEM
+                   EXEC CICS READQ TS
+                        QUEUE(WS-QNAME)
+                        INTO (WS-STF-REC)
+                        ITEM (WS-QITEM)
+                  END-EXEC  
+               ELSE
+                  MOVE SPACES TO DETL-DETAILI(WS-INDEX)
+                  MOVE 'THIS IS THE LAST PAGE'  TO ERRMSG1O
+                  MOVE '1' TO WS-LASTPAGE 
+                  ADD 1 TO WS-INDEX
+               END-IF
+            END-PERFORM
+            MOVE DETAILS-TIX-ID(1) TO WS-FUSER.
+
+       600-EXIT.
+           EXIT.
+   
+       900-MOVE-FILES-TO-Q.
+           MOVE LOW-VALUES TO WS-KEYB. 
+           MOVE LENGTH OF WS-STF-REC TO WS-REC-LENGTH
+            EXEC CICS 
+               STARTBR FILE('STF001C')
+               RIDFLD (WS-KEYB)
+               GTEQ
+            END-EXEC
+                 
+            EXEC CICS 
+                READNEXT FILE('STF001C')
+                INTO (WS-STF-REC)
+                RIDFLD (WS-KEYB)
+            END-EXEC
+
+
+           EXEC CICS WRITEQ TS
+                     QUEUE(WS-QNAME)
+                     FROM (WS-STF-REC)
+                     LENGTH (WS-REC-LENGTH)
+                     ITEM (WS-QITEM)
            END-EXEC
-           MOVE WS-T-ID TO WS-KEYB6
-           MOVE HIGH-VALUES TO WS-KEYB1
-           MOVE WS-TIX-ID TO DETAILS-TIX-ID(WS-INDEX)
-           MOVE WS-TICKET-TITLE TO DETAILS-TIX-TITLE(WS-INDEX)
-           MOVE WS-TICKET-STAT TO DETAILS-TIX-STAT(WS-INDEX)
-           MOVE WS-LAST-UPD TO DETAILS-LAST-UPD(WS-INDEX)
-           MOVE WS-UPD-BY TO DETAILS-UPD-BY(WS-INDEX)
-           END-PERFORM.
-       310-EXIT.
+           MOVE WS-QITEM TO WS-QITEM-START
+           PERFORM UNTIL EIBRESP NOT = DFHRESP(NORMAL)
+               MOVE WS-QITEM TO WS-QITEM-END
+               EXEC CICS 
+                    READNEXT FILE('STF001C')
+                    INTO (WS-STF-REC)
+                    RIDFLD (WS-KEYB)
+               END-EXEC
+               IF EIBRESP = DFHRESP(NORMAL)
+                  EXEC CICS WRITEQ TS
+                       QUEUE(WS-QNAME)
+                       FROM (WS-STF-REC)
+                       LENGTH (WS-REC-LENGTH)
+                       ITEM (WS-QITEM)
+                  END-EXEC
+                 MOVE WS-T-ID TO WS-KEYB6
+                  MOVE HIGH-VALUES TO WS-KEYB1
+               END-IF
+           END-PERFORM
+           EXEC CICS
+                ENDBR FILE('STF001C')
+           END-EXEC
+           MOVE WS-QITEM-START TO WS-QITEM-PAGE.
+
+       900-EXIT.
            EXIT.    

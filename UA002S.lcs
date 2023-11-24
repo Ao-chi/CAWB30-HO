@@ -1,4 +1,4 @@
-CA-Realia CICS Ver:6.0.27  UA002S.bms                                                                    17NOV23 11:28:58 PAGE  1
+CA-Realia CICS Ver:6.0.27  UA002S.bms                                                                    23NOV23 23:25:51 PAGE  1
 
     1          PRINT NOGEN
     2 UA002S   DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      C
@@ -25,8 +25,7 @@
    23 APRTAG   DFHMDF POS=(09,30),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET)
    24          DFHMDF POS=(10,02),LENGTH=24,ATTRB=(ASKIP,NORM),              C
    25                INITIAL='SERVICE PROVIDER TAG  : '
-   26 SRVTAG   DFHMDF POS=(10,30),LENGTH=01,ATTRB=(UNPROT,ASKIP,NORM)
-W **** ATTRB - ASKIP|PROT|UNPROT are mutually exclusive
+   26 SRVTAG   DFHMDF POS=(10,30),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET)
    27          DFHMDF POS=(24,02),LENGTH=40,ATTRB=(ASKIP,NORM),              C
    28                INITIAL='PF2 -ADD   PF3 - EXIT   PF5 - ABORT'
    29 ERRMSG8  DFHMDF POS=(22,01),LENGTH=71,ATTRB=(ASKIP,NORM,IC,FSET)
@@ -35,8 +34,7 @@ W **** ATTRB - ASKIP|PROT|UNPROT are mutually exclusive
    32          DFHMSD TYPE=FINAL
       UA002S loaded with 1 MAPS, 17 FIELDS and 193 Bytes of Literals
 
-   33          END
-There were     1 (W) warning(s). Proceed with caution.CA-Realia CICS Ver:6.0.27  UA002S.bms                                                                    17NOV23 11:28:58 PAGE  2
+   33          ENDCA-Realia CICS Ver:6.0.27  UA002S.bms                                                                    23NOV23 23:25:51 PAGE  2
 
       COBOL COPY file generated
 

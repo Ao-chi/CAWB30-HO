@@ -12,121 +12,296 @@
      9	     DATA DIVISION.
     10	     FILE SECTION.
     11	     WORKING-STORAGE SECTION.
-    12       01  WS-CURRENT-MAP  VALUE 'SM00S'         PIC X(7).
-    13	     01  WS-LENGTH			       PIC S9(4) COMP.
-    14	     01  WS-COMMAREA.
-    15		 05 WS-PROG-STATE		       PIC X(15).
-    16
-    17	    P	 COPY SM00S.
-    17	    *$PP-START-COPY D:\work\CAWB30-HO\SM00S.COB
-     1	    * SYMBOLIC MAP of SM00S Created by CACXBMS Version 6.0.27
-     2	     01  SM00MI.
+    12       01  WS-CURRENT-MAP  VALUE 'SM002M'        PIC X(7).
+    13	     01  WS-TIME			       PIC 9(15).
+    14	     01  WS-DATE			       PIC 9(7).
+    15	     01  WS-DATE-X REDEFINES WS-DATE	       PIC X(7).
+    16	     01  WS-LENGTH			       PIC S9(4) COMP.
+    17	    *01  WS-COMMAREA.
+    18	    *	 05 WS-PROG-STATE		       PIC X(17).
+    19	     01  WS-END 			       PIC X(15) VALUE
+    20           'INVALID ACCESS'.
+    21	     77 WS-RETNCODE			       PIC S9(8) COMP.
+    22	     77 TICKETADD			       PIC 9(06).
+    23       77 REQUESTOR                              PIC X(01) VALUE 'Y'.
+    24
+    25	     01  TICKET.
+    26		 05 TICKET-KEY		       PIC X(07).
+    27		 05 TICKET-KEY-NUM REDEFINES TICKET-KEY PIC 9(06).
+    28		 05 TICKET-Requestor	       PIC X(8).
+    29		 05 TICKET-Status	       PIC X(10).
+    30		 05 TICKET-Title	       PIC X(25).
+    31		 05 TICKET-DESCRIPTION	       PIC X(100).
+    32		 05 TICKET-Last-Update	       PIC X(20).
+    33		 05 TICKET-Last-Update-by      PIC X(8).
+    34		 05 TICKET-Update-Remarks      PIC X(50).
+    35
+    36	     01  NEW-TICKET.
+    37		 05 NEW-TICKET-KEY		   PIC X(07).
+    38		 05 NEW-TICKET-KEY-NUM REDEFINES NEW-TICKET-KEY PIC 9(07).
+    39           05 NEW-TICKET-Requestor           PIC X(08) VALUE 'ISCB124'.
+    40           05 NEW-TICKET-Status              PIC X(10) VALUE 'CREATED'.
+    41		 05 NEW-TICKET-Title		   PIC X(25).
+    42		 05 NEW-TICKET-DESCRIPTION	   PIC X(100).
+    43		 05 NEW-TICKET-Last-Update	   PIC X(20) VALUE SPACE.
+    44		 05 NEW-TICKET-Last-Update-by	   PIC X(08) VALUE SPACE.
+    45		 05 NEW-TICKET-Update-Remarks	   PIC X(50) VALUE SPACE.
+    46
+    47	     01  WS-LOG.
+    48		 05 WS-LOG-Ticket-ID	      PIC X(07).
+    49		 05 WS-LOG-Seq-Number	      PIC 9(03) VALUE 1.
+    50		 05 WS-LOG-Last-Update	      PIC X(20) VALUE SPACE.
+    51		 05 WS-LOG-Last-Update-by     PIC X(08) VALUE SPACE.
+    52		 05 WS-LOG-Update-Remarks     PIC X(50) VALUE SPACE.
+    53		 05 FILLER		      PIC X(02) VALUE SPACE.
+    54
+    55	     01  WS-ERRMSGS.
+    56		 05 WS-INVALID-ACCESS		       PIC X(15) VALUE
+    57              'INVALID ACCESS'.
+    58		 05 WS-INVALID-PGMID		       PIC X(20) VALUECA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
+
+
+    59              'INVALID USER ACCESS'.
+    60		 05 WS-MAPFAIL			       PIC X(20) VALUE
+    61              'MAPFAIL ERROR'.
+    62		 05 WS-INVALID-TIX-ACC		       PIC X(34) VALUE
+    63              'INVALID ACCESS TO SELECTED TICKET'.
+    64		 05 WS-FIELD-REQ		       PIC X(24) VALUE
+    65              'OPTION FIELD IS REQUIRED'.
+    66		 05 WS-TICKET-REQUIRED		       PIC X(24) VALUE
+    67              'TICKET TITLE IS REQUIRED'.
+    68		 05 WS-LAST-PAGE		       PIC X(21) VALUE
+    69              'THIS IS THE LAST PAGE'.
+    70		 05 WS-INVALID-VALUE		       PIC X(46) VALUE
+    71              'INVALID VALUE. PLEASE CORRECT HIGHLIGHT FIELDS'.
+    72		 05 WS-INVALID-PFKEY		       PIC X(21) VALUE
+    73               'INAVLID PFKEY PRESSED'.
+    74
+    75	     01  WS-COMMAREA.
+    76		 05 WS-PGMID			       PIC X(06).
+    77		 05 WS-TICKET-PASSED		       PIC X(07).
+    78		 05 USERID.
+    79		    10	USERID7 		       PIC X(7).
+    80		    10	FILLER			       PIC X(1).
+    81		 05 USR-TYPE.
+    82		   15 USR-REQUESTOR		       PIC X.
+    83		   15 USR-ADMIN 		       PIC X.
+    84		   15 USR-APPROVER		       PIC X.
+    85		   15 USR-SERVICE		       PIC X.
+    86		 05 WS-STF01-REC.
+    87		    10 WS-STF01-ID		       PIC X(07).
+    88		    10 FILL1			       PIC X(03).
+    89		    10 WS-STF01-TITLE		       PIC X(25).
+    90		    10 FILL2			       PIC X(01).
+    91		    10 WS-STF01-STATUS		       PIC X(10).
+    92		    10 FILL3			       PIC X(04).
+    93		    10 WS-STF01-LAST-UPD	       PIC X(10).
+    94		    10 FILL4			       PIC X(02).
+    95		    10 WS-STF01-LAST-UPDBY	       PIC X(8).
+    96		    10 WS-STF01-REQ		       PIC X(8).
+    97		 05 WS-PGMNAME			       PIC  X(6).
+    98		 05 WS-DFHSTATE 		       PIC X(15).
+    99		 05 WS-TRANS			       PIC X(04).
+   100		 05 WS-LUSER			       PIC 9(03).
+   101		 05 WS-FUSER			       PIC X(07).
+   102		 05 WS-PAGE			       PIC 9(02).
+   103		 05 WS-PAGE-END 		       PIC 9(01).
+   104		 05 WS-STATE			       PIC X.
+   105		 05 WS-QITEM			       PIC S9(4) COMP.
+   106		 05 WS-QITEM-START		       PIC S9(4) COMP.
+   107		 05 WS-QITEM-END		       PIC S9(4) COMP.
+   108		 05 WS-QITEM-PAGE		       PIC S9(4) COMP.
+   109		 05 WS-PROG-STATE		       PIC X(10).
+   110
+   111	    P	 COPY SM02S.
+   111	    *$PP-START-COPY D:\work\CAWB30-HO\SM02S.COB
+     1	    * SYMBOLIC MAP of SM02S Created by CACXBMS Version 6.0.27
+     2	     01  SM002MI.
      3		 02  FILLER				    PIC X(12).
-     4		 02  OPTN01L				    PIC S9(4) COMP.
-     5		 02  OPTN01F				    PIC X.
-     6		 02  FILLER REDEFINES OPTN01F.
-     7		     03  OPTN01A			    PIC X.
-     8		 02  OPTN01I				    PIC X(020).
-     9		 02  OPTN02L				    PIC S9(4) COMP.
-    10		 02  OPTN02F				    PIC X.
-    11		 02  FILLER REDEFINES OPTN02F.
-    12		     03  OPTN02A			    PIC X.
-    13		 02  OPTN02I				    PIC X(020).
-    14		 02  OPTN03L				    PIC S9(4) COMP.
-    15		 02  OPTN03F				    PIC X.
-    16		 02  FILLER REDEFINES OPTN03F.
-    17		     03  OPTN03A			    PIC X.
-    18		 02  OPTN03I				    PIC X(020).
-    19		 02  OPTN04L				    PIC S9(4) COMP.
-    20		 02  OPTN04F				    PIC X.
-    21		 02  FILLER REDEFINES OPTN04F.
-    22		     03  OPTN04A			    PIC X.
-    23		 02  OPTN04I				    PIC X(020).
-    24		 02  OPTN05L				    PIC S9(4) COMP.
-    25		 02  OPTN05F				    PIC X.
-    26		 02  FILLER REDEFINES OPTN05F.
-    27		     03  OPTN05A			    PIC X.
-    28		 02  OPTN05I				    PIC X(020).
-    29		 02  OPTN06L				    PIC S9(4) COMP.
-    30		 02  OPTN06F				    PIC X.
-    31		 02  FILLER REDEFINES OPTN06F.
-    32		     03  OPTN06A			    PIC X.
-    33		 02  OPTN06I				    PIC X(020).
-    34		 02  OPTN07L				    PIC S9(4) COMP.
-    35		 02  OPTN07F				    PIC X.
-    36		 02  FILLER REDEFINES OPTN07F.
-    37		     03  OPTN07A			    PIC X.
-    38		 02  OPTN07I				    PIC X(020).
-    39		 02  OPTIONL				    PIC S9(4) COMP.
-    40		 02  OPTIONF				    PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
+     4		 02  DATEL				    PIC S9(4) COMP.CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
 
 
-    41		 02  FILLER REDEFINES OPTIONF.
-    42		     03  OPTIONA			    PIC X.
-    43		 02  OPTIONI				    PIC X(001).
-    44		 02  TICKETL				    PIC S9(4) COMP.
-    45		 02  TICKETF				    PIC X.
-    46		 02  FILLER REDEFINES TICKETF.
-    47		     03  TICKETA			    PIC X.
-    48		 02  TICKETI				    PIC X(001).
-    49		 02  ERRMSGL				    PIC S9(4) COMP.
-    50		 02  ERRMSGF				    PIC X.
-    51		 02  FILLER REDEFINES ERRMSGF.
-    52		     03  ERRMSGA			    PIC X.
-    53		 02  ERRMSGI				    PIC X(071).
-    54		 02  DATEL				    PIC S9(4) COMP.
-    55		 02  DATEF				    PIC X.
-    56		 02  FILLER REDEFINES DATEF.
-    57		     03  DATEA				    PIC X.
-    58		 02  DATEI				    PIC X(010).
-    59		 02  TIMEL				    PIC S9(4) COMP.
-    60		 02  TIMEF				    PIC X.
-    61		 02  FILLER REDEFINES TIMEF.
-    62		     03  TIMEA				    PIC X.
-    63		 02  TIMEI				    PIC X(008).
-    64	     01  SM00MO REDEFINES SM00MI.
-    65		 02  FILLER				    PIC X(12).
-    66		 02  FILLER				    PIC XX.
-    67		 02  FILLER				    PIC X.
-    68		 02  OPTN01O				    PIC X(020).
-    69		 02  FILLER				    PIC XX.
-    70		 02  FILLER				    PIC X.
-    71		 02  OPTN02O				    PIC X(020).
-    72		 02  FILLER				    PIC XX.
-    73		 02  FILLER				    PIC X.
-    74		 02  OPTN03O				    PIC X(020).
-    75		 02  FILLER				    PIC XX.
-    76		 02  FILLER				    PIC X.
-    77		 02  OPTN04O				    PIC X(020).
-    78		 02  FILLER				    PIC XX.
-    79		 02  FILLER				    PIC X.
-    80		 02  OPTN05O				    PIC X(020).
-    81		 02  FILLER				    PIC XX.
-    82		 02  FILLER				    PIC X.
-    83		 02  OPTN06O				    PIC X(020).
-    84		 02  FILLER				    PIC XX.
-    85		 02  FILLER				    PIC X.
-    86		 02  OPTN07O				    PIC X(020).
-    87		 02  FILLER				    PIC XX.
-    88		 02  FILLER				    PIC X.
-    89		 02  OPTIONO				    PIC X(001).
-    90		 02  FILLER				    PIC XX.
-    91		 02  FILLER				    PIC X.
-    92		 02  TICKETO				    PIC X(001).
-    93		 02  FILLER				    PIC XX.
-    94		 02  FILLER				    PIC X.
-    95		 02  ERRMSGO				    PIC X(071).
-    96		 02  FILLER				    PIC XX.
-    97		 02  FILLER				    PIC X.
-    98		 02  DATEO				    PIC X(010).CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
+     5		 02  DATEF				    PIC X.
+     6		 02  FILLER REDEFINES DATEF.
+     7		     03  DATEA				    PIC X.
+     8		 02  DATEI				    PIC X(010).
+     9		 02  TIMEL				    PIC S9(4) COMP.
+    10		 02  TIMEF				    PIC X.
+    11		 02  FILLER REDEFINES TIMEF.
+    12		     03  TIMEA				    PIC X.
+    13		 02  TIMEI				    PIC X(008).
+    14		 02  IDL				    PIC S9(4) COMP.
+    15		 02  IDF				    PIC X.
+    16		 02  FILLER REDEFINES IDF.
+    17		     03  IDA				    PIC X.
+    18		 02  IDI				    PIC X(006).
+    19		 02  TICKETTL				    PIC S9(4) COMP.
+    20		 02  TICKETTF				    PIC X.
+    21		 02  FILLER REDEFINES TICKETTF.
+    22		     03  TICKETTA			    PIC X.
+    23		 02  TICKETTI				    PIC X(025).
+    24		 02  TICKTD1L				    PIC S9(4) COMP.
+    25		 02  TICKTD1F				    PIC X.
+    26		 02  FILLER REDEFINES TICKTD1F.
+    27		     03  TICKTD1A			    PIC X.
+    28		 02  TICKTD1I				    PIC X(040).
+    29		 02  TICKTD2L				    PIC S9(4) COMP.
+    30		 02  TICKTD2F				    PIC X.
+    31		 02  FILLER REDEFINES TICKTD2F.
+    32		     03  TICKTD2A			    PIC X.
+    33		 02  TICKTD2I				    PIC X(040).
+    34		 02  STL				    PIC S9(4) COMP.
+    35		 02  STF				    PIC X.
+    36		 02  FILLER REDEFINES STF.
+    37		     03  STA				    PIC X.
+    38		 02  STI				    PIC X(020).
+    39		 02  STATSL				    PIC S9(4) COMP.
+    40		 02  STATSF				    PIC X.
+    41		 02  FILLER REDEFINES STATSF.
+    42		     03  STATSA 			    PIC X.
+    43		 02  STATSI				    PIC X(007).
+    44		 02  UPR1L				    PIC S9(4) COMP.
+    45		 02  UPR1F				    PIC X.
+    46		 02  FILLER REDEFINES UPR1F.
+    47		     03  UPR1A				    PIC X.
+    48		 02  UPR1I				    PIC X(025).
+    49		 02  UPR2L				    PIC S9(4) COMP.
+    50		 02  UPR2F				    PIC X.
+    51		 02  FILLER REDEFINES UPR2F.
+    52		     03  UPR2A				    PIC X.
+    53		 02  UPR2I				    PIC X(025).
+    54		 02  UPDATEL				    PIC S9(4) COMP.
+    55		 02  UPDATEF				    PIC X.
+    56		 02  FILLER REDEFINES UPDATEF.
+    57		     03  UPDATEA			    PIC X.
+    58		 02  UPDATEI				    PIC X(010).
+    59		 02  UPTIMEL				    PIC S9(4) COMP.
+    60		 02  UPTIMEF				    PIC X.
+    61		 02  FILLER REDEFINES UPTIMEF.
+    62		     03  UPTIMEA			    PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
 
 
-    99		 02  FILLER				    PIC XX.
-   100		 02  FILLER				    PIC X.
-   101		 02  TIMEO				    PIC X(008).
-    17	    *$PP-END-COPY
-    18	    P	 COPY DFHBMSCA.
-    18	    *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHBMSCA.COB
+    63		 02  UPTIMEI				    PIC X(008).
+    64		 02  UPBL				    PIC S9(4) COMP.
+    65		 02  UPBF				    PIC X.
+    66		 02  FILLER REDEFINES UPBF.
+    67		     03  UPBA				    PIC X.
+    68		 02  UPBI				    PIC X(006).
+    69		 02  ERRMSGL				    PIC S9(4) COMP.
+    70		 02  ERRMSGF				    PIC X.
+    71		 02  FILLER REDEFINES ERRMSGF.
+    72		     03  ERRMSGA			    PIC X.
+    73		 02  ERRMSGI				    PIC X(058).
+    74	     01  SM002MO REDEFINES SM002MI.
+    75		 02  FILLER				    PIC X(12).
+    76		 02  FILLER				    PIC XX.
+    77		 02  FILLER				    PIC X.
+    78		 02  DATEO				    PIC X(010).
+    79		 02  FILLER				    PIC XX.
+    80		 02  FILLER				    PIC X.
+    81		 02  TIMEO				    PIC X(008).
+    82		 02  FILLER				    PIC XX.
+    83		 02  FILLER				    PIC X.
+    84		 02  IDO				    PIC X(006).
+    85		 02  FILLER				    PIC XX.
+    86		 02  FILLER				    PIC X.
+    87		 02  TICKETTO				    PIC X(025).
+    88		 02  FILLER				    PIC XX.
+    89		 02  FILLER				    PIC X.
+    90		 02  TICKTD1O				    PIC X(040).
+    91		 02  FILLER				    PIC XX.
+    92		 02  FILLER				    PIC X.
+    93		 02  TICKTD2O				    PIC X(040).
+    94		 02  FILLER				    PIC XX.
+    95		 02  FILLER				    PIC X.
+    96		 02  STO				    PIC X(020).
+    97		 02  FILLER				    PIC XX.
+    98		 02  FILLER				    PIC X.
+    99		 02  STATSO				    PIC X(007).
+   100		 02  FILLER				    PIC XX.
+   101		 02  FILLER				    PIC X.
+   102		 02  UPR1O				    PIC X(025).
+   103		 02  FILLER				    PIC XX.
+   104		 02  FILLER				    PIC X.
+   105		 02  UPR2O				    PIC X(025).
+   106		 02  FILLER				    PIC XX.
+   107		 02  FILLER				    PIC X.
+   108		 02  UPDATEO				    PIC X(010).
+   109		 02  FILLER				    PIC XX.
+   110		 02  FILLER				    PIC X.
+   111		 02  UPTIMEO				    PIC X(008).
+   112		 02  FILLER				    PIC XX.
+   113		 02  FILLER				    PIC X.
+   114		 02  UPBO				    PIC X(006).
+   115		 02  FILLER				    PIC XX.
+   116		 02  FILLER				    PIC X.
+   117		 02  ERRMSGO				    PIC X(058).
+   111	    *$PP-END-COPY
+   112	    P	 COPY DFHAID.
+   112	    *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHAID.COBCA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
+
+
+     1	     01  DFHAID.
+     2	    *
+     3	    * CA-Realia CICS 6.0 Computer Associates International, Inc.
+     4	    *
+     5	    * Revision Information
+     6	    * ^{File:dfhaid.cob  }
+     7	    * ^{Timestamp:Thu May 15 14:02:52 1997}
+     8	    * ^{Revision:2.0}
+     9	    *
+    10	    *This is the AID constants copy file
+    11	    *
+    12           05  DFHENTER                  PIC X VALUE ''''.
+    13	    *				       value APOST
+    14           05  DFHCLEAR                  PIC X VALUE '_'.
+    15           05  DFHPA1                    PIC X VALUE '%'.
+    16           05  DFHPA2                    PIC X VALUE '>'.
+    17           05  DFHPA3                    PIC X VALUE ','.
+    18           05  DFHPF1                    PIC X VALUE '1'.
+    19           05  DFHPF2                    PIC X VALUE '2'.
+    20           05  DFHPF3                    PIC X VALUE '3'.
+    21           05  DFHPF4                    PIC X VALUE '4'.
+    22           05  DFHPF5                    PIC X VALUE '5'.
+    23           05  DFHPF6                    PIC X VALUE '6'.
+    24           05  DFHPF7                    PIC X VALUE '7'.
+    25           05  DFHPF8                    PIC X VALUE '8'.
+    26           05  DFHPF9                    PIC X VALUE '9'.
+    27           05  DFHPF10                   PIC X VALUE ':'.
+    28           05  DFHPF11                   PIC X VALUE '#'.
+    29           05  DFHPF12                   PIC X VALUE '@'.
+    30           05  DFHPF13                   PIC X VALUE 'A'.
+    31           05  DFHPF14                   PIC X VALUE 'B'.
+    32           05  DFHPF15                   PIC X VALUE 'C'.
+    33           05  DFHPF16                   PIC X VALUE 'D'.
+    34           05  DFHPF17                   PIC X VALUE 'E'.
+    35           05  DFHPF18                   PIC X VALUE 'F'.
+    36           05  DFHPF19                   PIC X VALUE 'G'.
+    37           05  DFHPF20                   PIC X VALUE 'H'.
+    38           05  DFHPF21                   PIC X VALUE 'I'.
+    39           05  DFHPF22                   PIC X VALUE '›'.
+    40      *                                  EBCDIC Cent sign x'4A'
+    41      *                                  ASCII  Cent sign x'9B'
+    42           05  DFHPF23                   PIC X VALUE '.'.
+    43           05  DFHPF24                   PIC X VALUE '<'.
+    44           05  DFHOPID                   PIC X VALUE 'W'.
+    45           05  DFHMSRE                   PIC X VALUE 'X'.
+    46           05  DFHTRIG                   PIC X VALUE '"'.
+    47      *                                        value QUOTE  "
+    48           05  DFHPEN                    PIC X VALUE '='.
+    49           05  DFHCLRP                   PIC X VALUE 'Ý'.
+    50      *                                  EBCDIC x'6A'
+    51      *                                  ASCII  x'DD'
+    52           05  DFHSTRF                   PIC X VALUE 'h'.
+    53	    *	 DFHQUIT is a CA-Realia CICS Extension
+    54	    *	 It is set by using <Ctrl>+C or <Ctrl>+<Break> Keys
+    55           05  DFHQUIT                   PIC X VALUE '!'.
+    56		 05  DFHNULL		       PIC X VALUE LOW-VALUE.
+   112	    *$PP-END-COPY
+   113	    P	 COPY DFHBMSCA.CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
+
+
+   113	    *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHBMSCA.COB
      1	     01  DFHBMSCA.
      2	    *
      3	    * CA-Realia CICS 6.0 Computer Associates International, Inc.
@@ -178,14 +353,14 @@
     49           05  DFHBMDAR                          PIC X VALUE '<'.
     50           05  DFHBMFSE                          PIC X VALUE 'A'.
     51           05  DFHBMPRF                          PIC X VALUE '/'.
-    52           05  DFHBMPRO                          PIC X VALUE '-'.CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
-
-
+    52           05  DFHBMPRO                          PIC X VALUE '-'.
     53           05  DFHBMUNN                          PIC X VALUE '&'.
     54           05  DFHBMUNP                          PIC X VALUE ' '.
     55           05  DFHUNNUM                          PIC X VALUE 'J'.
     56	    *
-    57	    *	 partially supported
+    57	    *	 partially supportedCA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
+
+
     58	    *
     59           05  DFHUNNOD                          PIC X VALUE '('.
     60           05  DFHUNIMD                          PIC X VALUE 'I'.
@@ -238,14 +413,14 @@
    107		     10  DFHBMDUP		       PIC X.
    108      *                                              x'1C'
    109	    *
-   110	    ******************************************************************CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
-
-
+   110	    ******************************************************************
    111	    *	 supported 327X Extended Attributes
    112	    *
    113	    *	 Extended COLOR Attributes
    114	    *
-   115           05  DFHDFCOL                          PIC X VALUE '0'.
+   115           05  DFHDFCOL                          PIC X VALUE '0'.CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
+
+
    116           05  DFHBLUE                           PIC X VALUE '1'.
    117           05  DFHRED                            PIC X VALUE '2'.
    118           05  DFHPINK                           PIC X VALUE '3'.
@@ -298,14 +473,14 @@
    165		 05  FILLER REDEFINES DFHRA-VAL.
    166		     10  FILLER 		       PIC X.
    167		     10  DFHRA			       PIC X.
-   168      *                                              EBCDIC x'3C'CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
-
-
+   168      *                                              EBCDIC x'3C'
    169      *                                              ASCII  x'14'
    170		 05  DFHSFE-VAL VALUE 041	       PIC S9(4) COMP-4.
    171		     88 DFHSFE-VAL-EBCDIC	       VALUE 41.
    172		     88 DFHSFE-VAL-ASCII	       VALUE 31.
-   173		 05  FILLER REDEFINES DFHSFE-VAL.
+   173		 05  FILLER REDEFINES DFHSFE-VAL.CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
+
+
    174		     10  FILLER 		       PIC X.
    175		     10  DFHSFE 		       PIC X.
    176      *                                              EBCDIC x'29'
@@ -358,14 +533,14 @@
    223      *                                              EBCDIC X'15'.
    224      *                                              ASCII  X'0A'.
    225	    *
-   226	    ******************************************************************CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
-
-
+   226	    ******************************************************************
    227	    *	 Printer terminal data stream only
    228	    *
    229		 05  DFHBMPFF-VAL VALUE 012	       PIC S9(4) COMP-4.
    230		 05  FILLER REDEFINES DFHBMPFF-VAL.
-   231		     10  FILLER 		       PIC X.
+   231		     10  FILLER 		       PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
+
+
    232		     10  DFHBMPFF		       PIC X.
    233      *                                              X'0C'.
    234		 05  DFHBMPCR-VAL VALUE 013	       PIC S9(4) COMP-4.
@@ -418,28 +593,235 @@
    281      *                                              ASCII  X'1A'.
    282	    *
    283		 05  DFHFM-VAL	  VALUE 030	       PIC S9(4) COMP-4.
-   284		 05  FILLER REDEFINES DFHFM-VAL.CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
-
-
+   284		 05  FILLER REDEFINES DFHFM-VAL.
    285		     10  FILLER 		       PIC X.
    286		     10  DFHFM			       PIC X.
    287      *                                              EBCDIC X'1E'.
    288		 05  DFHEO VALUE HIGH-VALUE	       PIC X.
-    18	    *$PP-END-COPY
-    19
-    20	     LINKAGE SECTION.
-    21	     01  DFHCOMMAREA			       PIC X(15).
-    22
-    23
-    24	     PROCEDURE DIVISION 					      REALCICS
-    25	     100-MAIN.
-    26           MOVE 'SM002 CALLED' TO DFHCOMMAREA
-    27		 EXEC CICS
-    28		  RETURN
-    29		 END-EXEC.
-    30
-    31	     100-EXIT.
-    32		 EXIT.
+   113	    *$PP-END-COPYCA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
+
+
+   114
+   115	     LINKAGE SECTION.
+   116	     01  DFHCOMMAREA.
+   117		 05 DF-PGMID			       PIC X(06).
+   118		 05 DF-TICKET-PASSED		       PIC X(07).
+   119		 05 DF-USERID.
+   120		    10	DF-USERID7		       PIC X(7).
+   121		    10	FILLER			       PIC X(1).
+   122		 05 DF-USR-TYPE.
+   123		   15 DF-USR-REQUESTOR		       PIC X.
+   124		   15 DF-USR-ADMIN		       PIC X.
+   125		   15 DF-USR-APPROVER		       PIC X.
+   126		   15 DF-USR-SERVICE		       PIC X.
+   127		 05 DF-STF01-REC.
+   128		    10 DF-STF01-ID		       PIC X(07).
+   129		    10 DF-FILLER		       PIC X(03).
+   130		    10 DF-STF01-TITLE		       PIC X(25).
+   131		    10 DF-FILLER		       PIC X(01).
+   132		    10 DF-STF01-STATUS		       PIC X(10).
+   133		    10 DF-FILLER		       PIC X(04).
+   134		    10 DF-STF01-LAST-UPD	       PIC X(10).
+   135		    10 DF-FILLER4		       PIC X(02).
+   136		    10 DF-STF01-LAST-UPDBY	       PIC X(8).
+   137		    10 DF-STF01-REQ		       PIC X(8).
+   138		 05 DF-PGMNAME			       PIC X(6).
+   139		 05 DFHSTATE			       PIC X(15).
+   140		 05 DF-TRANS			       PIC X(04).
+   141		 05 DF-LUSER			       PIC 9(03).
+   142		 05 DF-FUSER			       PIC X(07).
+   143		 05 DF-PAGE			       PIC 9(02).
+   144		 05 DF-PAGE-END 		       PIC 9(01).
+   145		 05 DF-STATE			       PIC X.
+   146		 05 DF-QITEM			       PIC S9(4) COMP.
+   147		 05 DF-QITEM-START		       PIC S9(4) COMP.
+   148		 05 DF-QITEM-END		       PIC S9(4) COMP.
+   149		 05 DF-QITEM-PAGE		       PIC S9(4) COMP.
+   150		 05 DF-PROG-STATE		       PIC X(10).
+   151
+   152	     PROCEDURE DIVISION 					      REALCICS
+   153	     100-MAIN.
+   154		 MOVE DFHCOMMAREA TO WS-COMMAREA
+   155		 EXEC CICS IGNORE CONDITION
+   156			   ERROR
+   157		 END-EXEC
+   158
+   159		 MOVE HIGH-VALUE TO TICKET-KEY
+   160           EXEC CICS STARTBR FILE('STF001C')
+   161		   RIDFLD (TICKET-KEY)
+   162		   GTEQ
+   163		 END-EXEC
+   164		 IF EIBRESP = +0
+   165		   EXEC CICS READPREV
+   166               FILE('STF001C')
+   167		     INTO(TICKET)
+   168		     RIDFLD (TICKET-KEY)
+   169		   END-EXEC
+   170		 END-IF
+   171CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
+
+
+   172           IF WS-PGMID = 'SM000' OR WS-PGMID = 'SM001' OR
+   173              WS-PGMID = 'SM002'
+   174               IF USR-REQUESTOR = 'Y'
+   175			EVALUATE TRUE
+   176	    *	    Neal pinalitan ko ung WS-COMMAREA at WS-PROG-STATE ng
+   177	    *	    WS-STATE, bali nanggaling ung state sa commarea ng calling program
+   178			 WHEN WS-STATE = LOW-VALUES
+   179			   ADD	1 TO TICKET-KEY-NUM
+   180			   MOVE TICKET-KEY-NUM TO IDO
+   181                     MOVE 'A'  TO WS-STATE
+   182			   MOVE SPACE TO TICKETTO
+   183			   MOVE SPACE TO TICKTD1O
+   184			   MOVE SPACE TO TICKTD2O
+   185                     MOVE 'ENTER TICKET DETAILS AND PRESS PF2'
+   186			       TO ERRMSGO
+   187			   PERFORM 1000-NEW-MAP
+   188
+   189                   WHEN WS-STATE = 'A'
+   190			   PERFORM 3000-RMAP
+   191			   PERFORM 2000-CHECK-AID
+   192			   PERFORM 1000-NEW-MAP
+   193
+   194                   WHEN WS-STATE = 'B'
+   195			   PERFORM 3000-RMAP
+   196			   PERFORM 2000-CHECK-AID
+   197			   PERFORM 4000-WRITE
+   198                     MOVE 'CREATED' TO STATSO
+   199                     MOVE 'SUCCESSFULLY CREATED. PF2 TO ADD MORE'
+   200			      TO ERRMSGO
+   201			   MOVE DFHBMASK TO STA
+   202			   MOVE DFHBMPRO TO STATSA
+   203			   MOVE DFHBMPRO TO TICKETTA
+   204			   MOVE DFHBMPRO TO TICKTD1A
+   205			   MOVE DFHBMPRO TO TICKTD2A
+   206			   PERFORM 1000-NEW-MAP
+   207
+   208			END-EVALUATE
+   209		     ELSE
+   210			PERFORM 110-INVALID-ACCESS
+   211		     END-IF
+   212		 ELSE
+   213		    PERFORM 110-INVALID-ACCESS
+   214		 END-IF.
+   215	     100-EXIT.
+   216		 EXIT.
+   217
+   218	     110-INVALID-ACCESS.
+   219		 MOVE LENGTH OF WS-INVALID-ACCESS TO WS-LENGTH
+   220		 EXEC CICS SEND TEXT
+   221		    FROM (WS-INVALID-ACCESS)
+   222		    LENGTH (WS-LENGTH)
+   223		    ERASE
+   224		 END-EXEC
+   225		 EXEC CICS RETURN
+   226		 END-EXEC.
+   227	     110-EXIT. EXIT.
+   228
+   229	     1000-NEW-MAP.CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
+
+
+   230		 MOVE EIBDATE TO WS-DATE
+   231		 MOVE WS-DATE-X TO DATEO
+   232		 EXEC CICS ASKTIME
+   233		    ABSTIME    (WS-TIME)
+   234		 END-EXEC
+   235		 EXEC CICS FORMATTIME
+   236		    ABSTIME    (WS-TIME)
+   237              DATESEP    ('/')
+   238		    MMDDYYYY   (DATEO)
+   239		    TIME       (TIMEO)
+   240              TIMESEP    (':')
+   241		 END-EXEC
+   242		 MOVE DFHBMASB TO TIMEA
+   243		 MOVE DFHBMASB TO DATEA
+   244		 MOVE DFHBMASB TO ERRMSGA
+   245		 MOVE LENGTH OF SM002MO TO WS-LENGTH
+   246			     EXEC CICS SEND
+   247                    MAP('SM002M')
+   248                                MAPSET('SM02S')
+   249				      FROM(SM002MO)
+   250				      LENGTH(WS-LENGTH)
+   251		    ERASE
+   252				   END-EXEC.
+   253		 EXEC CICS RETURN
+   254                TRANSID('SM02')
+   255		      COMMAREA(WS-COMMAREA)
+   256		       END-EXEC.
+   257	     1000-EXIT.
+   258		 EXIT.
+   259
+   260	     2000-CHECK-AID.
+   261		  EVALUATE TRUE
+   262		    WHEN EIBAID = DFHPF2
+   263		      MOVE IDI TO NEW-TICKET-KEY
+   264		      MOVE IDI TO WS-LOG-Ticket-ID
+   265		      MOVE TICKETTI TO NEW-TICKET-Title
+   266		      MOVE TICKTD1I TO NEW-TICKET-DESCRIPTION(1:50)
+   267		      MOVE TICKTD2I TO NEW-TICKET-DESCRIPTION(51:50)
+   268
+   269               IF WS-STATE = 'B' THEN
+   270		       MOVE SPACE  TO WS-STATE
+   271		     ELSE
+   272		       EVALUATE TRUE
+   273			 WHEN NEW-TICKET-TITLE = SPACE
+   274			   MOVE WS-TICKET-REQUIRED TO ERRMSGO
+   275
+   276			 WHEN NEW-TICKET-DESCRIPTION = SPACE
+   277                     MOVE 'TICKET DESCRIPTION IS REQUIRED'
+   278			       TO ERRMSGO
+   279
+   280			 WHEN OTHER
+   281                     MOVE 'B' TO WS-STATE
+   282                     MOVE 'VALID INPUT PRESS PF2 TO ADD'
+   283			       TO ERRMSGO
+   284		       END-EVALUATE
+   285		    END-IF
+   286		    WHEN EIBAID = DFHPF3
+   287			 EVALUATE WS-PGMIDCA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
+
+
+   288                    WHEN 'SM000'
+   289				     EXEC CICS XCTL
+   290                                     PROGRAM('SM000')
+   291	    *			   COMMAREA(WS-COMMAREA)
+   292	    *			   LENGTH(17)
+   293			     END-EXEC
+   294                    WHEN 'SM001'
+   295				EXEC CICS XCTL
+   296                                            PROGRAM('SM000')
+   297				END-EXEC
+   298			 END-EVALUATE
+   299		    WHEN EIBAID = DFHPF5
+   300		      MOVE LOW-VALUES TO WS-STATE
+   301		    WHEN OTHER
+   302		      MOVE WS-INVALID-PFKEY TO	ERRMSGO
+   303		  END-EVALUATE.
+   304	     2000-EXIT. EXIT.
+   305
+   306
+   307	     3000-RMAP.
+   308		 EXEC CICS RECEIVE
+   309                MAP('SM002M')
+   310                MAPSET('SM02S')
+   311		      INTO (SM002MI)
+   312		 END-EXEC.
+   313	     3000-EXIT. EXIT.
+   314
+   315	     4000-WRITE.
+   316		 EXEC CICS
+   317            WRITE FILE('STF001C')
+   318		  FROM (NEW-TICKET)
+   319		  RIDFLD (NEW-TICKET-KEY)
+   320		 END-EXEC
+   321
+   322		 EXEC CICS
+   323            WRITE FILE('STF002D')
+   324		  FROM (WS-LOG)
+   325		  RIDFLD (WS-LOG-Ticket-ID)
+   326		  RESP(WS-RETNCODE)
+   327		 END-EXEC.
+   328	     4000-EXIT. EXIT.
 CA-Realia CACXPREP D:\work\CAWB30-HO\SM002.COB
 
 
@@ -457,6 +839,6 @@
 		      PPCODE
 		      DCHK
 
-		Source Lines Translated:     429
-		Translation Time:	     .01 sec
-		Translation Speed:	  290000 lines per min
+		Source Lines Translated:     799
+		Translation Time:	     .00 sec
+		Translation Speed:		 lines per min

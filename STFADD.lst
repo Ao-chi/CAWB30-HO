@@ -47,68 +47,68 @@
    110	      01  K				PIC 9(03).
    111        01  WS-INVALID-RESP               PIC X(13) VALUE 'INVALID RESP'.
    112	      01  WS-MASS-REC.
-   113		  05 FILLER	PIC X(24)    VALUE
-   114               '000006ISCB110 ONGOING   '.
-   115		  05 FILLER	PIC X(24)    VALUE
-   116               '000007ISCB110 APPROVED  '.
-   117		  05 FILLER	PIC X(24)    VALUE
-   118               '000008ISCB110 ONGOING   '.
-   119		  05 FILLER	PIC X(24)    VALUE
-   120               '000009ISCB110 COMPLETED '.
-   121		  05 FILLER	PIC X(24)    VALUE
-   122               '000010ISCB110 CLOSED    '.
-   123		  05 FILLER	PIC X(24)    VALUE   124               '000011ISCB110 APPROVED  '.
-   125		  05 FILLER	PIC X(24)    VALUE
-   126               '000012ISCB110 COMPLETED '.
-   127		  05 FILLER	PIC X(24)    VALUE
-   128               '000013ISCB110 APPROVED  '.
-   129		  05 FILLER	PIC X(24)    VALUE
-   130               '000014ISCB110 CLOSED    '.
-   131		  05 FILLER	PIC X(24)    VALUE
-   132               '000015ISCB110 CREATED   '.
-   133		  05 FILLER	PIC X(24)    VALUE
-   134               '000016ISCB110 CREATED   '.
-   135		  05 FILLER	PIC X(24)    VALUE
-   136               '000017ISCB110 CREATED   '.
-   137		  05 FILLER	PIC X(24)    VALUE
-   138               '000018ISCB110 APPROVED  '.
-   139		  05 FILLER	PIC X(24)    VALUE
-   140               '000019ISCB110 CREATED   '.
-   141		  05 FILLER	PIC X(24)    VALUE
-   142               '000020ISCB120 ONGOING   '.
-   143		  05 FILLER	PIC X(24)    VALUE
-   144               '000021ISCB120 ONGOING   '.
-   145		  05 FILLER	PIC X(24)    VALUE
-   146               '000022ISCB120 CREATED   '.
-   147		  05 FILLER	PIC X(24)    VALUE
-   148               '000023ISCB120 ONGOING   '.
-   149		  05 FILLER	PIC X(24)    VALUE
-   150               '000024ISCB120 ONGOING   '.
-   151		  05 FILLER	PIC X(24)    VALUE
-   152               '000025ISCB120 APPROVED  '.
-   153		  05 FILLER	PIC X(24)    VALUE
-   154               '000026ISCB120 APPROVED  '.
-   155		  05 FILLER	PIC X(24)    VALUE
-   156               '000027ISCB120 CREATED   '.
-   157		  05 FILLER	PIC X(24)    VALUE
-   158               '000028ISCB120 CREATED   '.
-   159		  05 FILLER	PIC X(24)    VALUE
-   160               '000029ISCB120 CREATED   '.
-   161		  05 FILLER	PIC X(24)    VALUE
-   162               '000030ISCB130 APPROVED  '.
-   163		  05 FILLER	PIC X(24)    VALUE
-   164               '000031ISCB130 ONGOING   '.
-   165		  05 FILLER	PIC X(24)    VALUE
-   166               '000032ISCB130 CREATED   '.
-   167		  05 FILLER	PIC X(24)    VALUE
-   168               '000033ISCB130 ONGOING   '.
-   169		  05 FILLER	PIC X(24)    VALUE
-   170               '000034ISCB130 ONGOING   '.
-   171		  05 FILLER	PIC X(24)    VALUE
-   172               '000035ISCB130 APPROVED  '.
+   113		  05 FILLER	PIC X(25)    VALUE
+   114               '000006 ISCB101 ONGOING   '.
+   115		  05 FILLER	PIC X(25)    VALUE
+   116               '000007 ISCB102 APPROVED  '.
+   117		  05 FILLER	PIC X(25)    VALUE
+   118               '000008 ISCB103 ONGOING   '.
+   119		  05 FILLER	PIC X(25)    VALUE
+   120               '000009 ISCB104 COMPLETED '.
+   121		  05 FILLER	PIC X(25)    VALUE
+   122               '000010 ISCB105 CLOSED    '.
+   123		  05 FILLER	PIC X(25)    VALUE   124               '000011 ISCB106 APPROVED  '.
+   125		  05 FILLER	PIC X(25)    VALUE
+   126               '000012 ISCB107 COMPLETED '.
+   127		  05 FILLER	PIC X(25)    VALUE
+   128               '000013 ISCB108 APPROVED  '.
+   129		  05 FILLER	PIC X(25)    VALUE
+   130               '000014 ISCB109 CLOSED    '.
+   131		  05 FILLER	PIC X(25)    VALUE
+   132               '000015 ISCB110 CREATED   '.
+   133		  05 FILLER	PIC X(25)    VALUE
+   134               '000016 ISCB110 CREATED   '.
+   135		  05 FILLER	PIC X(25)    VALUE
+   136               '000017 ISCB110 CREATED   '.
+   137		  05 FILLER	PIC X(25)    VALUE
+   138               '000018 ISCB110 APPROVED  '.
+   139		  05 FILLER	PIC X(25)    VALUE
+   140               '000019 ISCB110 CREATED   '.
+   141		  05 FILLER	PIC X(25)    VALUE
+   142               '000020 ISCB120 ONGOING   '.
+   143		  05 FILLER	PIC X(25)    VALUE
+   144               '000021 ISCB120 ONGOING   '.
+   145		  05 FILLER	PIC X(25)    VALUE
+   146               '000022 ISCB120 CREATED   '.
+   147		  05 FILLER	PIC X(25)    VALUE
+   148               '000023 ISCB120 ONGOING   '.
+   149		  05 FILLER	PIC X(25)    VALUE
+   150               '000024 ISCB120 ONGOING   '.
+   151		  05 FILLER	PIC X(25)    VALUE
+   152               '000025 ISCB120 APPROVED  '.
+   153		  05 FILLER	PIC X(25)    VALUE
+   154               '000026 ISCB120 APPROVED  '.
+   155		  05 FILLER	PIC X(25)    VALUE
+   156               '000027 ISCB120 CREATED   '.
+   157		  05 FILLER	PIC X(25)    VALUE
+   158               '000028 ISCB120 CREATED   '.
+   159		  05 FILLER	PIC X(25)    VALUE
+   160               '000029 ISCB120 CREATED   '.
+   161		  05 FILLER	PIC X(25)    VALUE
+   162               '000030 ISCB130 APPROVED  '.
+   163		  05 FILLER	PIC X(25)    VALUE
+   164               '000031 ISCB130 ONGOING   '.
+   165		  05 FILLER	PIC X(25)    VALUE
+   166               '000032 ISCB130 CREATED   '.
+   167		  05 FILLER	PIC X(25)    VALUE
+   168               '000033 ISCB130 ONGOING   '.
+   169		  05 FILLER	PIC X(25)    VALUE
+   170               '000034 ISCB130 ONGOING   '.
+   171		  05 FILLER	PIC X(25)    VALUE
+   172               '000035 ISCB130 APPROVED  '.
    173	      01  FILLER REDEFINES WS-MASS-REC.
    174		  05 WS-REC-TABLE	    OCCURS 30.
-   175		     10 Ticket-ID		   PIC X(6).
+   175		     10 Ticket-ID		   PIC X(7).
    176		     10 Requestor		   PIC X(8).
    177		     10 TKT-Stat		   PIC X(10).
    178	      01  WS-REC-CONSTANTS.
@@ -119,8 +119,8 @@
    183            05 Last-Update-by         PIC X(8)  VALUE 'ISCB145 '.   184            05 Last-Update-Remarks    PIC X(50) VALUE 'REMARKS'.
    185
    186	      01  WS-REC.
-   187		  05 WS-REC-KEY 		PIC X(06).
-   188		  05 WS-REC-KEY-NUM REDEFINES WS-REC-KEY PIC 9(06).
+   187		  05 WS-REC-KEY 		PIC X(07).
+   188		  05 WS-REC-KEY-NUM REDEFINES WS-REC-KEY PIC 9(07).
    189		  05 WS-REC-Requestor		PIC X(8).
    190		  05 WS-REC-Status		PIC X(10).
    191		  05 WS-REC-Title		PIC X(25).
@@ -129,15 +129,15 @@
    194		  05 WS-REC-Last-Update-by	PIC X(8).
    195		  05 WS-REC-Update-Remarks	PIC X(50).
    196	      01  WS-REC3.
-   197		  05 WS-REC3-Ticket-ID		PIC X(6).
+   197		  05 WS-REC3-Ticket-ID		PIC X(07).
    198		  05 WS-REC3-Seq-Number 	PIC 9(03).
    199		  05 WS-REC3-Last-Update	PIC X(20).
    200		  05 WS-REC3-Last-Update-by	PIC X(8).
    201		  05 WS-REC3-Update-Remarks	PIC X(50).
-   202		  05 FILLER			PIC X(3).
+   202		  05 FILLER			PIC X(2).
    203	      77  WS-RESPONSE			PIC S9(08) COMP.
    204	     *
-   205		  COPY DFHAID.
+   205		   COPY DFHAID.
    207	      01  DFHAID.
    208	     *
    209	     * CA-Realia CICS 6.0 Computer Associates International, Inc.
@@ -518,43 +518,44 @@
    595	      PROCEDURE DIVISION					       R
    597		  USING DFHEIBLK DFHCOMMAREA.				       R
    622	      100-PROCESS.
-   624		      EXEC CICS IGNORE CONDITION ERROR END-EXEC
+   624		       EXEC CICS IGNORE CONDITION ERROR END-EXEC
    639		       MOVE 1 TO I.
-   640
-   641		       PERFORM 30 TIMES
-   642			    MOVE Ticket-ID(I)	    TO
-   643				 WS-REC-KEY
-   644			    MOVE Last-Update	     TO
-   645				WS-REC-Last-Update
-   646			    MOVE Last-Update-by      TO
-   647				WS-REC-Last-Update-by
-   648			    MOVE Last-Update-Remarks TO
-   649				WS-REC-Update-Remarks   650			   MOVE 1 TO K
-   651				MOVE WS-REC-KEY TO WS-REC3-Ticket-ID
-   652				MOVE K TO WS-REC3-Seq-Number
-   653				MOVE WS-REC-Last-Update TO
-   654				     WS-REC3-Last-Update
-   655				MOVE WS-REC-Last-Update-by TO
-   656				     WS-REC3-Last-Update-by
-   657				MOVE WS-REC-Update-Remarks TO
-   658				     WS-REC3-Update-Remarks
-   660                          EXEC CICS WRITE FILE('STF002D')
-   661				     FROM (WS-REC3)
-   662				     RIDFLD (WS-REC3-Ticket-ID)
-   663				     LENGTH (WS-REC3-LENGTH)
-   664				     RESP2 (WS-RESPONSE)
-   665			       END-EXEC
-   700				IF EIBRESP NOT = +0
-   702				EXEC CICS SEND TEXT
-   703					 FROM(WS-RESPONSE)
-   704				END-EXEC
-   725				END-IF
-   726				ADD 1 TO I
-   727			       ADD 1 TO K
-   728		       END-PERFORM
-   730		       EXEC CICS RETURN
-   731		       END-EXEC.
-   745CA-Realia COBOL Version 6.0.45	 D:\work\CAWB30-HO\STFADD.cic	       PAGE   11
+   640		       MOVE 1 TO K
+   641
+   642		       PERFORM 30 TIMES
+   643			    MOVE Ticket-ID(I)	    TO
+   644				 WS-REC-KEY
+   645			    MOVE Last-Update	     TO
+   646				WS-REC-Last-Update
+   647			    MOVE Last-Update-by      TO
+   648				WS-REC-Last-Update-by
+   649			    MOVE Last-Update-Remarks TO   650				WS-REC-Update-Remarks
+   651	     *		   MOVE 1 TO K
+   652				MOVE WS-REC-KEY TO WS-REC3-Ticket-ID
+   653				MOVE K TO WS-REC3-Seq-Number
+   654				MOVE WS-REC-Last-Update TO
+   655				     WS-REC3-Last-Update
+   656				MOVE WS-REC-Last-Update-by TO
+   657				     WS-REC3-Last-Update-by
+   658				MOVE WS-REC-Update-Remarks TO
+   659				     WS-REC3-Update-Remarks
+   661                          EXEC CICS WRITE FILE('STF002D')
+   662				     FROM (WS-REC3)
+   663				     RIDFLD (WS-REC3-Ticket-ID)
+   664				     LENGTH (WS-REC3-LENGTH)
+   665				     RESP2 (WS-RESPONSE)
+   666			       END-EXEC
+   701				IF EIBRESP NOT = +0
+   703				EXEC CICS SEND TEXT
+   704					 FROM(WS-RESPONSE)
+   705				END-EXEC
+   726				END-IF
+   727				ADD 1 TO I
+   728			       ADD 1 TO K
+   729		       END-PERFORM
+   731		       EXEC CICS RETURN
+   732		       END-EXEC.
+   746CA-Realia COBOL Version 6.0.45	 D:\work\CAWB30-HO\STFADD.cic	       PAGE   11
 
 
 
@@ -583,9 +584,9 @@ DEBUGXREF	  DIALECT-VS2
 
 			Error level limit: W
 
-			Source lines compiled:	     756
-			Compilation time (mm:ss.ss):  0:00.02
-			Compilation speed (lines/minute): 68000
+			Source lines compiled:	     757
+			Compilation time (mm:ss.ss):  0:00.01
+			Compilation speed (lines/minute): 42000
 
-			Compilation date (yy/mm/dd): 23/11/16
-			     Time of day (hh:mm:ss): 18:32:11
+			Compilation date (yy/mm/dd): 23/11/23
+			     Time of day (hh:mm:ss): 13:51:03

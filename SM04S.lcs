@@ -1,0 +1,59 @@
+CA-Realia CICS Ver:6.0.27  SM04S.bms                                                                     24NOV23 11:47:34 PAGE  1
+
+    1          PRINT NOGEN
+    2 SM04S    DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      *
+    3                CTRL=(FREEKB,FRSET),TIOAPFX=YES,EXTATT=NO,              *
+    4                MAPATTS=(COLOR,HILIGHT)
+    5 SM004M   DFHMDI SIZE=(24,80)
+    6          DFHMDF POS=(01,01),LENGTH=06,ATTRB=(ASKIP,NORM),              *
+    7                INITIAL='SM004'
+    8          DFHMDF POS=(01,32),LENGTH=18,ATTRB=(ASKIP,NORM),              *
+    9                INITIAL='SERVICE MANAGEMENT'
+   10 DATE     DFHMDF POS=(01,70),LENGTH=10,ATTRB=(ASKIP,NORM,IC,FSET)
+   11          DFHMDF POS=(02,34),LENGTH=13,ATTRB=(ASKIP,NORM),              *
+   12                INITIAL='CLOSE TICKET'
+   13 TIME     DFHMDF POS=(02,70),LENGTH=08,ATTRB=(ASKIP,NORM,IC,FSET)
+   14          DFHMDF POS=(05,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
+   15                INITIAL='TICKET NUMBER      :'
+   16 TKTNUM   DFHMDF POS=(05,25),LENGTH=06,ATTRB=(UNPROT,NORM,IC,NUM)
+   17          DFHMDF POS=(06,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
+   18                INITIAL='REQUESTED BY       :'
+   19 REQBY    DFHMDF POS=(06,25),LENGTH=06
+   20          DFHMDF POS=(07,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
+   21                INITIAL='TICKET TITLE       :'
+   22 TKTLE    DFHMDF POS=(07,25),LENGTH=25
+   23          DFHMDF POS=(08,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
+   24                INITIAL='TICKET DESCRIPTION :'
+   25 TKDES    DFHMDF POS=(08,25),LENGTH=40
+   26          DFHMDF POS=(09,25),LENGTH=40
+   27          DFHMDF POS=(10,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
+   28                INITIAL='STATUS             :'
+   29 STAT     DFHMDF POS=(10,25),LENGTH=10
+   30          DFHMDF POS=(11,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
+   31                INITIAL='UPDATE BY          :'
+   32 UPDTBY   DFHMDF POS=(11,25),LENGTH=06
+   33          DFHMDF POS=(12,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
+   34                INITIAL='UPDATE REMARKS     :'
+   35 UPDREM   DFHMDF POS=(12,25),LENGTH=25,ATTRB=(UNPROT,NORM)
+   36          DFHMDF POS=(13,25),LENGTH=25,ATTRB=(UNPROT,NORM)
+   37          DFHMDF POS=(14,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
+   38                INITIAL='UPDATE DATE/TIME   :'
+   39 UPDT     DFHMDF POS=(14,25),LENGTH=19
+   40 ERRMSG   DFHMDF POS=(21,01),LENGTH=71,ATTRB=(ASKIP,NORM,FSET)
+   41          DFHMDF POS=(22,02),LENGTH=12,ATTRB=(ASKIP,NORM),              *
+   42                INITIAL='PF2 - CLOSE'
+   43          DFHMDF POS=(22,16),LENGTH=10,ATTRB=(ASKIP,NORM),              *
+   44                INITIAL='FF3 - EXIT'
+   45          DFHMDF POS=(22,33),LENGTH=11,ATTRB=(ASKIP,NORM),              *
+   46                INITIAL='PF5 - ABORT'
+   47          DFHMDF POS=(22,48),LENGTH=11,ATTRB=(ASKIP,NORM),              *
+   48                INITIAL='PF11 - LOGS'
+   49          DFHMSD TYPE=FINAL
+      SM04S loaded with 1 MAPS, 28 FIELDS and 241 Bytes of Literals
+
+   50          ENDCA-Realia CICS Ver:6.0.27  SM04S.bms                                                                     24NOV23 11:47:34 PAGE  2
+
+      COBOL COPY file generated
+
+      Mapset generated. Object size is 1,046.
+

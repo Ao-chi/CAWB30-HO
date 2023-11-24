@@ -75,7 +75,8 @@
        01  WS-CURRENT-MAP  VALUE 'SM00S'         PIC X(7).
        01  WS-LENGTH				 PIC S9(4) COMP.
        01  WS-COMMAREA.
-	   05 WS-PROG-STATE			 PIC X(15).
+	   05 WS-PGMID				 PIC X(06).
+
 
       *
       P    COPY SM00S.
@@ -127,7 +128,7 @@
 	   02  TICKETF				      PIC X.
 	   02  FILLER REDEFINES TICKETF.
 	       03  TICKETA			      PIC X.
-	   02  TICKETI				      PIC X(001).
+	   02  TICKETI				      PIC X(006).
 	   02  ERRMSGL				      PIC S9(4) COMP.
 	   02  ERRMSGF				      PIC X.
 	   02  FILLER REDEFINES ERRMSGF.
@@ -171,7 +172,7 @@
 	   02  OPTIONO				      PIC X(001).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  TICKETO				      PIC X(001).
+	   02  TICKETO				      PIC X(006).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  ERRMSGO				      PIC X(071).
@@ -511,8 +512,8 @@
 	   05 EIBRLDBK PIC X.						REALCICS
 	   05 EIBCARESERVED PIC X(32).					REALCICS
       *$PP-END-INSERT CICS NA						REALCICS
-       01  DFHCOMMAREA				 PIC X(15).
-
+       01  DFHCOMMAREA.
+	   05 DF-PGMID				 PIC X(06).
 
        PROCEDURE DIVISION						REALCICS
       *$PP-START-INSERT CICS NA 					REALCICS
@@ -542,14 +543,14 @@
        DFH-MAINLINE-ENTRY SECTION.					REALCICS
       *$PP-LIST CICS HI 						REALCICS
        100-MAIN.
-           MOVE 'SM003 CALLED' TO DFHCOMMAREA
+           MOVE 'SM003' TO DFHCOMMAREA
       *$PP-DEBUG							REALCICS
       P    EXEC CICS
-      P     RETURN
+      P 	RETURN
       P    END-EXEC.
       *$PP-NOLIST							REALCICS
            MOVE 'SM003' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 29 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 30 TO DFH-SOURCE-LINE-NUM				REALCICS
            MOVE X'0E08' TO DFH-COMMAND EIBFN                            REALCICS
 	   MOVE 000 TO DFH-VARS-COUNT					REALCICS
            CALL 'CICS_Exec_Std' USING CICSICB GIVING DFH-RETURN-STATUS  REALCICS
@@ -567,7 +568,7 @@
        DFH-END SECTION. 						REALCICS
        DFH-CALL-END.							REALCICS
            MOVE 'SM003' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 35 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 36 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE LOW-VALUE TO DFH-COMMAND				REALCICS
            CALL 'CICS_Module_End' USING CICSICB GIVING                  REALCICS
 	       DFH-RETURN-STATUS					REALCICS

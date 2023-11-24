@@ -51,25 +51,25 @@
     48	     01  K			       PIC 9(03).
     49	     01  WS-MASS-REC.
     50		 05 FILLER     PIC X(25)    VALUE
-    51              '000006 ISCB110 ONGOING   '.
+    51              '000006 ISCB101 ONGOING   '.
     52		 05 FILLER     PIC X(25)    VALUE
-    53              '000007 ISCB110 APPROVED  '.
+    53              '000007 ISCB102 APPROVED  '.
     54		 05 FILLER     PIC X(25)    VALUE
-    55              '000008 ISCB110 ONGOING   '.
+    55              '000008 ISCB103 ONGOING   '.
     56		 05 FILLER     PIC X(25)    VALUE
-    57              '000009 ISCB110 COMPLETED '.
+    57              '000009 ISCB104 COMPLETED '.
     58		 05 FILLER     PIC X(25)    VALUECA-Realia CACXPREP D:\work\CAWB30-HO\SMADDSTF.COB
 
 
-    59              '000010 ISCB110 CLOSED    '.
+    59              '000010 ISCB105 CLOSED    '.
     60		 05 FILLER     PIC X(25)    VALUE
-    61              '000011 ISCB110 APPROVED  '.
+    61              '000011 ISCB106 APPROVED  '.
     62		 05 FILLER     PIC X(25)    VALUE
-    63              '000012 ISCB110 COMPLETED '.
+    63              '000012 ISCB107 COMPLETED '.
     64		 05 FILLER     PIC X(25)    VALUE
-    65              '000013 ISCB110 APPROVED  '.
+    65              '000013 ISCB108 APPROVED  '.
     66		 05 FILLER     PIC X(25)    VALUE
-    67              '000014 ISCB110 CLOSED    '.
+    67              '000014 ISCB109 CLOSED    '.
     68		 05 FILLER     PIC X(25)    VALUE
     69              '000015 ISCB110 CREATED   '.
     70		 05 FILLER     PIC X(25)    VALUE
@@ -149,7 +149,7 @@
    142
    143
    144	    *
-   145	    P	 COPY DFHAID.
+   145	    P	  COPY DFHAID.
    145	    *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHAID.COB
      1	     01  DFHAID.
      2	    *
@@ -518,7 +518,7 @@
    151	    *
    152	     PROCEDURE DIVISION 					      REALCICS
    153	     100-PROCESS.
-   154		     EXEC CICS IGNORE CONDITION ERROR END-EXEC
+   154		      EXEC CICS IGNORE CONDITION ERROR END-EXEC
    155		      MOVE 1 TO I.
    156
    157		      PERFORM 30 TIMES
@@ -547,16 +547,17 @@
    178			       RIDFLD (WS-REC-KEY)
    179			       LENGTH (+228)
    180			  END-EXEC
-   181			  IF EIBRESP NOT = +0
-   182			  EXEC CICS SEND TEXT
-   183				   FROM(WS-INVALID-RESP)
-   184			  END-EXEC
-   185			  END-IF
-   186			  ADD 1 TO I
-   187		      END-PERFORM
-   188		      EXEC CICS RETURN
-   189		      END-EXEC.
-   190
+   181
+   182			  IF EIBRESP NOT = +0
+   183			  EXEC CICS SEND TEXT
+   184				   FROM(WS-INVALID-RESP)
+   185			  END-EXEC
+   186			  END-IF
+   187			  ADD 1 TO I
+   188		      END-PERFORM
+   189		      EXEC CICS RETURN
+   190		      END-EXEC.
+   191
 CA-Realia CACXPREP D:\work\CAWB30-HO\SMADDSTF.COB
 
 
@@ -574,6 +575,6 @@
 		      PPCODE
 		      DCHK
 
-		Source Lines Translated:     542
+		Source Lines Translated:     543
 		Translation Time:	     .01 sec
-		Translation Speed:	  420000 lines per min
+		Translation Speed:	  430000 lines per min

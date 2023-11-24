@@ -48,23 +48,23 @@
        01  K                             PIC 9(03). 
        01  WS-MASS-REC. 
            05 FILLER     PIC X(25)    VALUE
-              '000006 ISCB110 ONGOING   '.
+              '000006 ISCB101 ONGOING   '.
            05 FILLER     PIC X(25)    VALUE
-              '000007 ISCB110 APPROVED  '.
+              '000007 ISCB102 APPROVED  '.
            05 FILLER     PIC X(25)    VALUE
-              '000008 ISCB110 ONGOING   '.
+              '000008 ISCB103 ONGOING   '.
            05 FILLER     PIC X(25)    VALUE
-              '000009 ISCB110 COMPLETED '.
+              '000009 ISCB104 COMPLETED '.
            05 FILLER     PIC X(25)    VALUE
-              '000010 ISCB110 CLOSED    '.
+              '000010 ISCB105 CLOSED    '.
            05 FILLER     PIC X(25)    VALUE
-              '000011 ISCB110 APPROVED  '.
+              '000011 ISCB106 APPROVED  '.
            05 FILLER     PIC X(25)    VALUE
-              '000012 ISCB110 COMPLETED '.
+              '000012 ISCB107 COMPLETED '.
            05 FILLER     PIC X(25)    VALUE
-              '000013 ISCB110 APPROVED  '.
+              '000013 ISCB108 APPROVED  '.
            05 FILLER     PIC X(25)    VALUE
-              '000014 ISCB110 CLOSED    '.
+              '000014 ISCB109 CLOSED    '.
            05 FILLER     PIC X(25)    VALUE
               '000015 ISCB110 CREATED   '.
            05 FILLER     PIC X(25)    VALUE
@@ -142,7 +142,7 @@
  
 	   
       *
-	   COPY DFHAID.
+	    COPY DFHAID.
       *
        COPY DFHBMSCA.
 
@@ -151,7 +151,7 @@
       *
        PROCEDURE DIVISION.
        100-PROCESS.
-	       EXEC CICS IGNORE CONDITION ERROR END-EXEC
+	        EXEC CICS IGNORE CONDITION ERROR END-EXEC
                 MOVE 1 TO I.
                 
                 PERFORM 30 TIMES
@@ -178,6 +178,7 @@
                          RIDFLD (WS-REC-KEY)
                          LENGTH (+228)
                     END-EXEC
+
                     IF EIBRESP NOT = +0
                     EXEC CICS SEND TEXT  
                              FROM(WS-INVALID-RESP)

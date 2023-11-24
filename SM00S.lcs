@@ -1,4 +1,4 @@
-CA-Realia CICS Ver:6.0.27  SM00S.bms                                                                     17NOV23 11:28:58 PAGE  1
+CA-Realia CICS Ver:6.0.27  SM00S.bms                                                                     23NOV23 23:10:48 PAGE  1
 
     1          PRINT NOGEN
     2 SM00S    DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      C
@@ -32,14 +32,14 @@
    30          DFHMDF POS=(24,13),LENGTH=10,ATTRB=(ASKIP,NORM),              C
    31                INITIAL='PF3 - EXIT'
    32 OPTION   DFHMDF POS=(20,50),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET)
-   33 TICKET   DFHMDF POS=(21,50),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET)
+   33 TICKET   DFHMDF POS=(21,50),LENGTH=06,ATTRB=(UNPROT,NORM,IC,FSET)
    34 ERRMSG   DFHMDF POS=(22,01),LENGTH=71,ATTRB=(ASKIP,NORM,IC,FSET)
    35 DATE     DFHMDF POS=(01,70),LENGTH=10,ATTRB=(ASKIP,NORM,IC,FSET)
    36 TIME     DFHMDF POS=(02,70),LENGTH=08,ATTRB=(ASKIP,NORM,IC,FSET)
    37          DFHMSD TYPE=FINAL
       SM00S loaded with 1 MAPS, 18 FIELDS and 213 Bytes of Literals
 
-   38          ENDCA-Realia CICS Ver:6.0.27  SM00S.bms                                                                     17NOV23 11:28:58 PAGE  2
+   38          ENDCA-Realia CICS Ver:6.0.27  SM00S.bms                                                                     23NOV23 23:10:48 PAGE  2
 
       COBOL COPY file generated
 
