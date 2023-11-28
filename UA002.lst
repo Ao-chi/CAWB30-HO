@@ -424,194 +424,567 @@
    500        01  WS-CURRENT-MAP  VALUE 'UA002S'        PIC X(7).
    501	      01  WS-REC-LENGTH 			PIC S9(4)
    502		  COMP VALUE +21.
-   503	      01  WS-KEYB.
-   504		  05 WS-KEYB6			PIC X(06) VALUE LOW-VALUES.
-   505		  05 FILLER REDEFINES WS-KEYB6.
-   506		     10 FILLER			PIC X(03).
-   507		     10 WS-KEYB3		PIC 9(03).
-   508		  05 WS-KEYB1			PIC X(01) VALUE HIGH-VALUES.
-   509	      01  WS-STF-REC.
-   510		  05 WS-TICKET-ID			PIC 9(07).
-   511		  05 WS-TIX-ID				REDEFINES WS-TICKET-ID.
-   512		     10 WS-T-ID 			PIC X(06).
-   513		     10 FILLER				PIC X.
-   514		  05 WS-TICKET-REQ			PIC X(08).
-   515		  05 WS-TICKET-STAT			PIC X(10).
-   516		  05 WS-TICKET-TITLE			PIC X(25).
-   517		  05 WS-TICKET-DESC			PIC X(100).
-   518		  05 WS-LAST-UPD			PIC X(20).
-   519		  05 WS-UPD-BY				PIC X(08).
-   520		  05 WS-UPD-REMARKS			PIC X(50).
-   521	      01  WS-REC.
-   522		  05 WS-USERID.
-   523		     10  WS-USERID7			PIC X(7).
-   524		     10  FILLER 			PIC X(1).
-   525		  05 WS-TYPE.
-   526		     10  WS-REQUESTOR			PIC X.
-   527		     10  WS-ADMIN			PIC X.
-   528		     10  WS-APPROVER			PIC X.
-   529		     10  WS-SERVICE			PIC X.
-   530		  05 WS-UPDATEDBY			PIC X(8).
-   531	      01  WS-TIME				PIC 9(15) COMP-3.
-   532	      01  WS-DATE				PIC 9(7).
-   533	      01  WS-DATE-X REDEFINES WS-DATE		PIC X(7).
-   534	      01  WS-LENGTH				PIC S9(4) COMP.
-   535	     *--------------------------------------------------------------*
-   536	     *		     COMMAREA WORKING STORAGE			    *
-   537	     *--------------------------------------------------------------*
-   538	      01  WS-COMMAREA.
-   539		  05 WS-PROG-STATE			PIC X(15).
-   540		  05 WS-PGMID				PIC X(06).
-   541		  05 USERID.
-   542		     10  USERID7			PIC X(7).
-   543		     10  FILLER 			PIC X(1).
-   544		  05 USR-TYPE.
-   545		    15 USR-REQUESTOR			PIC X.
-   546		    15 USR-ADMIN			PIC X.
-   547		    15 USR-APPROVER			PIC X.
-   548		    15 USR-SERVICE			PIC X.
-   549		  05 WS-STATE				PIC X.   550
-   551	      01  WS-COUNTERS.
-   552		  05 WS-INDEX				PIC 9(02).
-   553	      01  WS-ERRMSGS.
-   554		  05 WS-INVALID-ACCESS			PIC X(15) VALUE
-   555               'INVALID ACCESS'.
-   556		  05 WS-INVALID-PGMID			PIC X(20) VALUE
-   557               'INVALID USER ACCESS'.
-   558		  05 WS-MAPFAIL 			PIC X(20) VALUE
-   559               'MAPFAIL ERROR'.
-   560		  05 WS-INVALID-TIX-ACC 		PIC X(34) VALUE
-   561               'INVALID ACCESS TO SELECTED TICKET'.
-   562		  05 WS-FIELD-REQ			PIC X(24) VALUE
-   563               'OPTION FIELD IS REQUIRED'.
-   564		  05 WS-FIRST-PAGE			PIC X(23) VALUE
-   565               'THIS IS THE FIRST PAGE'.
-   566		  05 WS-LAST-PAGE			PIC X(21) VALUE
-   567               'THIS IS THE LAST PAGE'.
-   568
-   569	      01  WS-PAGE-NO				PIC 9(03) VALUE 1.
-   570	      77 WS-RETNCODE	    PIC S9(8) COMP.
-   571	      77 WS-RETNCODE2	     PIC S9(8) COMP.
-   572	     *----------------------------------------------------------------*
-   573	     *			       LINKAGE SECTION			      *
-   574	     *----------------------------------------------------------------*
-   575	      LINKAGE SECTION.
-   577	      01  DFHEIBLK.						       R
-   578		  05 EIBTIME  PIC S9(7) COMP-3. 			       R
-   579		  05 EIBDATE  PIC S9(7) COMP-3. 			       R
-   580		  05 EIBTRNID PIC X(4). 				       R
-   581		  05 EIBTASKN PIC S9(7) COMP-3. 			       R
-   582		  05 EIBTRMID PIC X(4). 				       R
-   583		  05 DFHEIGDI PIC S9(4) COMP-4. 			       R
-   584		  05 EIBCPOSN PIC S9(4) COMP-4. 			       R
-   585		  05 EIBCALEN PIC S9(4) COMP-4. 			       R
-   586		  05 EIBAID   PIC X.					       R
-   587		  05 EIBFN    PIC X(2). 				       R
-   588		  05 EIBRCODE PIC X(6). 				       R
-   589		  05 EIBDS    PIC X(8). 				       R
-   590		  05 EIBREQID PIC X(8). 				       R
-   591		  05 EIBRSRCE PIC X(8). 				       R
-   592		  05 EIBSYNC  PIC X.					       R
-   593		  05 EIBFREE  PIC X.					       R
-   594		  05 EIBRECV  PIC X.					       R
-   595		  05 EIBSEND  PIC X.					       R
-   596		  05 EIBATT   PIC X.					       R
-   597		  05 EIBEOC   PIC X.					       R
-   598		  05 EIBFMH   PIC X.					       R
-   599		  05 EIBCOMPL PIC X.					       R
-   600		  05 EIBSIG   PIC X.					       R
-   601		  05 EIBCONF  PIC X.					       R
-   602		  05 EIBERR   PIC X.					       R
-   603		  05 EIBERRCD PIC X(4). 				       R
-   604		  05 EIBSYNRB PIC X.					       R
-   605		  05 EIBNODAT PIC X.					       R
-   606		  05 EIBRESP  PIC S9(8) COMP-4. 			       R
-   607		  05 EIBRESP2 PIC S9(8) COMP-4. 			       R
-   608		  05 EIBRLDBK PIC X.					       R
-   609		  05 EIBCARESERVED PIC X(32).				       R
-   611	      01  DFHCOMMAREA				PIC X(50).   612	     *----------------------------------------------------------------*
-   613	     *			       PROGRAM DIVISION 		      *
-   614	     *----------------------------------------------------------------*
-   615	      PROCEDURE DIVISION					       R
-   617		  USING DFHEIBLK DFHCOMMAREA.				       R
-   642	      100-MAIN.
-   644		  EXEC CICS IGNORE CONDITION
-   645			    ERROR
-   646		  END-EXEC
-   661
-   662		  MOVE DFHCOMMAREA TO WS-COMMAREA
-   663            IF WS-PGMID = 'SM000' OR 'UA001' OR 'UA002' OR LOW-VALUES
-   664		      IF WS-STATE NOT = LOW-VALUES
-   665			 PERFORM 200-REC-MAP
-   666		      ELSE
-   667                    MOVE 'ENTER USER DETAILS AND PRESS PF2' TO ERRMSG8O
-   668			  MOVE 1 TO WS-STATE
-   669			  PERFORM 111-CREATE-MAP
-   670		      END-IF
-   671		  ELSE
-   672		      MOVE SPACES TO ERRMSG8O
-   673		      MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-   675		      EXEC CICS SEND TEXT
-   676			      FROM (WS-INVALID-ACCESS)
-   677			      LENGTH (WS-LENGTH)
-   678			      ERASE
-   679			 END-EXEC
-   710		      EXEC CICS RETURN
-   711		      END-EXEC
-   724		  END-IF.
-   725	      100-EXIT.
-   726		  EXIT.
-   727
-   728	      110-DATE-TIME.
-   729		  MOVE EIBDATE TO WS-DATE.
-   730		  MOVE WS-DATE-X TO DATEO.
-   732		  EXEC CICS ASKTIME
-   733		       ABSTIME	  (WS-TIME)
-   734		  END-EXEC
-   753		  EXEC CICS FORMATTIME
-   754		       ABSTIME	  (WS-TIME)
-   755                 DATESEP    ('/')
-   756		       MMDDYYYY   (DATEO)
-   757		       TIME	  (TIMEO)
-   758                 TIMESEP    (':')
-   759		  END-EXEC
-   799		  MOVE DFHBMASB TO TIMEA
-   800		  MOVE DFHBMASB TO DATEA.
-   801	      110-EXIT.
-   802		  EXIT.
-   803
-   804	      111-CREATE-MAP.
-   805		  PERFORM 110-DATE-TIME
-   806		  MOVE LENGTH OF UA002MO TO WS-LENGTH
-   807		  MOVE -1 TO USRIDL
-   809		  EXEC CICS SEND
-   810                 MAP('UA002M')
-   811		       MAPSET(WS-CURRENT-MAP)
-   812		       FROM(UA002MO)
-   813		       LENGTH(WS-LENGTH)   814		       CURSOR
-   815		       ERASE
-   816		  END-EXEC
-   862		  EXEC CICS RETURN
-   863                 TRANSID('UA02')
-   864		       COMMAREA(WS-COMMAREA)
-   865		  END-EXEC.
-   890	      110-EXIT.
-   891		  EXIT.
-   892
-   893	      200-REC-MAP.
-   895		  EXEC CICS RECEIVE
-   896                 MAP('UA002M')
-   897		       MAPSET(WS-CURRENT-MAP)
-   898		       INTO (UA002MI)
-   899		       RESP(WS-RETNCODE)
-   900		  END-EXEC
-   940		  IF EIBRESP = DFHRESP(MAPFAIL)
-   942		  IF EIBRESP =	       036				       R
-   943		     MOVE WS-MAPFAIL TO ERRMSG8O
-   944		     PERFORM 111-CREATE-MAP
-   945		  END-IF.
-   946	      200-EXIT.
-   947		  EXIT.CA-Realia COBOL Version 6.0.45	 D:\work\CAWB30-HO\UA002.cic	       PAGE   12
+   503        01  WS-FLAG                               PIC X    VALUE 'N'.
+   504	      01  WS-KEYB.
+   505		  05 WS-KEYB6			PIC X(06) VALUE LOW-VALUES.
+   506		  05 FILLER REDEFINES WS-KEYB6.
+   507		     10 FILLER			PIC X(03).
+   508		     10 WS-KEYB3		PIC 9(03).
+   509		  05 WS-KEYB1			PIC X(01) VALUE HIGH-VALUES.
+   510	      01  WS-STF-REC.
+   511		  05 WS-TICKET-ID			PIC 9(07).
+   512		  05 WS-TIX-ID				REDEFINES WS-TICKET-ID.
+   513		     10 WS-T-ID 			PIC X(06).
+   514		     10 FILLER				PIC X.
+   515		  05 WS-TICKET-REQ			PIC X(08).
+   516		  05 WS-TICKET-STAT			PIC X(10).
+   517		  05 WS-TICKET-TITLE			PIC X(25).
+   518		  05 WS-TICKET-DESC			PIC X(100).
+   519		  05 WS-LAST-UPD			PIC X(20).
+   520		  05 WS-UPD-BY				PIC X(08).
+   521		  05 WS-UPD-REMARKS			PIC X(50).
+   522	      01  WS-USER-REC.
+   523		  05 WS-USERID.
+   524		     10  WS-USERID7			PIC X(7).
+   525		     10  FILLER 			PIC X(1).
+   526		  05 WS-TYPE.
+   527		     10  WS-REQUESTOR			PIC X.
+   528		     10  WS-ADMIN			PIC X.
+   529		     10  WS-APPROVER			PIC X.
+   530		     10  WS-SERVICE			PIC X.
+   531		  05 WS-UPDATEDBY			PIC X(8).
+   532	      01  WS-TIME				PIC 9(15) COMP-3.
+   533	      01  WS-DATE				PIC 9(7).
+   534	      01  WS-DATE-X REDEFINES WS-DATE		PIC X(7).
+   535	      01  WS-LENGTH				PIC S9(4) COMP.
+   536
+   537	      01  WS-COUNTERS.
+   538		  05 WS-INDEX				PIC 9(02).
+   539	      01  WS-ERRMSGS.
+   540		  05 WS-END				PIC X(15) VALUE
+   541               'END PREOCESSING'.
+   542		  05 WS-INVALID-ACCESS			PIC X(15) VALUE
+   543               'INVALID ACCESS'.
+   544		  05 WS-INVALID-PGMID			PIC X(20) VALUE
+   545               'INVALID USER ACCESS'.
+   546		  05 WS-MAPFAIL 			PIC X(20) VALUE
+   547               'MAPFAIL ERROR'.
+   548		  05 WS-INVALID-TIX-ACC 		PIC X(34) VALUE
+   549               'INVALID ACCESS TO SELECTED TICKET'.   550		  05 WS-FIELD-REQ			PIC X(24) VALUE
+   551               'OPTION FIELD IS REQUIRED'.
+   552		  05 WS-INVALID-VALUE			PIC X(46) VALUE
+   553               'INVALID VALUE. PLEASE CORRECT HIGHLIGHT FIELDS'.
+   554		  05 WS-INVALID-PFKEY			PIC X(21) VALUE
+   555                'INAVLID PFKEY PRESSED'.
+   556
+   557	      01  WS-PAGE-NO				PIC 9(03) VALUE 1.
+   558	      77 WS-RETNCODE	    PIC S9(8) COMP.
+   559	      77 WS-RETNCODE2	     PIC S9(8) COMP.
+   560	     *--------------------------------------------------------------*
+   561	     *		     COMMAREA WORKING STORAGE			    *
+   562	     *--------------------------------------------------------------*
+   563	      01  WS-COMMAREA.
+   564		  05 WS-PGMID				PIC X(06).
+   565		  05 WS-TICKET-PASSED			PIC X(07).
+   566		  05 USERID.
+   567		     10  USERID7			PIC X(7).
+   568		     10  FILLER 			PIC X(1).
+   569		  05 USR-TYPE.
+   570		    15 USR-REQUESTOR			PIC X.
+   571		    15 USR-ADMIN			PIC X.
+   572		    15 USR-APPROVER			PIC X.
+   573		    15 USR-SERVICE			PIC X.
+   574		  05 WS-STF01-REC.
+   575		     10 WS-STF01-ID			PIC X(07).
+   576		     10 FILL1				PIC X(03).
+   577		     10 WS-STF01-TITLE			PIC X(25).
+   578		     10 FILL2				PIC X(01).
+   579		     10 WS-STF01-STATUS 		PIC X(10).
+   580		     10 FILL3				PIC X(04).
+   581		     10 WS-STF01-LAST-UPD		PIC X(10).
+   582		     10 FILL4				PIC X(02).
+   583		     10 WS-STF01-LAST-UPDBY		PIC X(8).
+   584		     10 WS-STF01-REQ			PIC X(8).
+   585		  05 WS-PGMNAME 			PIC  X(6).
+   586		  05 WS-DFHSTATE			PIC X(15).
+   587		  05 WS-TRANS				PIC X(04).
+   588		  05 WS-LUSER				PIC 9(03).
+   589		  05 WS-FUSER				PIC X(07).
+   590		  05 WS-PAGE				PIC 9(02).
+   591		  05 WS-PAGE-END			PIC 9(01).
+   592		  05 WS-STATE				PIC X.
+   593		  05 WS-ADDED-USER		     PIC X(08).
+   594		  05 WS-USER-DETL.
+   595		     10 WS-USER-ADD			PIC X(08).
+   596		     10 WS-USER-REQ			PIC X.
+   597		     10 WS-USER-ADMIN			PIC X.
+   598		     10 WS-USER-APPROVER		PIC X.
+   599		     10 WS-USER-SERVICE 		PIC X.
+   600
+   601	     *----------------------------------------------------------------*
+   602	     *			       LINKAGE SECTION			      *
+   603	     *----------------------------------------------------------------*
+   604	      LINKAGE SECTION.
+   606	      01  DFHEIBLK.						       R
+   607		  05 EIBTIME  PIC S9(7) COMP-3. 			       R
+   608		  05 EIBDATE  PIC S9(7) COMP-3. 			       R
+   609		  05 EIBTRNID PIC X(4). 				       R
+   610		  05 EIBTASKN PIC S9(7) COMP-3. 			       R   611		  05 EIBTRMID PIC X(4). 				       R
+   612		  05 DFHEIGDI PIC S9(4) COMP-4. 			       R
+   613		  05 EIBCPOSN PIC S9(4) COMP-4. 			       R
+   614		  05 EIBCALEN PIC S9(4) COMP-4. 			       R
+   615		  05 EIBAID   PIC X.					       R
+   616		  05 EIBFN    PIC X(2). 				       R
+   617		  05 EIBRCODE PIC X(6). 				       R
+   618		  05 EIBDS    PIC X(8). 				       R
+   619		  05 EIBREQID PIC X(8). 				       R
+   620		  05 EIBRSRCE PIC X(8). 				       R
+   621		  05 EIBSYNC  PIC X.					       R
+   622		  05 EIBFREE  PIC X.					       R
+   623		  05 EIBRECV  PIC X.					       R
+   624		  05 EIBSEND  PIC X.					       R
+   625		  05 EIBATT   PIC X.					       R
+   626		  05 EIBEOC   PIC X.					       R
+   627		  05 EIBFMH   PIC X.					       R
+   628		  05 EIBCOMPL PIC X.					       R
+   629		  05 EIBSIG   PIC X.					       R
+   630		  05 EIBCONF  PIC X.					       R
+   631		  05 EIBERR   PIC X.					       R
+   632		  05 EIBERRCD PIC X(4). 				       R
+   633		  05 EIBSYNRB PIC X.					       R
+   634		  05 EIBNODAT PIC X.					       R
+   635		  05 EIBRESP  PIC S9(8) COMP-4. 			       R
+   636		  05 EIBRESP2 PIC S9(8) COMP-4. 			       R
+   637		  05 EIBRLDBK PIC X.					       R
+   638		  05 EIBCARESERVED PIC X(32).				       R
+   640	       01  DFHCOMMAREA.
+   641		  05 DF-PGMID				PIC X(06).
+   642		  05 DF-TICKET-PASSED			PIC X(07).
+   643		  05 DF-USERID.
+   644		     10  DF-USERID7			PIC X(7).
+   645		     10  FILLER 			PIC X(1).
+   646		  05 DF-USR-TYPE.
+   647		    15 DF-USR-REQUESTOR 		PIC X.
+   648		    15 DF-USR-ADMIN			PIC X.
+   649		    15 DF-USR-APPROVER			PIC X.
+   650		    15 DF-USR-SERVICE			PIC X.
+   651		  05 DF-STF01-REC.
+   652		     10 DF-STF01-ID			PIC X(07).
+   653		     10 DF-FILLER			PIC X(03).
+   654		     10 DF-STF01-TITLE			PIC X(25).
+   655		     10 DF-FILLER			PIC X(01).
+   656		     10 DF-STF01-STATUS 		PIC X(10).
+   657		     10 DF-FILLER			PIC X(04).
+   658		     10 DF-STF01-LAST-UPD		PIC X(10).
+   659		     10 DF-FILLER4			PIC X(02).
+   660		     10 DF-STF01-LAST-UPDBY		PIC X(8).
+   661		     10 DF-STF01-REQ			PIC X(8).
+   662		  05 DF-PGMNAME 			PIC X(6).
+   663		  05 DFHSTATE				PIC X(15).
+   664		  05 DF-TRANS				PIC X(04).
+   665		  05 DF-LUSER				PIC 9(03).
+   666		  05 DF-FUSER				PIC X(07).
+   667		  05 DF-PAGE				PIC 9(02).
+   668		  05 DF-PAGE-END			PIC 9(01).
+   669		  05 DF-STATE				PIC X.
+   670		  05 DF-ADDED-USER			PIC X(08).
+   671		  05 DF-USER-DETL.   672		     10 DF-USER 			PIC X(08).
+   673		     10 DF-USER-REQ			PIC X.
+   674		     10 DF-USER-ADMIN			PIC X.
+   675		     10 DF-USER-APPROVER		PIC X.
+   676		     10 DF-USER-SERVICE 		PIC X.
+   677	     *----------------------------------------------------------------*
+   678	     *			       PROGRAM DIVISION 		      *
+   679	     *----------------------------------------------------------------*
+   680	      PROCEDURE DIVISION					       R
+   682		  USING DFHEIBLK DFHCOMMAREA.				       R
+   707	      100-MAIN.
+   709		  EXEC CICS IGNORE CONDITION
+   710			    ERROR
+   711		  END-EXEC
+   726
+   727		  MOVE DFHCOMMAREA TO WS-COMMAREA
+   728            IF WS-PGMID = 'SM000' OR 'UA001' OR 'UA002' OR LOW-VALUES
+   729		     EVALUATE TRUE
+   730		       WHEN WS-STATE = LOW-VALUES
+   731			  MOVE 1 TO WS-STATE
+   732                    MOVE 'ENTER USER DETAILS AND PRESS PF2' TO ERRMSG8O
+   733			  MOVE -1 TO USRIDL
+   734			  PERFORM 111-CREATE-MAP
+   735		       WHEN WS-STATE = 1
+   736			    PERFORM 200-REC-MAP
+   737			    PERFORM 120-MOVE-DATA-TO-HOLDER
+   738			    PERFORM 300-CHECK-EIBAID
+   739			    PERFORM 111-CREATE-MAP
+   740		       WHEN WS-STATE = 2
+   741			    PERFORM 200-REC-MAP
+   742	     *		    PERFORM 120-MOVE-DATA-TO-HOLDER
+   743			    PERFORM 300-CHECK-EIBAID
+   744			    PERFORM 111-CREATE-MAP
+   745		       WHEN WS-STATE = 3
+   746			    PERFORM 200-REC-MAP
+   747	     *		    PERFORM 120-MOVE-DATA-TO-HOLDER
+   748			    PERFORM 300-CHECK-EIBAID
+   749			    PERFORM 111-CREATE-MAP
+   750		     END-EVALUATE
+   751		  ELSE
+   752		      MOVE SPACES TO ERRMSG8O
+   753		      MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+   755		      EXEC CICS SEND TEXT
+   756			      FROM (WS-INVALID-ACCESS)
+   757			      LENGTH (WS-LENGTH)
+   758			      ERASE
+   759			 END-EXEC
+   790		      EXEC CICS RETURN
+   791		      END-EXEC
+   804		  END-IF.
+   805	      100-EXIT.
+   806		  EXIT.
+   807
+   808	      110-DATE-TIME.
+   809		  MOVE EIBDATE TO WS-DATE.
+   810		  MOVE WS-DATE-X TO DATEO.
+   812		  EXEC CICS ASKTIME
+   813		       ABSTIME	  (WS-TIME)
+   814		  END-EXEC
+   833		  EXEC CICS FORMATTIME   834		       ABSTIME	  (WS-TIME)
+   835                 DATESEP    ('/')
+   836		       MMDDYYYY   (DATEO)
+   837		       TIME	  (TIMEO)
+   838                 TIMESEP    (':')
+   839		  END-EXEC
+   879		  MOVE DFHBMASB TO TIMEA
+   880		  MOVE DFHBMASB TO DATEA.
+   881	      110-EXIT.
+   882		  EXIT.
+   883
+   884	      111-CREATE-MAP.
+   885		  PERFORM 110-DATE-TIME
+   886		  MOVE LENGTH OF UA002MO TO WS-LENGTH
+   888		  EXEC CICS SEND
+   889                 MAP('UA002M')
+   890		       MAPSET(WS-CURRENT-MAP)
+   891		       FROM(UA002MO)
+   892		       LENGTH(WS-LENGTH)
+   893		       CURSOR
+   894		       ERASE
+   895		  END-EXEC
+   941		  EXEC CICS RETURN
+   942                 TRANSID('UA02')
+   943		       COMMAREA(WS-COMMAREA)
+   944		  END-EXEC.
+   969	      110-EXIT.
+   970		  EXIT.
+   971	     *Minove sa commarea para pag nagescape ung user di mabubura sa scre
+   972	     *inputs nila
+   973	      120-MOVE-DATA-TO-HOLDER.
+   974		  MOVE USRIDI TO WS-USER-ADD
+   975		  MOVE REQTAGI TO WS-USER-REQ
+   976		  MOVE ADMTAGI TO WS-USER-ADMIN
+   977		  MOVE APRTAGI TO WS-USER-APPROVER
+   978		  MOVE SRVTAGI TO WS-USER-SERVICE.
+   979	      120-EXIT.
+   980		  EXIT.
+   981
+   982	      200-REC-MAP.
+   984		  EXEC CICS RECEIVE
+   985                 MAP('UA002M')
+   986		       MAPSET(WS-CURRENT-MAP)
+   987		       INTO (UA002MI)
+   988		       RESP(WS-RETNCODE)
+   989		  END-EXEC
+  1028	     *	  Eto pang handle ng escape keypress
+  1030		  IF EIBRESP = DFHRESP(MAPFAIL)
+  1032		  IF EIBRESP =	       036				       R
+  1033		     MOVE WS-INVALID-PFKEY TO ERRMSG8O
+  1034		     MOVE WS-USER-ADD TO USRIDI
+  1035		     MOVE WS-USER-REQ TO REQTAGI
+  1036		     MOVE WS-USER-ADMIN TO ADMTAGI
+  1037		     MOVE WS-USER-APPROVER TO APRTAGI
+  1038		     MOVE WS-USER-SERVICE TO SRVTAGI
+  1039		     MOVE -1 TO USRIDL
+  1040		     MOVE 1 TO WS-STATE
+  1041		     PERFORM 111-CREATE-MAP
+  1042		  END-IF.
+  1043	      200-EXIT.  1044		  EXIT.
+  1045
+  1046	      300-CHECK-EIBAID.
+  1047		  EVALUATE EIBAID
+  1048		   WHEN DFHPF2
+  1049			EVALUATE TRUE
+  1050			  WHEN WS-STATE = 1
+  1051			     MOVE 2 TO WS-STATE
+  1052			     PERFORM 310-VALIDATE-DETAILS
+  1053                       IF WS-FLAG = 'Y'
+  1054				 MOVE 1 TO WS-STATE
+  1055			     ELSE
+  1056				 MOVE 3 TO WS-STATE
+  1057
+  1058				 STRING WS-USER-ADD DELIMITED BY SIZE
+  1059                             'CREATED PRESS ENTER TO' DELIMITED BY SIZE
+  1060                             ' CREATE ANOTHER USER ID' DELIMITED BY SIZE
+  1061				   INTO ERRMSG8O
+  1062				 END-STRING
+  1063				 MOVE WS-USER-ADD TO USRIDI
+  1064				 MOVE WS-USER-REQ TO REQTAGI
+  1065				 MOVE WS-USER-ADMIN TO ADMTAGI
+  1066				 MOVE WS-USER-APPROVER TO APRTAGI
+  1067				 MOVE WS-USER-SERVICE TO SRVTAGI
+  1068				 PERFORM 320-SET-PROTECTED
+  1069				 MOVE -1 TO USRIDL
+  1070				 MOVE WS-USER-ADD TO WS-USERID
+  1071				 MOVE WS-USER-REQ TO WS-REQUESTOR
+  1072				 MOVE WS-USER-ADMIN TO WS-ADMIN
+  1073				 MOVE WS-USER-APPROVER TO WS-APPROVER
+  1074				 MOVE WS-USER-SERVICE TO WS-SERVICE
+  1075                           MOVE 'ISCB126 ' TO WS-UPDATEDBY
+  1076				 PERFORM 400-WRITE-USER
+  1077			     END-IF
+  1078			  WHEN WS-STATE = 2
+  1079			       MOVE 3 TO WS-STATE
+  1080
+  1081				 STRING WS-USER-ADD DELIMITED BY SIZE
+  1082                             'CREATED PRESS ENTER TO' DELIMITED BY SIZE
+  1083                             ' CREATE ANOTHER USER ID' DELIMITED BY SIZE
+  1084				   INTO ERRMSG8O
+  1085				 END-STRING
+  1086				 MOVE WS-USER-ADD TO USRIDI
+  1087				 MOVE WS-USER-REQ TO REQTAGI
+  1088				 MOVE WS-USER-ADMIN TO ADMTAGI
+  1089				 MOVE WS-USER-APPROVER TO APRTAGI
+  1090				 MOVE WS-USER-SERVICE TO SRVTAGI
+  1091				 PERFORM 320-SET-PROTECTED
+  1092				 MOVE -1 TO USRIDL
+  1093				 MOVE WS-USER-ADD TO WS-USERID
+  1094				 MOVE WS-USER-REQ TO WS-REQUESTOR
+  1095				 MOVE WS-USER-ADMIN TO WS-ADMIN
+  1096				 MOVE WS-USER-APPROVER TO WS-APPROVER
+  1097				 MOVE WS-USER-SERVICE TO WS-SERVICE
+  1098                           MOVE 'ISCB126 ' TO WS-UPDATEDBY
+  1099
+  1100				 PERFORM 400-WRITE-USER
+  1101			  WHEN WS-STATE = 3
+  1102			       MOVE WS-USER-ADD TO USRIDI
+  1103			       MOVE WS-USER-REQ TO REQTAGI  1104			       MOVE WS-USER-ADMIN TO ADMTAGI
+  1105			       MOVE WS-USER-APPROVER TO APRTAGI
+  1106			       MOVE WS-USER-SERVICE TO SRVTAGI
+  1107			       MOVE -1 TO USRIDL
+  1108			       PERFORM 320-SET-PROTECTED
+  1109			       CONTINUE
+  1110			END-EVALUATE
+  1111		   WHEN DFHPF3
+  1113			EXEC CICS SEND TEXT
+  1114			     FROM (WS-END)
+  1115			     LENGTH (+15)
+  1116			     ERASE
+  1117			END-EXEC
+  1148			EXEC CICS RETURN
+  1149			END-EXEC
+  1162		   WHEN DFHPF5
+  1163			EVALUATE TRUE
+  1164			  WHEN WS-STATE = 1
+  1165			       MOVE 1 TO WS-STATE
+  1166			       MOVE LOW-VALUES TO USRIDI
+  1167			       MOVE LOW-VALUES TO REQTAGI
+  1168			       MOVE LOW-VALUES TO ADMTAGI
+  1169			       MOVE LOW-VALUES TO APRTAGI
+  1170			       MOVE LOW-VALUES TO SRVTAGI
+  1171                         MOVE 'ENTER USER DETAILS AND PRESS PF2'
+  1172				    TO ERRMSG8O
+  1173			       MOVE -1 TO USRIDL
+  1174			  WHEN WS-STATE = 2
+  1175			       MOVE 1 TO WS-STATE
+  1176			       MOVE LOW-VALUES TO USRIDI
+  1177			       MOVE LOW-VALUES TO REQTAGI
+  1178			       MOVE LOW-VALUES TO ADMTAGI
+  1179			       MOVE LOW-VALUES TO APRTAGI
+  1180			       MOVE LOW-VALUES TO SRVTAGI
+  1181                         MOVE 'ENTER USER DETAILS AND PRESS PF2'
+  1182				    TO ERRMSG8O
+  1183			       MOVE -1 TO USRIDL
+  1184			  WHEN WS-STATE = 3
+  1185			       MOVE WS-USER-ADD TO USRIDI
+  1186			       MOVE WS-USER-REQ TO REQTAGI
+  1187			       MOVE WS-USER-ADMIN TO ADMTAGI
+  1188			       MOVE WS-USER-APPROVER TO APRTAGI
+  1189			       MOVE WS-USER-SERVICE TO SRVTAGI
+  1190			       MOVE -1 TO USRIDL
+  1191			       PERFORM 320-SET-PROTECTED
+  1192			       CONTINUE
+  1193			END-EVALUATE
+  1194		   WHEN DFHENTER
+  1195			IF WS-STATE = 1
+  1196			   MOVE 2 TO WS-STATE
+  1197			   PERFORM 310-VALIDATE-DETAILS
+  1198                     IF WS-FLAG = 'Y'
+  1199			       MOVE 1 TO WS-STATE
+  1200			    ELSE
+  1201			       MOVE 2 TO WS-STATE
+  1202                         MOVE 'PRESS PF2 TO CONFIRM ADD' TO ERRMSG8O
+  1203			       PERFORM 320-SET-PROTECTED
+  1204			       MOVE -1 TO USRIDL
+  1205			   END-IF
+  1206  1207			ELSE
+  1208			   IF WS-STATE = 2
+  1209                        MOVE 'PRESS PF2 TO ADD USER' TO ERRMSG8O
+  1210			      PERFORM 320-SET-PROTECTED
+  1211			      MOVE -1 TO USRIDL
+  1212			      CONTINUE
+  1213			   ELSE
+  1214			      IF WS-STATE = 3
+  1215				 MOVE 1 TO WS-STATE
+  1216				 MOVE LOW-VALUES TO USRIDI
+  1217				 MOVE LOW-VALUES TO REQTAGI
+  1218				 MOVE LOW-VALUES TO ADMTAGI
+  1219				 MOVE LOW-VALUES TO APRTAGI
+  1220				 MOVE LOW-VALUES TO SRVTAGI
+  1221                           MOVE 'ENTER USER DETAILS AND PRESS PF2'
+  1222				      TO ERRMSG8O
+  1223				 MOVE -1 TO USRIDL
+  1224
+  1225			      END-IF
+  1226			   END-IF
+  1227			END-IF
+  1228		   WHEN OTHER
+  1229			MOVE WS-INVALID-PFKEY TO ERRMSG8O
+  1230			MOVE WS-USER-ADD TO USRIDI
+  1231			MOVE WS-USER-REQ TO REQTAGI
+  1232			MOVE WS-USER-ADMIN TO ADMTAGI
+  1233			MOVE WS-USER-APPROVER TO APRTAGI
+  1234			MOVE WS-USER-SERVICE TO SRVTAGI
+  1235			MOVE -1 TO USRIDL
+  1236			EVALUATE TRUE
+  1237			  WHEN WS-STATE = 1
+  1238			       MOVE 1 TO WS-STATE
+  1239			  WHEN WS-STATE = 2
+  1240			       MOVE 2 TO WS-STATE
+  1241			  WHEN WS-STATE = 3
+  1242			       MOVE 3 TO WS-STATE
+  1243			END-EVALUATE
+  1244		  END-EVALUATE.
+  1245	      300-EXIT.
+  1246		  EXIT.
+  1247
+  1248	      310-VALIDATE-DETAILS.
+  1249		  EVALUATE TRUE
+  1250		    WHEN USRIDI = LOW-VALUES
+  1251                   MOVE 'USER ID IS REQUIRED' TO ERRMSG8O
+  1252			 MOVE 1 TO WS-STATE
+  1253			 MOVE -1 TO USRIDL
+  1254			 MOVE DFHUNIMD TO USRIDA
+  1255                   MOVE 'Y' TO WS-FLAG
+  1256		    WHEN REQTAGI = LOW-VALUES
+  1257                   MOVE 'REQURESTOR TAG IS REQUIRED' TO ERRMSG8O
+  1258			 MOVE 1 TO WS-STATE
+  1259			 MOVE -1 TO REQTAGL
+  1260			 MOVE DFHUNIMD TO REQTAGA
+  1261                   MOVE 'Y' TO WS-FLAG
+  1262		    WHEN ADMTAGI = LOW-VALUES
+  1263                   MOVE 'ADMIN TAG IS REQUIRED' TO ERRMSG8O
+  1264			 MOVE 1 TO WS-STATE
+  1265			 MOVE -1 TO ADMTAGL
+  1266			 MOVE DFHUNIMD TO ADMTAGA  1267                   MOVE 'Y' TO WS-FLAG
+  1268		    WHEN APRTAGI = LOW-VALUES
+  1269                   MOVE 'APPROVER TAG IS REQUIRED' TO ERRMSG8O
+  1270			 MOVE 1 TO WS-STATE
+  1271			 MOVE -1 TO APRTAGL
+  1272			 MOVE DFHUNIMD TO APRTAGA
+  1273                   MOVE 'Y' TO WS-FLAG
+  1274		    WHEN SRVTAGI = LOW-VALUES
+  1275                   MOVE 'SERVICE TAG IS REQUIRED' TO ERRMSG8O
+  1276			 MOVE 1 TO WS-STATE
+  1277			 MOVE -1 TO SRVTAGL
+  1278			 MOVE DFHUNIMD TO SRVTAGA
+  1279                   MOVE 'Y' TO WS-FLAG
+  1280		  END-EVALUATE
+  1281
+  1282		  IF REQTAGI NOT = LOW-VALUES
+  1283               IF REQTAGI = 'Y' OR REQTAGI = 'N'
+  1284			MOVE 2 TO WS-STATE
+  1285		     ELSE
+  1286			MOVE WS-INVALID-VALUE TO ERRMSG8O
+  1287                  MOVE 'Y' TO WS-FLAG
+  1288			MOVE -1 TO REQTAGL
+  1289			MOVE DFHUNIMD TO REQTAGA
+  1290		     END-IF
+  1291		  END-IF
+  1292		  IF ADMTAGI NOT = LOW-VALUES
+  1293               IF ADMTAGI = 'Y' OR ADMTAGI = 'N'
+  1294			MOVE 2 TO WS-STATE
+  1295		     ELSE
+  1296			MOVE WS-INVALID-VALUE TO ERRMSG8O
+  1297                  MOVE 'Y' TO WS-FLAG
+  1298			MOVE -1 TO ADMTAGL
+  1299			MOVE DFHUNIMD TO ADMTAGA
+  1300		     END-IF
+  1301		  END-IF
+  1302		  IF APRTAGI NOT = LOW-VALUES
+  1303               IF APRTAGI = 'Y' OR APRTAGI = 'N'
+  1304			MOVE 2 TO WS-STATE
+  1305		     ELSE
+  1306			MOVE WS-INVALID-VALUE TO ERRMSG8O
+  1307                  MOVE 'Y' TO WS-FLAG
+  1308			MOVE -1 TO APRTAGL
+  1309			MOVE DFHUNIMD TO APRTAGA
+  1310		     END-IF
+  1311		  END-IF
+  1312		  IF SRVTAGI NOT = LOW-VALUES
+  1313               IF SRVTAGI = 'Y' OR SRVTAGI = 'N'
+  1314			MOVE 2 TO WS-STATE
+  1315		     ELSE
+  1316			MOVE WS-INVALID-VALUE TO ERRMSG8O
+  1317                  MOVE 'Y' TO WS-FLAG
+  1318			MOVE -1 TO SRVTAGL
+  1319			MOVE DFHUNIMD TO SRVTAGA
+  1320		     END-IF
+  1321		  END-IF.
+  1322	      310-EXIT.
+  1323		  EXIT.
+  1324
+  1325	      320-SET-PROTECTED.
+  1326		  MOVE DFHBMPRO TO USRIDA  1327		  MOVE DFHBMPRO TO REQTAGA
+  1328		  MOVE DFHBMPRO TO ADMTAGA
+  1329		  MOVE DFHBMPRO TO APRTAGA
+  1330		  MOVE DFHBMPRO TO SRVTAGA.
+  1331	      320-EXIT.
+  1332		  EXIT.
+  1333
+  1334	      330-SET-UNPROTECTED.
+  1335		  MOVE DFHBMUNP TO USRIDA
+  1336		  MOVE DFHBMUNP TO REQTAGA
+  1337		  MOVE DFHBMUNP TO ADMTAGA
+  1338		  MOVE DFHBMUNP TO APRTAGA
+  1339		  MOVE DFHBMUNP TO SRVTAGA.
+  1340	      330-EXIT.
+  1341		  EXIT.
+  1342
+  1343	      400-WRITE-USER.
+  1344
+  1346		  EXEC CICS WRITE
+  1347                 FILE('uaf001')
+  1348		       FROM(WS-USER-REC)
+  1349		       RIDFLD(WS-USERID)
+  1350		  END-EXEC
+  1379
+  1380	     *	  Will display error message if user id already in records
+  1381		  EVALUATE TRUE
+  1382		   WHEN EIBRESP = +14
+  1383                  STRING 'USER ID ALREADY EXIST' DELIMITED BY SIZE
+  1384                    ', USER NOT CREATED.' DELIMITED BY SIZE
+  1385                    'PRESS ENTER TO INPUT AGAIN.' DELIMITED BY SIZE
+  1386			   INTO ERRMSG8O
+  1387			END-STRING
+  1388			MOVE 3 TO WS-STATE
+  1389			PERFORM 330-SET-UNPROTECTED
+  1390		   WHEN EIBRESP = +0
+  1391			MOVE 3 TO WS-STATE
+  1392		   WHEN OTHER
+  1393                  MOVE 'USER NOT ADDED' TO ERRMSG8O
+  1394		  END-EVALUATE.
+  1395
+  1396	      400-EXIT.
+  1397		  EXIT.
+  1398CA-Realia COBOL Version 6.0.45	 D:\work\CAWB30-HO\UA002.cic	       PAGE   18
 
 
 
@@ -640,9 +1013,9 @@ DEBUGXREF	  DIALECT-VS2
 
 			Error level limit: W
 
-			Source lines compiled:	     958
-			Compilation time (mm:ss.ss):  0:00.32
-			Compilation speed (lines/minute): 79625
+			Source lines compiled:	    1409
+			Compilation time (mm:ss.ss):  0:00.67
+			Compilation speed (lines/minute): 26179
 
-			Compilation date (yy/mm/dd): 23/11/20
-			     Time of day (hh:mm:ss): 14:17:23
+			Compilation date (yy/mm/dd): 23/11/28
+			     Time of day (hh:mm:ss): 17:44:54

@@ -33,12 +33,14 @@
        01  WS-ERRMSG.
            05 WS-FIELD-REQ                       PIC X(24) VALUE
               'OPTION FIELD IS REQUIRED'.
+           05 WS-INVALID-PFKEY                   PIC X(21) VALUE
+               'INAVLID PFKEY PRESSED'.         
        01  WS-MAPFAIL                            PIC X(20) VALUE
            'MAPFAIL ERROR'.
        01  WS-INVALID-TRNID                      PIC X(15) VALUE
            'INVALID ACCESS'.
        01  WS-INVALID-USER                       PIC X(20) VALUE 
-           'INVALID USER ACCESS'.    
+           'INVALID USER ACCESS'.   
 
        01  WS-COMMAREA.
            05 WS-PGMID                           PIC X(06).
@@ -258,7 +260,7 @@
                 INTO (SM00MI)
            END-EXEC
            IF EIBRESP = DFHRESP(MAPFAIL)
-              MOVE WS-MAPFAIL TO ERRMSGO
+              MOVE WS-INVALID-PFKEY TO ERRMSGO
               PERFORM 110-VERIFY-ROLE
            END-IF.
            PERFORM 400-CHECK-EIBAID.

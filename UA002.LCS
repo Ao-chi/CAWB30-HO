@@ -454,168 +454,559 @@
     18       01  WS-CURRENT-MAP  VALUE 'UA002S'        PIC X(7).
     19	     01  WS-REC-LENGTH			       PIC S9(4)
     20		 COMP VALUE +21.
-    21	     01  WS-KEYB.
-    22		 05 WS-KEYB6		       PIC X(06) VALUE LOW-VALUES.
-    23		 05 FILLER REDEFINES WS-KEYB6.
-    24		    10 FILLER		       PIC X(03).
-    25		    10 WS-KEYB3 	       PIC 9(03).
-    26		 05 WS-KEYB1		       PIC X(01) VALUE HIGH-VALUES.
-    27	     01  WS-STF-REC.
-    28		 05 WS-TICKET-ID		       PIC 9(07).
-    29		 05 WS-TIX-ID			       REDEFINES WS-TICKET-ID.
-    30		    10 WS-T-ID			       PIC X(06).
-    31		    10 FILLER			       PIC X.
-    32		 05 WS-TICKET-REQ		       PIC X(08).
-    33		 05 WS-TICKET-STAT		       PIC X(10).
-    34		 05 WS-TICKET-TITLE		       PIC X(25).
-    35		 05 WS-TICKET-DESC		       PIC X(100).
-    36		 05 WS-LAST-UPD 		       PIC X(20).
-    37		 05 WS-UPD-BY			       PIC X(08).
-    38		 05 WS-UPD-REMARKS		       PIC X(50).
-    39	     01  WS-REC.
-    40		 05 WS-USERID.
-    41		    10	WS-USERID7		       PIC X(7).
-    42		    10	FILLER			       PIC X(1).
-    43		 05 WS-TYPE.
-    44		    10	WS-REQUESTOR		       PIC X.
-    45		    10	WS-ADMIN		       PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA002.COB
+    21       01  WS-FLAG                               PIC X    VALUE 'N'.
+    22	     01  WS-KEYB.
+    23		 05 WS-KEYB6		       PIC X(06) VALUE LOW-VALUES.
+    24		 05 FILLER REDEFINES WS-KEYB6.
+    25		    10 FILLER		       PIC X(03).
+    26		    10 WS-KEYB3 	       PIC 9(03).
+    27		 05 WS-KEYB1		       PIC X(01) VALUE HIGH-VALUES.
+    28	     01  WS-STF-REC.
+    29		 05 WS-TICKET-ID		       PIC 9(07).
+    30		 05 WS-TIX-ID			       REDEFINES WS-TICKET-ID.
+    31		    10 WS-T-ID			       PIC X(06).
+    32		    10 FILLER			       PIC X.
+    33		 05 WS-TICKET-REQ		       PIC X(08).
+    34		 05 WS-TICKET-STAT		       PIC X(10).
+    35		 05 WS-TICKET-TITLE		       PIC X(25).
+    36		 05 WS-TICKET-DESC		       PIC X(100).
+    37		 05 WS-LAST-UPD 		       PIC X(20).
+    38		 05 WS-UPD-BY			       PIC X(08).
+    39		 05 WS-UPD-REMARKS		       PIC X(50).
+    40	     01  WS-USER-REC.
+    41		 05 WS-USERID.
+    42		    10	WS-USERID7		       PIC X(7).
+    43		    10	FILLER			       PIC X(1).
+    44		 05 WS-TYPE.
+    45		    10	WS-REQUESTOR		       PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA002.COB
 
 
-    46		    10	WS-APPROVER		       PIC X.
-    47		    10	WS-SERVICE		       PIC X.
-    48		 05 WS-UPDATEDBY		       PIC X(8).
-    49	     01  WS-TIME			       PIC 9(15) COMP-3.
-    50	     01  WS-DATE			       PIC 9(7).
-    51	     01  WS-DATE-X REDEFINES WS-DATE	       PIC X(7).
-    52	     01  WS-LENGTH			       PIC S9(4) COMP.
-    53	    *--------------------------------------------------------------*
-    54	    *		    COMMAREA WORKING STORAGE			   *
-    55	    *--------------------------------------------------------------*
-    56	     01  WS-COMMAREA.
-    57		 05 WS-PROG-STATE		       PIC X(15).
-    58		 05 WS-PGMID			       PIC X(06).
-    59		 05 USERID.
-    60		    10	USERID7 		       PIC X(7).
-    61		    10	FILLER			       PIC X(1).
-    62		 05 USR-TYPE.
-    63		   15 USR-REQUESTOR		       PIC X.
-    64		   15 USR-ADMIN 		       PIC X.
-    65		   15 USR-APPROVER		       PIC X.
-    66		   15 USR-SERVICE		       PIC X.
-    67		 05 WS-STATE			       PIC X.
-    68
-    69	     01  WS-COUNTERS.
-    70		 05 WS-INDEX			       PIC 9(02).
-    71	     01  WS-ERRMSGS.
-    72		 05 WS-INVALID-ACCESS		       PIC X(15) VALUE
-    73              'INVALID ACCESS'.
-    74		 05 WS-INVALID-PGMID		       PIC X(20) VALUE
-    75              'INVALID USER ACCESS'.
-    76		 05 WS-MAPFAIL			       PIC X(20) VALUE
-    77              'MAPFAIL ERROR'.
-    78		 05 WS-INVALID-TIX-ACC		       PIC X(34) VALUE
-    79              'INVALID ACCESS TO SELECTED TICKET'.
-    80		 05 WS-FIELD-REQ		       PIC X(24) VALUE
-    81              'OPTION FIELD IS REQUIRED'.
-    82		 05 WS-FIRST-PAGE		       PIC X(23) VALUE
-    83              'THIS IS THE FIRST PAGE'.
-    84		 05 WS-LAST-PAGE		       PIC X(21) VALUE
-    85              'THIS IS THE LAST PAGE'.
-    86
-    87	     01  WS-PAGE-NO			       PIC 9(03) VALUE 1.
-    88	     77 WS-RETNCODE	   PIC S9(8) COMP.
-    89	     77 WS-RETNCODE2	    PIC S9(8) COMP.
-    90	    *----------------------------------------------------------------*
-    91	    *			      LINKAGE SECTION			     *
-    92	    *----------------------------------------------------------------*
-    93	     LINKAGE SECTION.
-    94	     01  DFHCOMMAREA			       PIC X(50).
-    95	    *----------------------------------------------------------------*
-    96	    *			      PROGRAM DIVISION			     *
-    97	    *----------------------------------------------------------------*
-    98	     PROCEDURE DIVISION 					      REALCICS
-    99	     100-MAIN.
-   100		 EXEC CICS IGNORE CONDITION
-   101			   ERROR
-   102		 END-EXEC
-   103CA-Realia CACXPREP D:\work\CAWB30-HO\UA002.COB
+    46		    10	WS-ADMIN		       PIC X.
+    47		    10	WS-APPROVER		       PIC X.
+    48		    10	WS-SERVICE		       PIC X.
+    49		 05 WS-UPDATEDBY		       PIC X(8).
+    50	     01  WS-TIME			       PIC 9(15) COMP-3.
+    51	     01  WS-DATE			       PIC 9(7).
+    52	     01  WS-DATE-X REDEFINES WS-DATE	       PIC X(7).
+    53	     01  WS-LENGTH			       PIC S9(4) COMP.
+    54
+    55	     01  WS-COUNTERS.
+    56		 05 WS-INDEX			       PIC 9(02).
+    57	     01  WS-ERRMSGS.
+    58		 05 WS-END			       PIC X(15) VALUE
+    59              'END PREOCESSING'.
+    60		 05 WS-INVALID-ACCESS		       PIC X(15) VALUE
+    61              'INVALID ACCESS'.
+    62		 05 WS-INVALID-PGMID		       PIC X(20) VALUE
+    63              'INVALID USER ACCESS'.
+    64		 05 WS-MAPFAIL			       PIC X(20) VALUE
+    65              'MAPFAIL ERROR'.
+    66		 05 WS-INVALID-TIX-ACC		       PIC X(34) VALUE
+    67              'INVALID ACCESS TO SELECTED TICKET'.
+    68		 05 WS-FIELD-REQ		       PIC X(24) VALUE
+    69              'OPTION FIELD IS REQUIRED'.
+    70		 05 WS-INVALID-VALUE		       PIC X(46) VALUE
+    71              'INVALID VALUE. PLEASE CORRECT HIGHLIGHT FIELDS'.
+    72		 05 WS-INVALID-PFKEY		       PIC X(21) VALUE
+    73               'INAVLID PFKEY PRESSED'.
+    74
+    75	     01  WS-PAGE-NO			       PIC 9(03) VALUE 1.
+    76	     77 WS-RETNCODE	   PIC S9(8) COMP.
+    77	     77 WS-RETNCODE2	    PIC S9(8) COMP.
+    78	    *--------------------------------------------------------------*
+    79	    *		    COMMAREA WORKING STORAGE			   *
+    80	    *--------------------------------------------------------------*
+    81	     01  WS-COMMAREA.
+    82		 05 WS-PGMID			       PIC X(06).
+    83		 05 WS-TICKET-PASSED		       PIC X(07).
+    84		 05 USERID.
+    85		    10	USERID7 		       PIC X(7).
+    86		    10	FILLER			       PIC X(1).
+    87		 05 USR-TYPE.
+    88		   15 USR-REQUESTOR		       PIC X.
+    89		   15 USR-ADMIN 		       PIC X.
+    90		   15 USR-APPROVER		       PIC X.
+    91		   15 USR-SERVICE		       PIC X.
+    92		 05 WS-STF01-REC.
+    93		    10 WS-STF01-ID		       PIC X(07).
+    94		    10 FILL1			       PIC X(03).
+    95		    10 WS-STF01-TITLE		       PIC X(25).
+    96		    10 FILL2			       PIC X(01).
+    97		    10 WS-STF01-STATUS		       PIC X(10).
+    98		    10 FILL3			       PIC X(04).
+    99		    10 WS-STF01-LAST-UPD	       PIC X(10).
+   100		    10 FILL4			       PIC X(02).
+   101		    10 WS-STF01-LAST-UPDBY	       PIC X(8).
+   102		    10 WS-STF01-REQ		       PIC X(8).
+   103		 05 WS-PGMNAME			       PIC  X(6).CA-Realia CACXPREP D:\work\CAWB30-HO\UA002.COB
 
 
-   104		 MOVE DFHCOMMAREA TO WS-COMMAREA
-   105           IF WS-PGMID = 'SM000' OR 'UA001' OR 'UA002' OR LOW-VALUES
-   106		     IF WS-STATE NOT = LOW-VALUES
-   107			PERFORM 200-REC-MAP
-   108		     ELSE
-   109                   MOVE 'ENTER USER DETAILS AND PRESS PF2' TO ERRMSG8O
-   110			 MOVE 1 TO WS-STATE
-   111			 PERFORM 111-CREATE-MAP
-   112		     END-IF
-   113		 ELSE
-   114		     MOVE SPACES TO ERRMSG8O
-   115		     MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-   116		     EXEC CICS SEND TEXT
-   117			     FROM (WS-INVALID-ACCESS)
-   118			     LENGTH (WS-LENGTH)
-   119			     ERASE
-   120			END-EXEC
-   121		     EXEC CICS RETURN
-   122		     END-EXEC
-   123		 END-IF.
-   124	     100-EXIT.
-   125		 EXIT.
-   126
-   127	     110-DATE-TIME.
-   128		 MOVE EIBDATE TO WS-DATE.
-   129		 MOVE WS-DATE-X TO DATEO.
-   130		 EXEC CICS ASKTIME
-   131		      ABSTIME	 (WS-TIME)
-   132		 END-EXEC
-   133		 EXEC CICS FORMATTIME
-   134		      ABSTIME	 (WS-TIME)
-   135                DATESEP    ('/')
-   136		      MMDDYYYY	 (DATEO)
-   137		      TIME	 (TIMEO)
-   138                TIMESEP    (':')
-   139		 END-EXEC
-   140		 MOVE DFHBMASB TO TIMEA
-   141		 MOVE DFHBMASB TO DATEA.
-   142	     110-EXIT.
-   143		 EXIT.
-   144
-   145	     111-CREATE-MAP.
-   146		 PERFORM 110-DATE-TIME
-   147		 MOVE LENGTH OF UA002MO TO WS-LENGTH
-   148		 MOVE -1 TO USRIDL
-   149		 EXEC CICS SEND
-   150                MAP('UA002M')
-   151		      MAPSET(WS-CURRENT-MAP)
-   152		      FROM(UA002MO)
-   153		      LENGTH(WS-LENGTH)
-   154		      CURSOR
-   155		      ERASE
-   156		 END-EXEC
-   157		 EXEC CICS RETURN
-   158                TRANSID('UA02')
-   159		      COMMAREA(WS-COMMAREA)
-   160		 END-EXEC.
-   161	     110-EXIT.CA-Realia CACXPREP D:\work\CAWB30-HO\UA002.COB
+   104		 05 WS-DFHSTATE 		       PIC X(15).
+   105		 05 WS-TRANS			       PIC X(04).
+   106		 05 WS-LUSER			       PIC 9(03).
+   107		 05 WS-FUSER			       PIC X(07).
+   108		 05 WS-PAGE			       PIC 9(02).
+   109		 05 WS-PAGE-END 		       PIC 9(01).
+   110		 05 WS-STATE			       PIC X.
+   111		 05 WS-ADDED-USER		    PIC X(08).
+   112		 05 WS-USER-DETL.
+   113		    10 WS-USER-ADD		       PIC X(08).
+   114		    10 WS-USER-REQ		       PIC X.
+   115		    10 WS-USER-ADMIN		       PIC X.
+   116		    10 WS-USER-APPROVER 	       PIC X.
+   117		    10 WS-USER-SERVICE		       PIC X.
+   118
+   119	    *----------------------------------------------------------------*
+   120	    *			      LINKAGE SECTION			     *
+   121	    *----------------------------------------------------------------*
+   122	     LINKAGE SECTION.
+   123	      01  DFHCOMMAREA.
+   124		 05 DF-PGMID			       PIC X(06).
+   125		 05 DF-TICKET-PASSED		       PIC X(07).
+   126		 05 DF-USERID.
+   127		    10	DF-USERID7		       PIC X(7).
+   128		    10	FILLER			       PIC X(1).
+   129		 05 DF-USR-TYPE.
+   130		   15 DF-USR-REQUESTOR		       PIC X.
+   131		   15 DF-USR-ADMIN		       PIC X.
+   132		   15 DF-USR-APPROVER		       PIC X.
+   133		   15 DF-USR-SERVICE		       PIC X.
+   134		 05 DF-STF01-REC.
+   135		    10 DF-STF01-ID		       PIC X(07).
+   136		    10 DF-FILLER		       PIC X(03).
+   137		    10 DF-STF01-TITLE		       PIC X(25).
+   138		    10 DF-FILLER		       PIC X(01).
+   139		    10 DF-STF01-STATUS		       PIC X(10).
+   140		    10 DF-FILLER		       PIC X(04).
+   141		    10 DF-STF01-LAST-UPD	       PIC X(10).
+   142		    10 DF-FILLER4		       PIC X(02).
+   143		    10 DF-STF01-LAST-UPDBY	       PIC X(8).
+   144		    10 DF-STF01-REQ		       PIC X(8).
+   145		 05 DF-PGMNAME			       PIC X(6).
+   146		 05 DFHSTATE			       PIC X(15).
+   147		 05 DF-TRANS			       PIC X(04).
+   148		 05 DF-LUSER			       PIC 9(03).
+   149		 05 DF-FUSER			       PIC X(07).
+   150		 05 DF-PAGE			       PIC 9(02).
+   151		 05 DF-PAGE-END 		       PIC 9(01).
+   152		 05 DF-STATE			       PIC X.
+   153		 05 DF-ADDED-USER		       PIC X(08).
+   154		 05 DF-USER-DETL.
+   155		    10 DF-USER			       PIC X(08).
+   156		    10 DF-USER-REQ		       PIC X.
+   157		    10 DF-USER-ADMIN		       PIC X.
+   158		    10 DF-USER-APPROVER 	       PIC X.
+   159		    10 DF-USER-SERVICE		       PIC X.
+   160	    *----------------------------------------------------------------*
+   161	    *			      PROGRAM DIVISION			     *CA-Realia CACXPREP D:\work\CAWB30-HO\UA002.COB
 
 
-   162		 EXIT.
-   163
-   164	     200-REC-MAP.
-   165		 EXEC CICS RECEIVE
-   166                MAP('UA002M')
-   167		      MAPSET(WS-CURRENT-MAP)
-   168		      INTO (UA002MI)
-   169		      RESP(WS-RETNCODE)
-   170		 END-EXEC
-   171		 IF EIBRESP = DFHRESP(MAPFAIL)
-   172		    MOVE WS-MAPFAIL TO ERRMSG8O
-   173		    PERFORM 111-CREATE-MAP
-   174		 END-IF.
-   175	     200-EXIT.
-   176		 EXIT.
+   162	    *----------------------------------------------------------------*
+   163	     PROCEDURE DIVISION 					      REALCICS
+   164	     100-MAIN.
+   165		 EXEC CICS IGNORE CONDITION
+   166			   ERROR
+   167		 END-EXEC
+   168
+   169		 MOVE DFHCOMMAREA TO WS-COMMAREA
+   170           IF WS-PGMID = 'SM000' OR 'UA001' OR 'UA002' OR LOW-VALUES
+   171		    EVALUATE TRUE
+   172		      WHEN WS-STATE = LOW-VALUES
+   173			 MOVE 1 TO WS-STATE
+   174                   MOVE 'ENTER USER DETAILS AND PRESS PF2' TO ERRMSG8O
+   175			 MOVE -1 TO USRIDL
+   176			 PERFORM 111-CREATE-MAP
+   177		      WHEN WS-STATE = 1
+   178			   PERFORM 200-REC-MAP
+   179			   PERFORM 120-MOVE-DATA-TO-HOLDER
+   180			   PERFORM 300-CHECK-EIBAID
+   181			   PERFORM 111-CREATE-MAP
+   182		      WHEN WS-STATE = 2
+   183			   PERFORM 200-REC-MAP
+   184	    *		   PERFORM 120-MOVE-DATA-TO-HOLDER
+   185			   PERFORM 300-CHECK-EIBAID
+   186			   PERFORM 111-CREATE-MAP
+   187		      WHEN WS-STATE = 3
+   188			   PERFORM 200-REC-MAP
+   189	    *		   PERFORM 120-MOVE-DATA-TO-HOLDER
+   190			   PERFORM 300-CHECK-EIBAID
+   191			   PERFORM 111-CREATE-MAP
+   192		    END-EVALUATE
+   193		 ELSE
+   194		     MOVE SPACES TO ERRMSG8O
+   195		     MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+   196		     EXEC CICS SEND TEXT
+   197			     FROM (WS-INVALID-ACCESS)
+   198			     LENGTH (WS-LENGTH)
+   199			     ERASE
+   200			END-EXEC
+   201		     EXEC CICS RETURN
+   202		     END-EXEC
+   203		 END-IF.
+   204	     100-EXIT.
+   205		 EXIT.
+   206
+   207	     110-DATE-TIME.
+   208		 MOVE EIBDATE TO WS-DATE.
+   209		 MOVE WS-DATE-X TO DATEO.
+   210		 EXEC CICS ASKTIME
+   211		      ABSTIME	 (WS-TIME)
+   212		 END-EXEC
+   213		 EXEC CICS FORMATTIME
+   214		      ABSTIME	 (WS-TIME)
+   215                DATESEP    ('/')
+   216		      MMDDYYYY	 (DATEO)
+   217		      TIME	 (TIMEO)
+   218                TIMESEP    (':')
+   219		 END-EXECCA-Realia CACXPREP D:\work\CAWB30-HO\UA002.COB
+
+
+   220		 MOVE DFHBMASB TO TIMEA
+   221		 MOVE DFHBMASB TO DATEA.
+   222	     110-EXIT.
+   223		 EXIT.
+   224
+   225	     111-CREATE-MAP.
+   226		 PERFORM 110-DATE-TIME
+   227		 MOVE LENGTH OF UA002MO TO WS-LENGTH
+   228		 EXEC CICS SEND
+   229                MAP('UA002M')
+   230		      MAPSET(WS-CURRENT-MAP)
+   231		      FROM(UA002MO)
+   232		      LENGTH(WS-LENGTH)
+   233		      CURSOR
+   234		      ERASE
+   235		 END-EXEC
+   236		 EXEC CICS RETURN
+   237                TRANSID('UA02')
+   238		      COMMAREA(WS-COMMAREA)
+   239		 END-EXEC.
+   240	     110-EXIT.
+   241		 EXIT.
+   242	    *Minove sa commarea para pag nagescape ung user di mabubura sa screen
+   243	    *inputs nila
+   244	     120-MOVE-DATA-TO-HOLDER.
+   245		 MOVE USRIDI TO WS-USER-ADD
+   246		 MOVE REQTAGI TO WS-USER-REQ
+   247		 MOVE ADMTAGI TO WS-USER-ADMIN
+   248		 MOVE APRTAGI TO WS-USER-APPROVER
+   249		 MOVE SRVTAGI TO WS-USER-SERVICE.
+   250	     120-EXIT.
+   251		 EXIT.
+   252
+   253	     200-REC-MAP.
+   254		 EXEC CICS RECEIVE
+   255                MAP('UA002M')
+   256		      MAPSET(WS-CURRENT-MAP)
+   257		      INTO (UA002MI)
+   258		      RESP(WS-RETNCODE)
+   259		 END-EXEC
+   260	    *	 Eto pang handle ng escape keypress
+   261		 IF EIBRESP = DFHRESP(MAPFAIL)
+   262		    MOVE WS-INVALID-PFKEY TO ERRMSG8O
+   263		    MOVE WS-USER-ADD TO USRIDI
+   264		    MOVE WS-USER-REQ TO REQTAGI
+   265		    MOVE WS-USER-ADMIN TO ADMTAGI
+   266		    MOVE WS-USER-APPROVER TO APRTAGI
+   267		    MOVE WS-USER-SERVICE TO SRVTAGI
+   268		    MOVE -1 TO USRIDL
+   269		    MOVE 1 TO WS-STATE
+   270		    PERFORM 111-CREATE-MAP
+   271		 END-IF.
+   272	     200-EXIT.
+   273		 EXIT.
+   274
+   275	     300-CHECK-EIBAID.
+   276		 EVALUATE EIBAID
+   277		  WHEN DFHPF2CA-Realia CACXPREP D:\work\CAWB30-HO\UA002.COB
+
+
+   278		       EVALUATE TRUE
+   279			 WHEN WS-STATE = 1
+   280			    MOVE 2 TO WS-STATE
+   281			    PERFORM 310-VALIDATE-DETAILS
+   282                      IF WS-FLAG = 'Y'
+   283				MOVE 1 TO WS-STATE
+   284			    ELSE
+   285				MOVE 3 TO WS-STATE
+   286
+   287				STRING WS-USER-ADD DELIMITED BY SIZE
+   288                            'CREATED PRESS ENTER TO' DELIMITED BY SIZE
+   289                            ' CREATE ANOTHER USER ID' DELIMITED BY SIZE
+   290				  INTO ERRMSG8O
+   291				END-STRING
+   292				MOVE WS-USER-ADD TO USRIDI
+   293				MOVE WS-USER-REQ TO REQTAGI
+   294				MOVE WS-USER-ADMIN TO ADMTAGI
+   295				MOVE WS-USER-APPROVER TO APRTAGI
+   296				MOVE WS-USER-SERVICE TO SRVTAGI
+   297				PERFORM 320-SET-PROTECTED
+   298				MOVE -1 TO USRIDL
+   299				MOVE WS-USER-ADD TO WS-USERID
+   300				MOVE WS-USER-REQ TO WS-REQUESTOR
+   301				MOVE WS-USER-ADMIN TO WS-ADMIN
+   302				MOVE WS-USER-APPROVER TO WS-APPROVER
+   303				MOVE WS-USER-SERVICE TO WS-SERVICE
+   304                          MOVE 'ISCB126 ' TO WS-UPDATEDBY
+   305				PERFORM 400-WRITE-USER
+   306			    END-IF
+   307			 WHEN WS-STATE = 2
+   308			      MOVE 3 TO WS-STATE
+   309
+   310				STRING WS-USER-ADD DELIMITED BY SIZE
+   311                            'CREATED PRESS ENTER TO' DELIMITED BY SIZE
+   312                            ' CREATE ANOTHER USER ID' DELIMITED BY SIZE
+   313				  INTO ERRMSG8O
+   314				END-STRING
+   315				MOVE WS-USER-ADD TO USRIDI
+   316				MOVE WS-USER-REQ TO REQTAGI
+   317				MOVE WS-USER-ADMIN TO ADMTAGI
+   318				MOVE WS-USER-APPROVER TO APRTAGI
+   319				MOVE WS-USER-SERVICE TO SRVTAGI
+   320				PERFORM 320-SET-PROTECTED
+   321				MOVE -1 TO USRIDL
+   322				MOVE WS-USER-ADD TO WS-USERID
+   323				MOVE WS-USER-REQ TO WS-REQUESTOR
+   324				MOVE WS-USER-ADMIN TO WS-ADMIN
+   325				MOVE WS-USER-APPROVER TO WS-APPROVER
+   326				MOVE WS-USER-SERVICE TO WS-SERVICE
+   327                          MOVE 'ISCB126 ' TO WS-UPDATEDBY
+   328
+   329				PERFORM 400-WRITE-USER
+   330			 WHEN WS-STATE = 3
+   331			      MOVE WS-USER-ADD TO USRIDI
+   332			      MOVE WS-USER-REQ TO REQTAGI
+   333			      MOVE WS-USER-ADMIN TO ADMTAGI
+   334			      MOVE WS-USER-APPROVER TO APRTAGI
+   335			      MOVE WS-USER-SERVICE TO SRVTAGICA-Realia CACXPREP D:\work\CAWB30-HO\UA002.COB
+
+
+   336			      MOVE -1 TO USRIDL
+   337			      PERFORM 320-SET-PROTECTED
+   338			      CONTINUE
+   339		       END-EVALUATE
+   340		  WHEN DFHPF3
+   341		       EXEC CICS SEND TEXT
+   342			    FROM (WS-END)
+   343			    LENGTH (+15)
+   344			    ERASE
+   345		       END-EXEC
+   346		       EXEC CICS RETURN
+   347		       END-EXEC
+   348		  WHEN DFHPF5
+   349		       EVALUATE TRUE
+   350			 WHEN WS-STATE = 1
+   351			      MOVE 1 TO WS-STATE
+   352			      MOVE LOW-VALUES TO USRIDI
+   353			      MOVE LOW-VALUES TO REQTAGI
+   354			      MOVE LOW-VALUES TO ADMTAGI
+   355			      MOVE LOW-VALUES TO APRTAGI
+   356			      MOVE LOW-VALUES TO SRVTAGI
+   357                        MOVE 'ENTER USER DETAILS AND PRESS PF2'
+   358				   TO ERRMSG8O
+   359			      MOVE -1 TO USRIDL
+   360			 WHEN WS-STATE = 2
+   361			      MOVE 1 TO WS-STATE
+   362			      MOVE LOW-VALUES TO USRIDI
+   363			      MOVE LOW-VALUES TO REQTAGI
+   364			      MOVE LOW-VALUES TO ADMTAGI
+   365			      MOVE LOW-VALUES TO APRTAGI
+   366			      MOVE LOW-VALUES TO SRVTAGI
+   367                        MOVE 'ENTER USER DETAILS AND PRESS PF2'
+   368				   TO ERRMSG8O
+   369			      MOVE -1 TO USRIDL
+   370			 WHEN WS-STATE = 3
+   371			      MOVE WS-USER-ADD TO USRIDI
+   372			      MOVE WS-USER-REQ TO REQTAGI
+   373			      MOVE WS-USER-ADMIN TO ADMTAGI
+   374			      MOVE WS-USER-APPROVER TO APRTAGI
+   375			      MOVE WS-USER-SERVICE TO SRVTAGI
+   376			      MOVE -1 TO USRIDL
+   377			      PERFORM 320-SET-PROTECTED
+   378			      CONTINUE
+   379		       END-EVALUATE
+   380		  WHEN DFHENTER
+   381		       IF WS-STATE = 1
+   382			  MOVE 2 TO WS-STATE
+   383			  PERFORM 310-VALIDATE-DETAILS
+   384                    IF WS-FLAG = 'Y'
+   385			      MOVE 1 TO WS-STATE
+   386			   ELSE
+   387			      MOVE 2 TO WS-STATE
+   388                        MOVE 'PRESS PF2 TO CONFIRM ADD' TO ERRMSG8O
+   389			      PERFORM 320-SET-PROTECTED
+   390			      MOVE -1 TO USRIDL
+   391			  END-IF
+   392
+   393		       ELSECA-Realia CACXPREP D:\work\CAWB30-HO\UA002.COB
+
+
+   394			  IF WS-STATE = 2
+   395                       MOVE 'PRESS PF2 TO ADD USER' TO ERRMSG8O
+   396			     PERFORM 320-SET-PROTECTED
+   397			     MOVE -1 TO USRIDL
+   398			     CONTINUE
+   399			  ELSE
+   400			     IF WS-STATE = 3
+   401				MOVE 1 TO WS-STATE
+   402				MOVE LOW-VALUES TO USRIDI
+   403				MOVE LOW-VALUES TO REQTAGI
+   404				MOVE LOW-VALUES TO ADMTAGI
+   405				MOVE LOW-VALUES TO APRTAGI
+   406				MOVE LOW-VALUES TO SRVTAGI
+   407                          MOVE 'ENTER USER DETAILS AND PRESS PF2'
+   408				     TO ERRMSG8O
+   409				MOVE -1 TO USRIDL
+   410
+   411			     END-IF
+   412			  END-IF
+   413		       END-IF
+   414		  WHEN OTHER
+   415		       MOVE WS-INVALID-PFKEY TO ERRMSG8O
+   416		       MOVE WS-USER-ADD TO USRIDI
+   417		       MOVE WS-USER-REQ TO REQTAGI
+   418		       MOVE WS-USER-ADMIN TO ADMTAGI
+   419		       MOVE WS-USER-APPROVER TO APRTAGI
+   420		       MOVE WS-USER-SERVICE TO SRVTAGI
+   421		       MOVE -1 TO USRIDL
+   422		       EVALUATE TRUE
+   423			 WHEN WS-STATE = 1
+   424			      MOVE 1 TO WS-STATE
+   425			 WHEN WS-STATE = 2
+   426			      MOVE 2 TO WS-STATE
+   427			 WHEN WS-STATE = 3
+   428			      MOVE 3 TO WS-STATE
+   429		       END-EVALUATE
+   430		 END-EVALUATE.
+   431	     300-EXIT.
+   432		 EXIT.
+   433
+   434	     310-VALIDATE-DETAILS.
+   435		 EVALUATE TRUE
+   436		   WHEN USRIDI = LOW-VALUES
+   437                  MOVE 'USER ID IS REQUIRED' TO ERRMSG8O
+   438			MOVE 1 TO WS-STATE
+   439			MOVE -1 TO USRIDL
+   440			MOVE DFHUNIMD TO USRIDA
+   441                  MOVE 'Y' TO WS-FLAG
+   442		   WHEN REQTAGI = LOW-VALUES
+   443                  MOVE 'REQURESTOR TAG IS REQUIRED' TO ERRMSG8O
+   444			MOVE 1 TO WS-STATE
+   445			MOVE -1 TO REQTAGL
+   446			MOVE DFHUNIMD TO REQTAGA
+   447                  MOVE 'Y' TO WS-FLAG
+   448		   WHEN ADMTAGI = LOW-VALUES
+   449                  MOVE 'ADMIN TAG IS REQUIRED' TO ERRMSG8O
+   450			MOVE 1 TO WS-STATE
+   451			MOVE -1 TO ADMTAGLCA-Realia CACXPREP D:\work\CAWB30-HO\UA002.COB
+
+
+   452			MOVE DFHUNIMD TO ADMTAGA
+   453                  MOVE 'Y' TO WS-FLAG
+   454		   WHEN APRTAGI = LOW-VALUES
+   455                  MOVE 'APPROVER TAG IS REQUIRED' TO ERRMSG8O
+   456			MOVE 1 TO WS-STATE
+   457			MOVE -1 TO APRTAGL
+   458			MOVE DFHUNIMD TO APRTAGA
+   459                  MOVE 'Y' TO WS-FLAG
+   460		   WHEN SRVTAGI = LOW-VALUES
+   461                  MOVE 'SERVICE TAG IS REQUIRED' TO ERRMSG8O
+   462			MOVE 1 TO WS-STATE
+   463			MOVE -1 TO SRVTAGL
+   464			MOVE DFHUNIMD TO SRVTAGA
+   465                  MOVE 'Y' TO WS-FLAG
+   466		 END-EVALUATE
+   467
+   468		 IF REQTAGI NOT = LOW-VALUES
+   469              IF REQTAGI = 'Y' OR REQTAGI = 'N'
+   470		       MOVE 2 TO WS-STATE
+   471		    ELSE
+   472		       MOVE WS-INVALID-VALUE TO ERRMSG8O
+   473                 MOVE 'Y' TO WS-FLAG
+   474		       MOVE -1 TO REQTAGL
+   475		       MOVE DFHUNIMD TO REQTAGA
+   476		    END-IF
+   477		 END-IF
+   478		 IF ADMTAGI NOT = LOW-VALUES
+   479              IF ADMTAGI = 'Y' OR ADMTAGI = 'N'
+   480		       MOVE 2 TO WS-STATE
+   481		    ELSE
+   482		       MOVE WS-INVALID-VALUE TO ERRMSG8O
+   483                 MOVE 'Y' TO WS-FLAG
+   484		       MOVE -1 TO ADMTAGL
+   485		       MOVE DFHUNIMD TO ADMTAGA
+   486		    END-IF
+   487		 END-IF
+   488		 IF APRTAGI NOT = LOW-VALUES
+   489              IF APRTAGI = 'Y' OR APRTAGI = 'N'
+   490		       MOVE 2 TO WS-STATE
+   491		    ELSE
+   492		       MOVE WS-INVALID-VALUE TO ERRMSG8O
+   493                 MOVE 'Y' TO WS-FLAG
+   494		       MOVE -1 TO APRTAGL
+   495		       MOVE DFHUNIMD TO APRTAGA
+   496		    END-IF
+   497		 END-IF
+   498		 IF SRVTAGI NOT = LOW-VALUES
+   499              IF SRVTAGI = 'Y' OR SRVTAGI = 'N'
+   500		       MOVE 2 TO WS-STATE
+   501		    ELSE
+   502		       MOVE WS-INVALID-VALUE TO ERRMSG8O
+   503                 MOVE 'Y' TO WS-FLAG
+   504		       MOVE -1 TO SRVTAGL
+   505		       MOVE DFHUNIMD TO SRVTAGA
+   506		    END-IF
+   507		 END-IF.
+   508	     310-EXIT.
+   509		 EXIT.CA-Realia CACXPREP D:\work\CAWB30-HO\UA002.COB
+
+
+   510
+   511	     320-SET-PROTECTED.
+   512		 MOVE DFHBMPRO TO USRIDA
+   513		 MOVE DFHBMPRO TO REQTAGA
+   514		 MOVE DFHBMPRO TO ADMTAGA
+   515		 MOVE DFHBMPRO TO APRTAGA
+   516		 MOVE DFHBMPRO TO SRVTAGA.
+   517	     320-EXIT.
+   518		 EXIT.
+   519
+   520	     330-SET-UNPROTECTED.
+   521		 MOVE DFHBMUNP TO USRIDA
+   522		 MOVE DFHBMUNP TO REQTAGA
+   523		 MOVE DFHBMUNP TO ADMTAGA
+   524		 MOVE DFHBMUNP TO APRTAGA
+   525		 MOVE DFHBMUNP TO SRVTAGA.
+   526	     330-EXIT.
+   527		 EXIT.
+   528
+   529	     400-WRITE-USER.
+   530
+   531		 EXEC CICS WRITE
+   532                FILE('uaf001')
+   533		      FROM(WS-USER-REC)
+   534		      RIDFLD(WS-USERID)
+   535		 END-EXEC
+   536
+   537	    *	 Will display error message if user id already in records
+   538		 EVALUATE TRUE
+   539		  WHEN EIBRESP = +14
+   540                 STRING 'USER ID ALREADY EXIST' DELIMITED BY SIZE
+   541                   ', USER NOT CREATED.' DELIMITED BY SIZE
+   542                   'PRESS ENTER TO INPUT AGAIN.' DELIMITED BY SIZE
+   543			  INTO ERRMSG8O
+   544		       END-STRING
+   545		       MOVE 3 TO WS-STATE
+   546		       PERFORM 330-SET-UNPROTECTED
+   547		  WHEN EIBRESP = +0
+   548		       MOVE 3 TO WS-STATE
+   549		  WHEN OTHER
+   550                 MOVE 'USER NOT ADDED' TO ERRMSG8O
+   551		 END-EVALUATE.
+   552
+   553	     400-EXIT.
+   554		 EXIT.
+   555
 CA-Realia CACXPREP D:\work\CAWB30-HO\UA002.COB
 
 
@@ -633,6 +1024,6 @@
 		      PPCODE
 		      DCHK
 
-		Source Lines Translated:     599
+		Source Lines Translated:     978
 		Translation Time:	     .01 sec
-		Translation Speed:	  990000 lines per min
+		Translation Speed:	  780000 lines per min

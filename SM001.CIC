@@ -83,7 +83,7 @@
 	   02  PAGEF				      PIC X.
 	   02  FILLER REDEFINES PAGEF.
 	       03  PAGEA			      PIC X.
-	   02  PAGEI				      PIC X(003).
+	   02  PAGEI				      PIC X(002).
 	   02  DATE1L				      PIC S9(4) COMP.
 	   02  DATE1F				      PIC X.
 	   02  FILLER REDEFINES DATE1F.
@@ -233,7 +233,7 @@
 	   02  FILLER				      PIC X(12).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  PAGEO				      PIC X(003).
+	   02  PAGEO				      PIC X(002).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  DATE1O				      PIC X(010).
@@ -747,6 +747,10 @@
        01  WS-SELECTED-VALUE			 PIC X.
        01  WS-COUNTERS.
 	   05 WS-INDEX				 PIC 9(02).
+	   05 WS-I				 PIC 9(02).
+	   05 WS-SELECT-COUNT			 PIC 9.
+	   05 WS-PAGE-UPDOWN			 PIC 9(02).
+
        01  WS-ERRMSGS.
 	   05 WS-INVALID-ACCESS 		 PIC X(15) VALUE
               'INVALID ACCESS'.
@@ -764,6 +768,12 @@
               'THIS IS THE LAST PAGE'.
 	   05 WS-INVALID-VALUE			 PIC X(46) VALUE
               'INVALID VALUE. PLEASE CORRECT HIGHLIGHT FIELDS'.
+	   05 WS-INVALID-PFKEY			 PIC X(21) VALUE
+               'INAVLID PFKEY PRESSED'.
+	   05 WS-MULTIPLE-SELECT		 PIC X(31) VALUE
+               'NO MULTIPLE SELECTED IS ALLOWED'.
+	   05 WS-SELECT-OPTION			 PIC X(29) VALUE
+              'SELECT TICKET AND PRESS ENTER'.
 
        77 WS-RETNCODE				 PIC S9(8) COMP.
        77 WS-RETNCODE2				 PIC S9(8) COMP.
@@ -804,6 +814,13 @@
 	   05 WS-QITEM-START			 PIC S9(4) COMP.
 	   05 WS-QITEM-END			 PIC S9(4) COMP.
 	   05 WS-QITEM-PAGE			 PIC S9(4) COMP.
+	   05 WS-PAGES.
+	      10 WS-PREV-PAGE			    PIC X(02).
+	      10 PREV-PAGE REDEFINES WS-PREV-PAGE   PIC 9(02).
+	      10 WS-CURR-PAGE			    PIC X(02).
+	      10 CURR-PAGE REDEFINES WS-CURR-PAGE   PIC 9(02).
+	      10 WS-TOTAL-QITEM 		    PIC 9(02).
+	      10 WS-MAX-PAGE			    PIC 9(02).
       *----------------------------------------------------------------*
       * 			 LINKAGE SECTION		       *
       *----------------------------------------------------------------*
@@ -877,7 +894,13 @@
 	   05 DF-QITEM-START			 PIC S9(4) COMP.
 	   05 DF-QITEM-END			 PIC S9(4) COMP.
 	   05 DF-QITEM-PAGE			 PIC S9(4) COMP.
-
+	   05 DF-PAGES.
+	      10 DF-PREV-PAGE			    PIC X(02).
+	      10 PREV REDEFINES DF-PREV-PAGE	    PIC 9(02).
+	      10 DF-CURR-PAGE			    PIC X(02).
+	      10 CURR REDEFINES DF-CURR-PAGE	    PIC 9(02).
+	      10 DF-TOTAL-QITEM 		    PIC 9(02).
+	      10 DF-MAX-PAGE			    PIC 9(02).
 
        PROCEDURE DIVISION						REALCICS
       *$PP-START-INSERT CICS NA 					REALCICS
@@ -917,7 +940,7 @@
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 195 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 218 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '0' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE ' ' TO DFH-DATA-CLASS (02)                              REALCICS
@@ -937,7 +960,7 @@
 	       IF EIBCALEN NOT = +26
 		  PERFORM 200-REC-MAP
 	       ELSE
-                   MOVE 'SELECT TICKET AND PRESS ENTER' TO ERRMSG1O
+		   MOVE WS-SELECT-OPTION TO ERRMSG1O
 		   MOVE 1 TO WS-STATE
 		   MOVE 1 TO WS-PAGE
 		   MOVE WS-PAGE TO PAGEO
@@ -956,7 +979,7 @@
       P 	  END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 217 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 240 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '1' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE ' ' TO DFH-DATA-CLASS (02)                              REALCICS
@@ -988,7 +1011,7 @@
       P        END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 222 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 245 TO DFH-SOURCE-LINE-NUM				REALCICS
            MOVE X'0E08' TO DFH-COMMAND EIBFN                            REALCICS
 	   MOVE 000 TO DFH-VARS-COUNT					REALCICS
            CALL 'CICS_Exec_Std' USING CICSICB GIVING DFH-RETURN-STATUS  REALCICS
@@ -1012,7 +1035,7 @@
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 232 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 255 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '1' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE 'T ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1037,7 +1060,7 @@
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 235 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 258 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '1' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE 'T ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1083,8 +1106,8 @@
 	   PERFORM 110-DATE-TIME
 	   MOVE DFHUNIMD TO TITLEA
 	   MOVE DFHUNIMD TO STATUSA
+
 	   MOVE LENGTH OF SM001MO TO WS-LENGTH
-	   MOVE -1 TO TITLEL
       *$PP-DEBUG							REALCICS
       P    EXEC CICS SEND
       P         MAP('SM001M')
@@ -1096,7 +1119,7 @@
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 253 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 276 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '7 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1145,7 +1168,7 @@
       P    END-EXEC.
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 261 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 284 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '4 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1180,7 +1203,7 @@
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 269 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 292 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '7 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1220,7 +1243,7 @@
       P    IF EIBRESP = DFHRESP(MAPFAIL)
       *$PP-END-INSERT CICS NA						REALCICS
 	   IF EIBRESP = 	036					REALCICS
-	      MOVE WS-MAPFAIL TO ERRMSG1O
+	      MOVE WS-INVALID-PFKEY TO ERRMSG1O
 	      PERFORM 600-MOVE-Q-TO-SCREEN
 	      PERFORM 111-CREATE-MAP
 	   END-IF
@@ -1228,6 +1251,37 @@
 	      PERFORM 600-MOVE-Q-TO-SCREEN
 	      PERFORM 111-CREATE-MAP.
        200-EXIT.
+	   EXIT.
+
+       530-PAGE-UP-ENTER.
+	   IF WS-QITEM-PAGE > WS-QITEM-END
+	      SUBTRACT 11 FROM WS-QITEM-PAGE
+	      MOVE WS-LAST-PAGE TO ERRMSG1O
+	   ELSE
+	      MOVE WS-SELECT-OPTION TO
+	       ERRMSG1O
+	      MOVE CURR-PAGE TO WS-PAGE
+	      MOVE WS-PAGE TO PAGEO
+	      PERFORM 600-MOVE-Q-TO-SCREEN
+	   END-IF
+	   PERFORM 111-CREATE-MAP.
+       530-EXIT.
+	   EXIT.
+
+       540-PAGEDOWN-ENTER.
+	   IF WS-QITEM-PAGE = WS-QITEM-START OR
+	      WS-QITEM-PAGE <  WS-QITEM-START
+	      MOVE WS-FIRST-PAGE TO ERRMSG1O
+	      MOVE 1 TO WS-PAGE
+	      MOVE WS-QITEM-START TO WS-QITEM-PAGE
+	   ELSE
+	     SUBTRACT CURR-PAGE FROM WS-PAGE
+	     MOVE WS-PAGE TO PAGEO
+	   END-IF
+	   MOVE WS-PAGE TO PAGEO
+	   PERFORM 600-MOVE-Q-TO-SCREEN
+	   PERFORM 111-CREATE-MAP.
+       540-EXIT.
 	   EXIT.
 
        500-CHECK-EIBAID.
@@ -1243,7 +1297,7 @@
       P 	   END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 291 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 345 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1286,7 +1340,7 @@
       P 	END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 304 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 358 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (04)					REALCICS
            MOVE '0' TO DFH-DATA-TYPE (04)                               REALCICS
            MOVE ' ' TO DFH-DATA-CLASS (04)                              REALCICS
@@ -1308,7 +1362,7 @@
       P 	END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 308 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 362 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1327,12 +1381,10 @@
       *$PP-DEBUG							REALCICS
       P 	EXEC CICS XCTL
       P              PROGRAM('SM000')
-      * 	     COMMAREA(WS-COMMAREA)
-      * 	     LENGTH(WS-LENGTH)
       P 	END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 311 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 365 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1363,19 +1415,68 @@
 		PERFORM 600-MOVE-Q-TO-SCREEN
 		PERFORM 111-CREATE-MAP
 	   WHEN DFHENTER
+		MOVE PAGEI TO WS-CURR-PAGE
+		IF CURR-PAGE IS NUMERIC
+		   PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL
+			   WS-INDEX > WS-MAX-PAGE
+		     IF CURR-PAGE = WS-INDEX
+			SUBTRACT PREV-PAGE FROM CURR-PAGE GIVING
+				 WS-PAGE-UPDOWN
+      * 		IF CURR-PAGE < 1 OR CURR-PAGE > 4
+      * 		   MOVE
+      * 		END-IF
+			IF CURR-PAGE > PREV-PAGE
+			   IF WS-PAGE-UPDOWN = 1
+			      ADD 11 TO WS-QITEM-PAGE
+			      PERFORM 530-PAGE-UP-ENTER
+			   ELSE
+			      MOVE 1 TO WS-I
+			      PERFORM UNTIL WS-I = CURR-PAGE
+				      ADD 11 TO WS-QITEM-PAGE
+				      ADD 1 TO WS-I
+			      END-PERFORM
+			      PERFORM 530-PAGE-UP-ENTER
+			   END-IF
+			ELSE
+			   IF WS-PAGE-UPDOWN = 1
+			      SUBTRACT 11 FROM WS-QITEM-PAGE
+			     PERFORM 540-PAGEDOWN-ENTER
+			   ELSE
+			      MOVE PREV-PAGE TO WS-I
+			      PERFORM UNTIL WS-I = CURR-PAGE
+				      SUBTRACT 11 FROM WS-QITEM-PAGE
+				      SUBTRACT 1 FROM WS-I
+			      END-PERFORM
+			      PERFORM 540-PAGEDOWN-ENTER
+			   END-IF
+			END-IF
+		     END-IF
+		   END-PERFORM
+		ELSE
+		    PERFORM 600-MOVE-Q-TO-SCREEN
+		    PERFORM 111-CREATE-MAP
+		END-IF
+
 		PERFORM 600-MOVE-Q-TO-SCREEN
+
 		MOVE 1 TO WS-INDEX
-		MOVE SPACES TO WS-SELECTED-VALUE
+		MOVE 0 TO WS-SELECT-COUNT
 		PERFORM UNTIL WS-INDEX > 11
                    IF DETL-SELECTI(WS-INDEX) NOT = '-' AND
 		      DETL-SELECTI(WS-INDEX) NOT = SPACES AND
 		      DETL-SELECTI(WS-INDEX) NOT = LOW-VALUES
-		    IF WS-SELECTED-VALUE = SPACES
-                       OR WS-SELECTED-VALUE = '-'
-		       MOVE DETL-SELECTI(WS-INDEX) TO WS-SELECTED-VALUE
-		       MOVE DETL-DETAILI(WS-INDEX) TO WS-STF01-REC
-		       MOVE WS-STF-REQ2(WS-INDEX) TO
-			    WS-STF01-REQ
+                      IF DETL-SELECTI(WS-INDEX) = 'U' OR
+                         DETL-SELECTI(WS-INDEX) = 'C' OR
+                         DETL-SELECTI(WS-INDEX) = 'A' OR
+                         DETL-SELECTI(WS-INDEX) = 'X'
+			 ADD 1 TO WS-SELECT-COUNT
+			 MOVE DETL-SELECTI(WS-INDEX) TO
+			      WS-SELECTED-VALUE
+			 MOVE DETL-DETAILI(WS-INDEX) TO WS-STF01-REC
+			 MOVE WS-STF-REQ2(WS-INDEX) TO
+			      WS-STF01-REQ
+		      END-IF
+		    IF WS-SELECT-COUNT = 1
 		       EVALUATE WS-SELECTED-VALUE
                         WHEN 'U'
                             IF WS-STF01-STATUS = 'APPROVED' OR
@@ -1393,7 +1494,7 @@
       P 			     END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 353 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 454 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1444,7 +1545,7 @@
       P 			   END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 373 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 474 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1475,9 +1576,14 @@
                                    MOVE 'SM004' TO ERRMSG1O
 				ELSE
 				   MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+				   MOVE DFHUNIMD TO
+					DETL-SELECTA(WS-INDEX)
+				   MOVE -1 TO DETL-SELECTL(WS-INDEX)
 				END-IF
 			     ELSE
 				MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+				MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+				MOVE -1 TO DETL-SELECTL(WS-INDEX)
 			     END-IF
                         WHEN 'A'
                              IF WS-STF01-STATUS = 'CREATED'
@@ -1492,7 +1598,7 @@
       P 			   END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 390 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 496 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1523,9 +1629,14 @@
                                    MOVE 'SM005' TO ERRMSG1O
 				ELSE
 				   MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+				   MOVE DFHUNIMD TO
+					DETL-SELECTA(WS-INDEX)
+				   MOVE -1 TO DETL-SELECTL(WS-INDEX)
 				END-IF
 			      ELSE
 				MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+				MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+				MOVE -1 TO DETL-SELECTL(WS-INDEX)
 			      END-IF
                         WHEN 'X'
 			     IF WS-STF01-REQ = USERID
@@ -1539,7 +1650,7 @@
       P 			END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 406 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 517 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1570,18 +1681,29 @@
                                 MOVE 'SM006' TO ERRMSG1O
 			     ELSE
 				MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+				MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+				   MOVE -1 TO DETL-SELECTL(WS-INDEX)
 			     END-IF
 			WHEN OTHER
-			     MOVE DFHBMBRY TO DETL-DETAILI(WS-INDEX)
+			     MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+			     MOVE -1 TO DETL-SELECTL(WS-INDEX)
 			     MOVE WS-INVALID-VALUE TO ERRMSG1O
 			     PERFORM 600-MOVE-Q-TO-SCREEN
 			     PERFORM 111-CREATE-MAP
 		       END-EVALUATE
 		    ELSE
-                      MOVE 'NO MULTIPLE SELECTED IS ALLOWED' TO ERRMSG1O
+		      MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+		      MOVE -1 TO DETL-SELECTL(WS-INDEX)
+		      MOVE WS-MULTIPLE-SELECT TO ERRMSG1O
 		      PERFORM 600-MOVE-Q-TO-SCREEN
 		      PERFORM 111-CREATE-MAP
-
+		      IF WS-SELECT-COUNT < 1
+			 MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+			 MOVE -1 TO DETL-SELECTL(WS-INDEX)
+			 MOVE WS-FIELD-REQ TO ERRMSG1O
+			 PERFORM 600-MOVE-Q-TO-SCREEN
+			 PERFORM 111-CREATE-MAP
+		      END-IF
 		    END-IF
 		 END-IF
 		   ADD 1 TO WS-INDEX
@@ -1599,10 +1721,11 @@
 	   SUBTRACT 11 FROM WS-QITEM-PAGE
 	   IF WS-QITEM-PAGE = WS-QITEM-START OR
 	      WS-QITEM-PAGE <  WS-QITEM-START
-              MOVE 'THIS IS THE FIRST PAGE' TO ERRMSG1O
+	      MOVE WS-FIRST-PAGE TO ERRMSG1O
 	      MOVE 1 TO WS-PAGE
 	      MOVE WS-QITEM-START TO WS-QITEM-PAGE
 	   ELSE
+	     MOVE WS-SELECT-OPTION TO ERRMSG1O
 	     SUBTRACT 1 FROM WS-PAGE
 	     MOVE WS-PAGE TO PAGEO
 	   END-IF
@@ -1617,9 +1740,9 @@
 	   ADD 11 TO WS-QITEM-PAGE
 	   IF WS-QITEM-PAGE > WS-QITEM-END
 	      SUBTRACT 11 FROM WS-QITEM-PAGE
-              MOVE 'THIS IS THE LAST PAGE' TO ERRMSG1O
+	      MOVE WS-LAST-PAGE TO ERRMSG1O
 	   ELSE
-              MOVE 'SELECT OPTION AND PRESS ENTER' TO ERRMSG1O
+	      MOVE WS-SELECT-OPTION TO ERRMSG1O
 	      ADD 1 TO WS-PAGE
 	      MOVE WS-PAGE TO PAGEO
 	      PERFORM 600-MOVE-Q-TO-SCREEN
@@ -1629,6 +1752,7 @@
 	   EXIT.
 
        600-MOVE-Q-TO-SCREEN.
+	    MOVE PAGEO TO WS-PREV-PAGE
 	    MOVE WS-QITEM-PAGE TO WS-QITEM
       *$PP-DEBUG							REALCICS
       P     EXEC CICS READQ TS
@@ -1639,7 +1763,7 @@
       P      END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 474 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 598 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1696,7 +1820,7 @@
       P 	  END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 494 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 618 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1725,7 +1849,7 @@
       *$PP-LIST 							REALCICS
 	       ELSE
 		  MOVE SPACES TO DETL-DETAILI(WS-INDEX)
-                  MOVE 'THIS IS THE LAST PAGE'  TO ERRMSG1O
+		  MOVE WS-LAST-PAGE  TO ERRMSG1O
                   MOVE '1' TO WS-LASTPAGE
 		  ADD 1 TO WS-INDEX
 	       END-IF
@@ -1746,7 +1870,7 @@
       P     END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 514 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 638 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1779,7 +1903,7 @@
       P     END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 520 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 644 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1806,7 +1930,6 @@
 	       END-IF END-IF						REALCICS
       *$PP-LIST 							REALCICS
 
-
       *$PP-DEBUG							REALCICS
       P    EXEC CICS WRITEQ TS
       P 	     QUEUE(WS-QNAME)
@@ -1816,7 +1939,7 @@
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 527 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 650 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1849,6 +1972,7 @@
 	       END-IF END-IF						REALCICS
       *$PP-LIST 							REALCICS
 	   MOVE WS-QITEM TO WS-QITEM-START
+	   MOVE 1 TO WS-TOTAL-QITEM
       *$PP-START-INSERT CICS NA 					REALCICS
       P    PERFORM UNTIL EIBRESP NOT = DFHRESP(NORMAL)
       *$PP-END-INSERT CICS NA						REALCICS
@@ -1862,7 +1986,7 @@
       P        END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 536 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 660 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1901,7 +2025,7 @@
       P 	  END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 542 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 666 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1935,15 +2059,18 @@
       *$PP-LIST 							REALCICS
 		 MOVE WS-T-ID TO WS-KEYB6
 		  MOVE HIGH-VALUES TO WS-KEYB1
+		  ADD 1 TO WS-TOTAL-QITEM
 	       END-IF
 	   END-PERFORM
+	       DIVIDE WS-TOTAL-QITEM BY 11 GIVING WS-MAX-PAGE
+	       ADD 1 TO WS-MAX-PAGE
       *$PP-DEBUG							REALCICS
       P    EXEC CICS
       P         ENDBR FILE('STF001C')
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 552 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 679 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1967,7 +2094,7 @@
        DFH-END SECTION. 						REALCICS
        DFH-CALL-END.							REALCICS
            MOVE 'SM001' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 559 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 686 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE LOW-VALUE TO DFH-COMMAND				REALCICS
            CALL 'CICS_Module_End' USING CICSICB GIVING                  REALCICS
 	       DFH-RETURN-STATUS					REALCICS

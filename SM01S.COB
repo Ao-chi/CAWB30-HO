@@ -5,7 +5,7 @@
 	   02  PAGEF				      PIC X.
 	   02  FILLER REDEFINES PAGEF.
 	       03  PAGEA			      PIC X.
-	   02  PAGEI				      PIC X(003).
+	   02  PAGEI				      PIC X(002).
 	   02  DATE1L				      PIC S9(4) COMP.
 	   02  DATE1F				      PIC X.
 	   02  FILLER REDEFINES DATE1F.
@@ -155,7 +155,7 @@
 	   02  FILLER				      PIC X(12).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  PAGEO				      PIC X(003).
+	   02  PAGEO				      PIC X(002).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  DATE1O				      PIC X(010).

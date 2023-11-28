@@ -43,10 +43,10 @@ if exist SM01S.bin erase SM01S.bin
 if exist SM01S.cob erase SM01S.cob
 REM if exist SM02S.bin erase SM02S.bin
 REM if exist SM02S.cob erase SM02S.cob
-if exist SM04S.bin erase SM04S.bin
-if exist SM04S.cob erase SM04S.cob
-if exist SM05S.bin erase SM05S.bin
-if exist SM05S.cob erase SM05S.cob
+REM if exist SM04S.bin erase SM04S.bin
+REM if exist SM04S.cob erase SM04S.cob
+REM if exist SM05S.bin erase SM05S.bin
+REM if exist SM05S.cob erase SM05S.cob
 REM if exist SM06S.bin erase SM06S.bin
 REM if exist SM06S.cob erase SM06S.cob
 REM if exist UA002S.bin erase UA002S.bin
@@ -57,8 +57,8 @@ set _step=3
 REM call bms SM00S
 call bms SM01S
 REM call bms SM02S
-call bms SM04S
-call bms SM05S
+REM call bms SM04S
+REM call bms SM05S
 REM call bms SM06S
 REM call bms UA002S
 REM call bms UA001S
@@ -85,24 +85,24 @@ call cicstran SM001 /hvw
 if exist SM002.dll erase SM002.dll
 if exist SM002.obj erase SM002.obj
 call cicstran SM002 /hvw
- if exist SM003.dll erase SM003.dll
- if exist SM003.obj erase SM003.obj
- call cicstran SM003 /hvw
- if exist SM004.dll erase SM004.dll
- if exist SM004.obj erase SM004.obj
- call cicstran SM004 /hvw
- if exist SM005.dll erase SM005.dll
- if exist SM005.obj erase SM005.obj
- call cicstran SM005 /hvw
- if exist SM006.dll erase SM006.dll
- if exist SM006.obj erase SM006.obj
- call cicstran SM006 /hvw
+REM if exist SM003.dll erase SM003.dll
+REM if exist SM003.obj erase SM003.obj
+REM call cicstran SM003 /hvw
+REM if exist SM004.dll erase SM004.dll
+REM if exist SM004.obj erase SM004.obj
+REM call cicstran SM004 /hvw
+REM if exist SM005.dll erase SM005.dll
+REM if exist SM005.obj erase SM005.obj
+REM call cicstran SM005 /hvw
+REM if exist SM006.dll erase SM006.dll
+REM if exist SM006.obj erase SM006.obj
+REM call cicstran SM006 /hvw
 REM  if exist UA001.dll erase UA001.dll
 REM  if exist UA001.obj erase UA001.obj
 REM  call cicstran UA001 /hvw
-REM  if exist UA002.dll erase UA002.dll
-REM  if exist UA002.obj erase UA002.obj
-REM call cicstran UA002 /hvw
+if exist UA002.dll erase UA002.dll
+if exist UA002.obj erase UA002.obj
+call cicstran UA002 /hvw
 if errorlevel 1 goto builderr
 goto end
 :builderr

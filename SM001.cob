@@ -89,6 +89,10 @@
        01  WS-SELECTED-VALUE                     PIC X.
        01  WS-COUNTERS.
            05 WS-INDEX                           PIC 9(02).   
+           05 WS-I                               PIC 9(02).                        
+           05 WS-SELECT-COUNT                    PIC 9.
+           05 WS-PAGE-UPDOWN                     PIC 9(02).
+
        01  WS-ERRMSGS.
            05 WS-INVALID-ACCESS                  PIC X(15) VALUE
               'INVALID ACCESS'.
@@ -106,7 +110,13 @@
               'THIS IS THE LAST PAGE'.
            05 WS-INVALID-VALUE                   PIC X(46) VALUE
               'INVALID VALUE. PLEASE CORRECT HIGHLIGHT FIELDS'.   
-                    
+           05 WS-INVALID-PFKEY                   PIC X(21) VALUE
+               'INAVLID PFKEY PRESSED'.    
+           05 WS-MULTIPLE-SELECT                 PIC X(31) VALUE 
+               'NO MULTIPLE SELECTED IS ALLOWED'.    
+           05 WS-SELECT-OPTION                   PIC X(29) VALUE 
+              'SELECT TICKET AND PRESS ENTER'.    
+                     
        77 WS-RETNCODE                            PIC S9(8) COMP.
        77 WS-RETNCODE2                           PIC S9(8) COMP.
        01  WS-LASTPAGE                           PIC X(1).
@@ -146,6 +156,13 @@
            05 WS-QITEM-START                     PIC S9(4) COMP.
            05 WS-QITEM-END                       PIC S9(4) COMP.
            05 WS-QITEM-PAGE                      PIC S9(4) COMP.      
+           05 WS-PAGES.        
+              10 WS-PREV-PAGE                       PIC X(02).    
+              10 PREV-PAGE REDEFINES WS-PREV-PAGE   PIC 9(02).    
+              10 WS-CURR-PAGE                       PIC X(02).
+              10 CURR-PAGE REDEFINES WS-CURR-PAGE   PIC 9(02).  
+              10 WS-TOTAL-QITEM                     PIC 9(02).
+              10 WS-MAX-PAGE                        PIC 9(02).  
       *----------------------------------------------------------------*
       *                          LINKAGE SECTION                       *
       *----------------------------------------------------------------*
@@ -184,7 +201,13 @@
            05 DF-QITEM-START                     PIC S9(4) COMP.
            05 DF-QITEM-END                       PIC S9(4) COMP.
            05 DF-QITEM-PAGE                      PIC S9(4) COMP.
-
+           05 DF-PAGES.        
+              10 DF-PREV-PAGE                       PIC X(02).    
+              10 PREV REDEFINES DF-PREV-PAGE        PIC 9(02).    
+              10 DF-CURR-PAGE                       PIC X(02).
+              10 CURR REDEFINES DF-CURR-PAGE        PIC 9(02).  
+              10 DF-TOTAL-QITEM                     PIC 9(02).
+              10 DF-MAX-PAGE                        PIC 9(02). 
 
        PROCEDURE DIVISION.
        100-MAIN.
@@ -203,7 +226,7 @@
                IF EIBCALEN NOT = +26
                   PERFORM 200-REC-MAP
                ELSE
-                   MOVE 'SELECT TICKET AND PRESS ENTER' TO ERRMSG1O 
+                   MOVE WS-SELECT-OPTION TO ERRMSG1O 
                    MOVE 1 TO WS-STATE
                    MOVE 1 TO WS-PAGE
                    MOVE WS-PAGE TO PAGEO
@@ -248,8 +271,8 @@
            PERFORM 110-DATE-TIME
            MOVE DFHUNIMD TO TITLEA
            MOVE DFHUNIMD TO STATUSA
+           
            MOVE LENGTH OF SM001MO TO WS-LENGTH     
-           MOVE -1 TO TITLEL
            EXEC CICS SEND
                 MAP('SM001M')
                 MAPSET('SM01S')
@@ -273,7 +296,7 @@
                 RESP(WS-RETNCODE)
            END-EXEC
            IF EIBRESP = DFHRESP(MAPFAIL)
-              MOVE WS-MAPFAIL TO ERRMSG1O
+              MOVE WS-INVALID-PFKEY TO ERRMSG1O
               PERFORM 600-MOVE-Q-TO-SCREEN  
               PERFORM 111-CREATE-MAP
            END-IF
@@ -282,6 +305,37 @@
               PERFORM 111-CREATE-MAP.
        200-EXIT.
            EXIT.    
+
+       530-PAGE-UP-ENTER.
+           IF WS-QITEM-PAGE > WS-QITEM-END 
+              SUBTRACT 11 FROM WS-QITEM-PAGE
+              MOVE WS-LAST-PAGE TO ERRMSG1O
+           ELSE
+              MOVE WS-SELECT-OPTION TO 
+               ERRMSG1O
+              MOVE CURR-PAGE TO WS-PAGE
+              MOVE WS-PAGE TO PAGEO
+              PERFORM 600-MOVE-Q-TO-SCREEN
+           END-IF
+           PERFORM 111-CREATE-MAP.
+       530-EXIT.
+           EXIT.
+
+       540-PAGEDOWN-ENTER.
+           IF WS-QITEM-PAGE = WS-QITEM-START OR 
+              WS-QITEM-PAGE <  WS-QITEM-START
+              MOVE WS-FIRST-PAGE TO ERRMSG1O
+              MOVE 1 TO WS-PAGE
+              MOVE WS-QITEM-START TO WS-QITEM-PAGE
+           ELSE
+             SUBTRACT CURR-PAGE FROM WS-PAGE 
+             MOVE WS-PAGE TO PAGEO
+           END-IF
+           MOVE WS-PAGE TO PAGEO
+           PERFORM 600-MOVE-Q-TO-SCREEN   
+           PERFORM 111-CREATE-MAP.
+       540-EXIT.
+           EXIT.
 
        500-CHECK-EIBAID.
            EVALUATE EIBAID
@@ -310,8 +364,6 @@
                 END-EXEC 
                 EXEC CICS XCTL 
                      PROGRAM('SM000')
-      *              COMMAREA(WS-COMMAREA)
-      *              LENGTH(WS-LENGTH)
                 END-EXEC
            WHEN DFHPF5
                 MOVE 'PF5 PRESSED' TO ERRMSG1O
@@ -328,19 +380,68 @@
                 PERFORM 600-MOVE-Q-TO-SCREEN
                 PERFORM 111-CREATE-MAP
            WHEN DFHENTER 
+                MOVE PAGEI TO WS-CURR-PAGE
+                IF CURR-PAGE IS NUMERIC
+                   PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL 
+                           WS-INDEX > WS-MAX-PAGE
+                     IF CURR-PAGE = WS-INDEX
+                        SUBTRACT PREV-PAGE FROM CURR-PAGE GIVING 
+                                 WS-PAGE-UPDOWN
+      *                 IF CURR-PAGE < 1 OR CURR-PAGE > 4 
+      *                    MOVE 
+      *                 END-IF         
+                        IF CURR-PAGE > PREV-PAGE
+                           IF WS-PAGE-UPDOWN = 1       
+                              ADD 11 TO WS-QITEM-PAGE
+                              PERFORM 530-PAGE-UP-ENTER
+                           ELSE    
+                              MOVE 1 TO WS-I
+                              PERFORM UNTIL WS-I = CURR-PAGE
+                                      ADD 11 TO WS-QITEM-PAGE
+                                      ADD 1 TO WS-I
+                              END-PERFORM
+                              PERFORM 530-PAGE-UP-ENTER
+                           END-IF             
+                        ELSE 
+                           IF WS-PAGE-UPDOWN = 1
+                              SUBTRACT 11 FROM WS-QITEM-PAGE
+                             PERFORM 540-PAGEDOWN-ENTER
+                           ELSE 
+                              MOVE PREV-PAGE TO WS-I
+                              PERFORM UNTIL WS-I = CURR-PAGE
+                                      SUBTRACT 11 FROM WS-QITEM-PAGE
+                                      SUBTRACT 1 FROM WS-I
+                              END-PERFORM   
+                              PERFORM 540-PAGEDOWN-ENTER
+                           END-IF   
+                        END-IF
+                     END-IF
+                   END-PERFORM
+                ELSE 
+                    PERFORM 600-MOVE-Q-TO-SCREEN
+                    PERFORM 111-CREATE-MAP  
+                END-IF
+                   
                 PERFORM 600-MOVE-Q-TO-SCREEN
+
                 MOVE 1 TO WS-INDEX
-                MOVE SPACES TO WS-SELECTED-VALUE
+                MOVE 0 TO WS-SELECT-COUNT
                 PERFORM UNTIL WS-INDEX > 11  
                    IF DETL-SELECTI(WS-INDEX) NOT = '-' AND 
                       DETL-SELECTI(WS-INDEX) NOT = SPACES AND
                       DETL-SELECTI(WS-INDEX) NOT = LOW-VALUES
-                    IF WS-SELECTED-VALUE = SPACES 
-                       OR WS-SELECTED-VALUE = '-'
-                       MOVE DETL-SELECTI(WS-INDEX) TO WS-SELECTED-VALUE
-                       MOVE DETL-DETAILI(WS-INDEX) TO WS-STF01-REC
-                       MOVE WS-STF-REQ2(WS-INDEX) TO 
-                            WS-STF01-REQ
+                      IF DETL-SELECTI(WS-INDEX) = 'U' OR 
+                         DETL-SELECTI(WS-INDEX) = 'C' OR 
+                         DETL-SELECTI(WS-INDEX) = 'A' OR 
+                         DETL-SELECTI(WS-INDEX) = 'X'
+                         ADD 1 TO WS-SELECT-COUNT
+                         MOVE DETL-SELECTI(WS-INDEX) TO 
+                              WS-SELECTED-VALUE
+                         MOVE DETL-DETAILI(WS-INDEX) TO WS-STF01-REC
+                         MOVE WS-STF-REQ2(WS-INDEX) TO 
+                              WS-STF01-REQ
+                      END-IF
+                    IF WS-SELECT-COUNT = 1
                        EVALUATE WS-SELECTED-VALUE
                         WHEN 'U'
                             IF WS-STF01-STATUS = 'APPROVED' OR 
@@ -378,9 +479,14 @@
                                    MOVE 'SM004' TO ERRMSG1O  
                                 ELSE 
                                    MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                                   MOVE DFHUNIMD TO 
+                                        DETL-SELECTA(WS-INDEX)
+                                   MOVE -1 TO DETL-SELECTL(WS-INDEX)
                                 END-IF   
                              ELSE
                                 MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                                MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+                                MOVE -1 TO DETL-SELECTL(WS-INDEX)
                              END-IF   
                         WHEN 'A'
                              IF WS-STF01-STATUS = 'CREATED' 
@@ -395,9 +501,14 @@
                                    MOVE 'SM005' TO ERRMSG1O
                                 ELSE
                                    MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                                   MOVE DFHUNIMD TO 
+                                        DETL-SELECTA(WS-INDEX)
+                                   MOVE -1 TO DETL-SELECTL(WS-INDEX)
                                 END-IF   
                               ELSE
                                 MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                                MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+                                MOVE -1 TO DETL-SELECTL(WS-INDEX)
                               END-IF    
                         WHEN 'X'
                              IF WS-STF01-REQ = USERID
@@ -411,18 +522,29 @@
                                 MOVE 'SM006' TO ERRMSG1O   
                              ELSE
                                 MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                                MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+                                   MOVE -1 TO DETL-SELECTL(WS-INDEX)
                              END-IF   
                         WHEN OTHER
-                             MOVE DFHBMBRY TO DETL-DETAILI(WS-INDEX)
+                             MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+                             MOVE -1 TO DETL-SELECTL(WS-INDEX)
                              MOVE WS-INVALID-VALUE TO ERRMSG1O 
                              PERFORM 600-MOVE-Q-TO-SCREEN  
                              PERFORM 111-CREATE-MAP            
                        END-EVALUATE  
                     ELSE 
-                      MOVE 'NO MULTIPLE SELECTED IS ALLOWED' TO ERRMSG1O
+                      MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+                      MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                      MOVE WS-MULTIPLE-SELECT TO ERRMSG1O
                       PERFORM 600-MOVE-Q-TO-SCREEN
                       PERFORM 111-CREATE-MAP    
-
+                      IF WS-SELECT-COUNT < 1
+                         MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+                         MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                         MOVE WS-FIELD-REQ TO ERRMSG1O
+                         PERFORM 600-MOVE-Q-TO-SCREEN
+                         PERFORM 111-CREATE-MAP    
+                      END-IF   
                     END-IF
                  END-IF  
                    ADD 1 TO WS-INDEX  
@@ -440,10 +562,11 @@
            SUBTRACT 11 FROM WS-QITEM-PAGE
            IF WS-QITEM-PAGE = WS-QITEM-START OR 
               WS-QITEM-PAGE <  WS-QITEM-START
-              MOVE 'THIS IS THE FIRST PAGE' TO ERRMSG1O
+              MOVE WS-FIRST-PAGE TO ERRMSG1O
               MOVE 1 TO WS-PAGE
               MOVE WS-QITEM-START TO WS-QITEM-PAGE
            ELSE
+             MOVE WS-SELECT-OPTION TO ERRMSG1O
              SUBTRACT 1 FROM WS-PAGE 
              MOVE WS-PAGE TO PAGEO
            END-IF
@@ -458,9 +581,9 @@
            ADD 11 TO WS-QITEM-PAGE
            IF WS-QITEM-PAGE > WS-QITEM-END 
               SUBTRACT 11 FROM WS-QITEM-PAGE
-              MOVE 'THIS IS THE LAST PAGE' TO ERRMSG1O
+              MOVE WS-LAST-PAGE TO ERRMSG1O
            ELSE
-              MOVE 'SELECT OPTION AND PRESS ENTER' TO ERRMSG1O
+              MOVE WS-SELECT-OPTION TO ERRMSG1O
               ADD 1 TO WS-PAGE
               MOVE WS-PAGE TO PAGEO
               PERFORM 600-MOVE-Q-TO-SCREEN
@@ -470,6 +593,7 @@
            EXIT.
 
        600-MOVE-Q-TO-SCREEN.
+            MOVE PAGEO TO WS-PREV-PAGE
             MOVE WS-QITEM-PAGE TO WS-QITEM
             EXEC CICS READQ TS
                       QUEUE(WS-QNAME)
@@ -498,7 +622,7 @@
                   END-EXEC  
                ELSE
                   MOVE SPACES TO DETL-DETAILI(WS-INDEX)
-                  MOVE 'THIS IS THE LAST PAGE'  TO ERRMSG1O
+                  MOVE WS-LAST-PAGE  TO ERRMSG1O
                   MOVE '1' TO WS-LASTPAGE 
                   ADD 1 TO WS-INDEX
                END-IF
@@ -523,7 +647,6 @@
                 RIDFLD (WS-KEYB)
             END-EXEC
 
-
            EXEC CICS WRITEQ TS
                      QUEUE(WS-QNAME)
                      FROM (WS-STF-REC)
@@ -531,6 +654,7 @@
                      ITEM (WS-QITEM)
            END-EXEC
            MOVE WS-QITEM TO WS-QITEM-START
+           MOVE 1 TO WS-TOTAL-QITEM
            PERFORM UNTIL EIBRESP NOT = DFHRESP(NORMAL)
                MOVE WS-QITEM TO WS-QITEM-END
                EXEC CICS 
@@ -547,8 +671,11 @@
                   END-EXEC
                  MOVE WS-T-ID TO WS-KEYB6
                   MOVE HIGH-VALUES TO WS-KEYB1
+                  ADD 1 TO WS-TOTAL-QITEM
                END-IF
            END-PERFORM
+               DIVIDE WS-TOTAL-QITEM BY 11 GIVING WS-MAX-PAGE
+               ADD 1 TO WS-MAX-PAGE
            EXEC CICS
                 ENDBR FILE('STF001C')
            END-EXEC

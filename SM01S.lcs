@@ -1,4 +1,4 @@
-CA-Realia CICS Ver:6.0.27  SM01S.bms                                                                     24NOV23 11:47:34 PAGE  1
+CA-Realia CICS Ver:6.0.27  SM01S.bms                                                                     28NOV23 17:44:49 PAGE  1
 
     1  PRINT NOGEN
     2 SM01S    DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      C
@@ -9,8 +9,8 @@
     7                INITIAL='SM001'
     8          DFHMDF POS=(02,01),LENGTH=05,ATTRB=(ASKIP,NORM),              C
     9                INITIAL='PAGE '
-   10 PAGE     DFHMDF POS=(02,07),LENGTH=03,ATTRB=(ASKIP,NORM,IC,FSET),      C
-   11                INITIAL='001'
+   10 PAGE     DFHMDF POS=(02,07),LENGTH=02,ATTRB=(UNPROT,NORM,IC,FSET),     C
+   11                INITIAL='01'
    12          DFHMDF POS=(01,32),LENGTH=18,ATTRB=(ASKIP,NORM),              C
    13                INITIAL='SERVICE MANAGEMENT'
    14          DFHMDF POS=(02,34),LENGTH=13,ATTRB=(ASKIP,NORM),              C
@@ -57,7 +57,7 @@
    55                 INITIAL='-'
    56          DFHMDF POS=(14,06),LENGTH=1,ATTRB=(ASKIP,NORM)
    57 OPTN6    DFHMDF POS=(15,04),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET),     C
-   58                 INITIAL='-'CA-Realia CICS Ver:6.0.27  SM01S.bms                                                                     24NOV23 11:47:34 PAGE  2
+   58                 INITIAL='-'CA-Realia CICS Ver:6.0.27  SM01S.bms                                                                     28NOV23 17:44:49 PAGE  2
 
    59          DFHMDF POS=(15,06),LENGTH=1,ATTRB=(ASKIP,NORM)
    60 OPTN7    DFHMDF POS=(16,04),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET),     C
@@ -75,18 +75,18 @@
    72 OPTN11   DFHMDF POS=(20,04),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET),     C
    73                 INITIAL='-'
    74          DFHMDF POS=(20,06),LENGTH=1,ATTRB=(ASKIP,NORM)
-   75 DETL1    DFHMDF POS=(10,10),LENGTH=70,ATTRB=(ASKIP,NORM,IC,FSET)
-   76 DETL2    DFHMDF POS=(11,10),LENGTH=70,ATTRB=(ASKIP,NORM,IC,FSET)
-   77 DETL3    DFHMDF POS=(12,10),LENGTH=70,ATTRB=(ASKIP,NORM,IC,FSET)
-   78 DETL4    DFHMDF POS=(13,10),LENGTH=70,ATTRB=(ASKIP,NORM,IC,FSET)
-   79 DETL5    DFHMDF POS=(14,10),LENGTH=70,ATTRB=(ASKIP,NORM,IC,FSET)
-   80 DETL6    DFHMDF POS=(15,10),LENGTH=70,ATTRB=(ASKIP,NORM,IC,FSET)
-   81 DETL7    DFHMDF POS=(16,10),LENGTH=70,ATTRB=(ASKIP,NORM,IC,FSET)
-   82 DETL8    DFHMDF POS=(17,10),LENGTH=70,ATTRB=(ASKIP,NORM,IC,FSET)
-   83 DETL9    DFHMDF POS=(18,10),LENGTH=70,ATTRB=(ASKIP,NORM,IC,FSET)
-   84 DETL10   DFHMDF POS=(19,10),LENGTH=70,ATTRB=(ASKIP,NORM,IC,FSET)
-   85 DETL11   DFHMDF POS=(20,10),LENGTH=70,ATTRB=(ASKIP,NORM,IC,FSET)
-   86          DFHMDF POS=(21,10),LENGTH=70,ATTRB=(ASKIP,NORM,IC,FSET)
+   75 DETL1    DFHMDF POS=(10,10),LENGTH=70,ATTRB=(ASKIP,NORM)
+   76 DETL2    DFHMDF POS=(11,10),LENGTH=70,ATTRB=(ASKIP,NORM)
+   77 DETL3    DFHMDF POS=(12,10),LENGTH=70,ATTRB=(ASKIP,NORM)
+   78 DETL4    DFHMDF POS=(13,10),LENGTH=70,ATTRB=(ASKIP,NORM)
+   79 DETL5    DFHMDF POS=(14,10),LENGTH=70,ATTRB=(ASKIP,NORM)
+   80 DETL6    DFHMDF POS=(15,10),LENGTH=70,ATTRB=(ASKIP,NORM)
+   81 DETL7    DFHMDF POS=(16,10),LENGTH=70,ATTRB=(ASKIP,NORM)
+   82 DETL8    DFHMDF POS=(17,10),LENGTH=70,ATTRB=(ASKIP,NORM)
+   83 DETL9    DFHMDF POS=(18,10),LENGTH=70,ATTRB=(ASKIP,NORM)
+   84 DETL10   DFHMDF POS=(19,10),LENGTH=70,ATTRB=(ASKIP,NORM)
+   85 DETL11   DFHMDF POS=(20,10),LENGTH=70,ATTRB=(ASKIP,NORM)
+   86          DFHMDF POS=(21,10),LENGTH=70,ATTRB=(ASKIP,NORM)
    87          DFHMDF POS=(23,15),LENGTH=10,ATTRB=(ASKIP,NORM),              C
    88                INITIAL='PF3 - EXIT'
    89          DFHMDF POS=(23,28),LENGTH=10,ATTRB=(ASKIP,NORM),              C
@@ -99,11 +99,11 @@
    96                INITIAL='PF12 - RESET'
    97 ERRMSG1  DFHMDF POS=(22,01),LENGTH=70,ATTRB=(ASKIP,NORM,IC,FSET)
    98          DFHMSD TYPE=FINAL
-      SM01S loaded with 1 MAPS, 61 FIELDS and 201 Bytes of Literals
+      SM01S loaded with 1 MAPS, 61 FIELDS and 200 Bytes of Literals
 
-   99          ENDCA-Realia CICS Ver:6.0.27  SM01S.bms                                                                     24NOV23 11:47:34 PAGE  3
+   99          ENDCA-Realia CICS Ver:6.0.27  SM01S.bms                                                                     28NOV23 17:44:50 PAGE  3
 
       COBOL COPY file generated
 
-      Mapset generated. Object size is 1,864.
+      Mapset generated. Object size is 1,863.
 

@@ -1,4 +1,4 @@
-CA-Realia CICS Ver:6.0.27  UA002S.bms                                                                    23NOV23 23:25:51 PAGE  1
+CA-Realia CICS Ver:6.0.27  UA002S.bms                                                                    28NOV23 11:10:44 PAGE  1
 
     1          PRINT NOGEN
     2 UA002S   DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      C
@@ -17,26 +17,34 @@
    15          DFHMDF POS=(07,02),LENGTH=24,ATTRB=(ASKIP,NORM),              C
    16                 INITIAL='REQUESTOR TAG         : '
    17 REQTAG   DFHMDF POS=(07,30),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET)
-   18          DFHMDF POS=(08,02),LENGTH=24,ATTRB=(ASKIP,NORM),              C
-   19                INITIAL='ADMIN TAG             : '
-   20 ADMTAG   DFHMDF POS=(08,30),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET)
-   21          DFHMDF POS=(09,02),LENGTH=24,ATTRB=(ASKIP,NORM),              C
-   22                INITIAL='APPROVER TAG          : '
-   23 APRTAG   DFHMDF POS=(09,30),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET)
-   24          DFHMDF POS=(10,02),LENGTH=24,ATTRB=(ASKIP,NORM),              C
-   25                INITIAL='SERVICE PROVIDER TAG  : '
-   26 SRVTAG   DFHMDF POS=(10,30),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET)
-   27          DFHMDF POS=(24,02),LENGTH=40,ATTRB=(ASKIP,NORM),              C
-   28                INITIAL='PF2 -ADD   PF3 - EXIT   PF5 - ABORT'
-   29 ERRMSG8  DFHMDF POS=(22,01),LENGTH=71,ATTRB=(ASKIP,NORM,IC,FSET)
-   30 DATE     DFHMDF POS=(01,70),LENGTH=10,ATTRB=(ASKIP,NORM,IC,FSET)
-   31 TIME     DFHMDF POS=(02,70),LENGTH=08,ATTRB=(ASKIP,NORM,IC,FSET)
-   32          DFHMSD TYPE=FINAL
-      UA002S loaded with 1 MAPS, 17 FIELDS and 193 Bytes of Literals
+   18          DFHMDF POS=(07,32),LENGTH=05,ATTRB=(ASKIP,NORM),              C
+   19                INITIAL='(Y/N)'
+   20          DFHMDF POS=(08,02),LENGTH=24,ATTRB=(ASKIP,NORM),              C
+   21                INITIAL='ADMIN TAG             : '
+   22 ADMTAG   DFHMDF POS=(08,30),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET)
+   23          DFHMDF POS=(08,32),LENGTH=05,ATTRB=(ASKIP,NORM),              C
+   24                INITIAL='(Y/N)'
+   25          DFHMDF POS=(09,02),LENGTH=24,ATTRB=(ASKIP,NORM),              C
+   26                INITIAL='APPROVER TAG          : '
+   27 APRTAG   DFHMDF POS=(09,30),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET)
+   28          DFHMDF POS=(09,32),LENGTH=05,ATTRB=(ASKIP,NORM),              C
+   29                INITIAL='(Y/N)'
+   30          DFHMDF POS=(10,02),LENGTH=24,ATTRB=(ASKIP,NORM),              C
+   31                INITIAL='SERVICE PROVIDER TAG  : '
+   32 SRVTAG   DFHMDF POS=(10,30),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET)
+   33          DFHMDF POS=(10,32),LENGTH=05,ATTRB=(ASKIP,NORM),              C
+   34                INITIAL='(Y/N)'
+   35          DFHMDF POS=(24,02),LENGTH=40,ATTRB=(ASKIP,NORM),              C
+   36                INITIAL='PF2 -ADD   PF3 - EXIT   PF5 - ABORT'
+   37 ERRMSG8  DFHMDF POS=(22,01),LENGTH=71,ATTRB=(ASKIP,NORM,IC,FSET)
+   38 DATE     DFHMDF POS=(01,70),LENGTH=10,ATTRB=(ASKIP,NORM,IC,FSET)
+   39 TIME     DFHMDF POS=(02,70),LENGTH=08,ATTRB=(ASKIP,NORM,IC,FSET)
+   40          DFHMSD TYPE=FINAL
+      UA002S loaded with 1 MAPS, 21 FIELDS and 213 Bytes of Literals
 
-   33          ENDCA-Realia CICS Ver:6.0.27  UA002S.bms                                                                    23NOV23 23:25:51 PAGE  2
+   41          ENDCA-Realia CICS Ver:6.0.27  UA002S.bms                                                                    28NOV23 11:10:44 PAGE  2
 
       COBOL COPY file generated
 
-      Mapset generated. Object size is 712.
+      Mapset generated. Object size is 836.
 
