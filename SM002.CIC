@@ -2,7 +2,7 @@
       *$PP-DEF CARCPP HA COPY SUPPRESS
       *$PP
       *$PP-LIST
-      *CBL XOPTS(COBOL2)
+      *  CBL XOPTS(COBOL2)
       *$PP-NOLIST							REALCICS
       *$PP-DEF CICS HA CICS Internal Data				REALCICS
       *$PP-DEF CICS HI CICS Internal Code				REALCICS
@@ -25,7 +25,6 @@
        SOURCE-COMPUTER.    IBM-PC.
        OBJECT-COMPUTER.    IBM-PC.
        DATA DIVISION.
-       FILE SECTION.
        WORKING-STORAGE SECTION.
       *$PP-NOLIST CICS HA						REALCICS
        01  DFH-RETURN-STATUS PIC S9(4) COMP-5.				REALCICS
@@ -77,8 +76,6 @@
        01  WS-DATE				 PIC 9(7).
        01  WS-DATE-X REDEFINES WS-DATE		 PIC X(7).
        01  WS-LENGTH				 PIC S9(4) COMP.
-      *01  WS-COMMAREA.
-      *    05 WS-PROG-STATE			 PIC X(17).
        01  WS-END				 PIC X(15) VALUE
            'INVALID ACCESS'.
        77 WS-RETNCODE				 PIC S9(8) COMP.
@@ -86,33 +83,34 @@
        77 REQUESTOR                              PIC X(01) VALUE 'Y'.
 
        01  TICKET.
-	   05 TICKET-KEY		 PIC X(07).
+	   05 TICKET-KEY			 PIC X(07).
 	   05 TICKET-KEY-NUM REDEFINES TICKET-KEY PIC 9(06).
-	   05 TICKET-Requestor		 PIC X(8).
-	   05 TICKET-Status		 PIC X(10).
-	   05 TICKET-Title		 PIC X(25).
-	   05 TICKET-DESCRIPTION	 PIC X(100).
-	   05 TICKET-Last-Update	 PIC X(20).
-	   05 TICKET-Last-Update-by	 PIC X(8).
-	   05 TICKET-Update-Remarks	 PIC X(50).
+	   05 TICKET-REQUESTOR			 PIC X(8).
+	   05 TICKET-STATUS			 PIC X(10).
+	   05 TICKET-TITLE			 PIC X(25).
+	   05 TICKET-DESCRIPTION		 PIC X(100).
+	   05 TICKET-LAST-UPDATE		 PIC X(20).
+	   05 TICKET-LAST-UPDATE-BY		 PIC X(8).
+	   05 TICKET-UPDATE-REMARKS		 PIC X(50).
 
        01  NEW-TICKET.
-	   05 NEW-TICKET-KEY		     PIC X(07).
+	   05 NEW-TICKET-KEY			 PIC X(07).
 	   05 NEW-TICKET-KEY-NUM REDEFINES NEW-TICKET-KEY PIC 9(07).
-           05 NEW-TICKET-Requestor           PIC X(08) VALUE 'ISCB124'.
-           05 NEW-TICKET-Status              PIC X(10) VALUE 'CREATED'.
-	   05 NEW-TICKET-Title		     PIC X(25).
-	   05 NEW-TICKET-DESCRIPTION	     PIC X(100).
-	   05 NEW-TICKET-Last-Update	     PIC X(20) VALUE SPACE.
-	   05 NEW-TICKET-Last-Update-by      PIC X(08) VALUE SPACE.
-	   05 NEW-TICKET-Update-Remarks      PIC X(50) VALUE SPACE.
+	   05 NEW-TICKET-REQUESTOR		 PIC X(08).
+	   05 NEW-TICKET-STATUS 		 PIC X(10) VALUE
+              'CREATED'.
+	   05 NEW-TICKET-TITLE			 PIC X(25).
+	   05 NEW-TICKET-DESCRIPTION		 PIC X(100).
+	   05 NEW-TICKET-LAST-UPDATE		 PIC X(20) VALUE SPACE.
+	   05 NEW-TICKET-LAST-UPDATE-BY 	 PIC X(08) VALUE SPACE.
+	   05 NEW-TICKET-UPDATE-REMARKS 	 PIC X(50) VALUE SPACE.
 
        01  WS-LOG.
-	   05 WS-LOG-Ticket-ID		PIC X(07).
-	   05 WS-LOG-Seq-Number 	PIC 9(03) VALUE 1.
-	   05 WS-LOG-Last-Update	PIC X(20) VALUE SPACE.
-	   05 WS-LOG-Last-Update-by	PIC X(08) VALUE SPACE.
-	   05 WS-LOG-Update-Remarks	PIC X(50) VALUE SPACE.
+	   05 WS-LOG-TICKET-ID		PIC X(07).
+	   05 WS-LOG-SEQ-NUMBER 	PIC 9(03) VALUE 1.
+	   05 WS-LOG-LAST-UPDATE	PIC X(20) VALUE SPACE.
+	   05 WS-LOG-LAST-UPDATE-BY	PIC X(08) VALUE SPACE.
+	   05 WS-LOG-UPDATE-REMARKS	PIC X(50) VALUE SPACE.
 	   05 FILLER			PIC X(02) VALUE SPACE.
 
        01  WS-ERRMSGS.
@@ -126,7 +124,7 @@
               'INVALID ACCESS TO SELECTED TICKET'.
 	   05 WS-FIELD-REQ			 PIC X(24) VALUE
               'OPTION FIELD IS REQUIRED'.
-	   05 WS-TICKET-REQUIRED		 PIC X(24) VALUE
+	   05 WS-TITLE-REQUIRED 		PIC X(24) VALUE
               'TICKET TITLE IS REQUIRED'.
 	   05 WS-LAST-PAGE			 PIC X(21) VALUE
               'THIS IS THE LAST PAGE'.
@@ -137,6 +135,7 @@
 
        01  WS-COMMAREA.
 	   05 WS-PGMID				 PIC X(06).
+	   05 WS-STATE				 PIC X.
 	   05 WS-TICKET-PASSED			 PIC X(07).
 	   05 USERID.
 	      10  USERID7			 PIC X(7).
@@ -146,32 +145,14 @@
 	     15 USR-ADMIN			 PIC X.
 	     15 USR-APPROVER			 PIC X.
 	     15 USR-SERVICE			 PIC X.
-	   05 WS-STF01-REC.
-	      10 WS-STF01-ID			 PIC X(07).
-	      10 FILL1				 PIC X(03).
-	      10 WS-STF01-TITLE 		 PIC X(25).
-	      10 FILL2				 PIC X(01).
-	      10 WS-STF01-STATUS		 PIC X(10).
-	      10 FILL3				 PIC X(04).
-	      10 WS-STF01-LAST-UPD		 PIC X(10).
-	      10 FILL4				 PIC X(02).
-	      10 WS-STF01-LAST-UPDBY		 PIC X(8).
-	      10 WS-STF01-REQ			 PIC X(8).
-	   05 WS-PGMNAME			 PIC  X(6).
-	   05 WS-DFHSTATE			 PIC X(15).
-	   05 WS-TRANS				 PIC X(04).
-	   05 WS-LUSER				 PIC 9(03).
-	   05 WS-FUSER				 PIC X(07).
-	   05 WS-PAGE				 PIC 9(02).
-	   05 WS-PAGE-END			 PIC 9(01).
-	   05 WS-STATE				 PIC X.
-	   05 WS-QITEM				 PIC S9(4) COMP.
-	   05 WS-QITEM-START			 PIC S9(4) COMP.
-	   05 WS-QITEM-END			 PIC S9(4) COMP.
-	   05 WS-QITEM-PAGE			 PIC S9(4) COMP.
-	   05 WS-PROG-STATE			 PIC X(10).
+	   05 WS-FLAG				 PIC X(01).
+	   05 WS-HOLDER.
+	      10 WS-ID				PIC X(06).
+	      10 WS-TITLE			PIC X(25).
+	      10 WS-DES1			PIC X(50).
+	      10 WS-DES2			PIC X(50).
 
-      P    COPY SM02S.
+      PCOPY SM02S.
       *$PP-START-COPY D:\work\CAWB30-HO\SM02S.COB
       * SYMBOLIC MAP of SM02S Created by CACXBMS Version 6.0.27
        01  SM002MI.
@@ -216,6 +197,11 @@
 	   02  FILLER REDEFINES STATSF.
 	       03  STATSA			      PIC X.
 	   02  STATSI				      PIC X(007).
+	   02  UPML				      PIC S9(4) COMP.
+	   02  UPMF				      PIC X.
+	   02  FILLER REDEFINES UPMF.
+	       03  UPMA 			      PIC X.
+	   02  UPMI				      PIC X(020).
 	   02  UPR1L				      PIC S9(4) COMP.
 	   02  UPR1F				      PIC X.
 	   02  FILLER REDEFINES UPR1F.
@@ -226,6 +212,11 @@
 	   02  FILLER REDEFINES UPR2F.
 	       03  UPR2A			      PIC X.
 	   02  UPR2I				      PIC X(025).
+	   02  UPDTL				      PIC S9(4) COMP.
+	   02  UPDTF				      PIC X.
+	   02  FILLER REDEFINES UPDTF.
+	       03  UPDTA			      PIC X.
+	   02  UPDTI				      PIC X(020).
 	   02  UPDATEL				      PIC S9(4) COMP.
 	   02  UPDATEF				      PIC X.
 	   02  FILLER REDEFINES UPDATEF.
@@ -236,11 +227,16 @@
 	   02  FILLER REDEFINES UPTIMEF.
 	       03  UPTIMEA			      PIC X.
 	   02  UPTIMEI				      PIC X(008).
+	   02  UPBYL				      PIC S9(4) COMP.
+	   02  UPBYF				      PIC X.
+	   02  FILLER REDEFINES UPBYF.
+	       03  UPBYA			      PIC X.
+	   02  UPBYI				      PIC X(020).
 	   02  UPBL				      PIC S9(4) COMP.
 	   02  UPBF				      PIC X.
 	   02  FILLER REDEFINES UPBF.
 	       03  UPBA 			      PIC X.
-	   02  UPBI				      PIC X(006).
+	   02  UPBI				      PIC X(007).
 	   02  ERRMSGL				      PIC S9(4) COMP.
 	   02  ERRMSGF				      PIC X.
 	   02  FILLER REDEFINES ERRMSGF.
@@ -274,10 +270,16 @@
 	   02  STATSO				      PIC X(007).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
+	   02  UPMO				      PIC X(020).
+	   02  FILLER				      PIC XX.
+	   02  FILLER				      PIC X.
 	   02  UPR1O				      PIC X(025).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  UPR2O				      PIC X(025).
+	   02  FILLER				      PIC XX.
+	   02  FILLER				      PIC X.
+	   02  UPDTO				      PIC X(020).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  UPDATEO				      PIC X(010).
@@ -286,12 +288,15 @@
 	   02  UPTIMEO				      PIC X(008).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  UPBO				      PIC X(006).
+	   02  UPBYO				      PIC X(020).
+	   02  FILLER				      PIC XX.
+	   02  FILLER				      PIC X.
+	   02  UPBO				      PIC X(007).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  ERRMSGO				      PIC X(058).
       *$PP-END-COPY
-      P    COPY DFHAID.
+      PCOPY DFHAID.
       *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHAID.COB
        01  DFHAID.
       *
@@ -350,7 +355,7 @@
            05  DFHQUIT                   PIC X VALUE '!'.
 	   05  DFHNULL			 PIC X VALUE LOW-VALUE.
       *$PP-END-COPY
-      P    COPY DFHBMSCA.
+      PCOPY DFHBMSCA.
       *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHBMSCA.COB
        01  DFHBMSCA.
       *
@@ -680,6 +685,7 @@
       *$PP-END-INSERT CICS NA						REALCICS
        01  DFHCOMMAREA.
 	   05 DF-PGMID				 PIC X(06).
+	   05 DF-STATE				 PIC X.
 	   05 DF-TICKET-PASSED			 PIC X(07).
 	   05 DF-USERID.
 	      10  DF-USERID7			 PIC X(7).
@@ -689,30 +695,13 @@
 	     15 DF-USR-ADMIN			 PIC X.
 	     15 DF-USR-APPROVER 		 PIC X.
 	     15 DF-USR-SERVICE			 PIC X.
-	   05 DF-STF01-REC.
-	      10 DF-STF01-ID			 PIC X(07).
-	      10 DF-FILLER			 PIC X(03).
-	      10 DF-STF01-TITLE 		 PIC X(25).
-	      10 DF-FILLER			 PIC X(01).
-	      10 DF-STF01-STATUS		 PIC X(10).
-	      10 DF-FILLER			 PIC X(04).
-	      10 DF-STF01-LAST-UPD		 PIC X(10).
-	      10 DF-FILLER4			 PIC X(02).
-	      10 DF-STF01-LAST-UPDBY		 PIC X(8).
-	      10 DF-STF01-REQ			 PIC X(8).
-	   05 DF-PGMNAME			 PIC X(6).
-	   05 DFHSTATE				 PIC X(15).
-	   05 DF-TRANS				 PIC X(04).
-	   05 DF-LUSER				 PIC 9(03).
-	   05 DF-FUSER				 PIC X(07).
-	   05 DF-PAGE				 PIC 9(02).
-	   05 DF-PAGE-END			 PIC 9(01).
-	   05 DF-STATE				 PIC X.
-	   05 DF-QITEM				 PIC S9(4) COMP.
-	   05 DF-QITEM-START			 PIC S9(4) COMP.
-	   05 DF-QITEM-END			 PIC S9(4) COMP.
-	   05 DF-QITEM-PAGE			 PIC S9(4) COMP.
-	   05 DF-PROG-STATE			 PIC X(10).
+	   05 DF-FLAG				 PIC X(01).
+	   05 HOLDER.
+	      10 T-ID				 PIC X(06).
+	      10 T-TITLE			 PIC X(25).
+	      10 T-DES1 			 PIC X(50).
+	      10 T-DES2 			 PIC X(50).
+
 
        PROCEDURE DIVISION						REALCICS
       *$PP-START-INSERT CICS NA 					REALCICS
@@ -742,14 +731,13 @@
        DFH-MAINLINE-ENTRY SECTION.					REALCICS
       *$PP-LIST CICS HI 						REALCICS
        100-MAIN.
-	   MOVE DFHCOMMAREA TO WS-COMMAREA
       *$PP-DEBUG							REALCICS
       P    EXEC CICS IGNORE CONDITION
       P 	     ERROR
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 155 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 119 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '0' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE ' ' TO DFH-DATA-CLASS (02)                              REALCICS
@@ -761,7 +749,6 @@
 	   ELSE IF DFH-RETURN-STATUS > 0 PERFORM DFH-GOTO-HANDLE	REALCICS
 	       END-IF END-IF						REALCICS
       *$PP-LIST 							REALCICS
-
 	   MOVE HIGH-VALUE TO TICKET-KEY
       *$PP-DEBUG							REALCICS
       P    EXEC CICS STARTBR FILE('STF001C')
@@ -770,7 +757,7 @@
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 160 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 123 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -797,13 +784,13 @@
 	   IF EIBRESP = +0
       *$PP-DEBUG							REALCICS
       P      EXEC CICS READPREV
-      P        FILE('STF001C')
-      P        INTO(TICKET)
-      P        RIDFLD (TICKET-KEY)
+      P           FILE('STF001C')
+      P 	  INTO(TICKET)
+      P 	  RIDFLD(TICKET-KEY)
       P      END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 165 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 128 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -831,53 +818,73 @@
       *$PP-LIST 							REALCICS
 	   END-IF
 
+	   MOVE DFHCOMMAREA  TO WS-COMMAREA
+
+            IF WS-STATE = 'A' OR
+                WS-STATE  = 'B' OR
+		WS-STATE  =  SPACE
+		CONTINUE
+	    ELSE
+	      MOVE SPACE TO WS-STATE
+	    END-IF
+
            IF WS-PGMID = 'SM000' OR WS-PGMID = 'SM001' OR
               WS-PGMID = 'SM002'
-               IF USR-REQUESTOR = 'Y'
-		  EVALUATE TRUE
-      *       Neal pinalitan ko ung WS-COMMAREA at WS-PROG-STATE ng
-      *       WS-STATE, bali nanggaling ung state sa commarea ng calling program
-		   WHEN WS-STATE = LOW-VALUES
-		     ADD  1 TO TICKET-KEY-NUM
-		     MOVE TICKET-KEY-NUM TO IDO
-                     MOVE 'A'  TO WS-STATE
-		     MOVE SPACE TO TICKETTO
-		     MOVE SPACE TO TICKTD1O
-		     MOVE SPACE TO TICKTD2O
-                     MOVE 'ENTER TICKET DETAILS AND PRESS PF2'
-			 TO ERRMSGO
-		     PERFORM 1000-NEW-MAP
+                IF USR-REQUESTOR = 'Y'
+		   PERFORM 2000-CHECK-AID
+		   EVALUATE TRUE
+		     WHEN WS-STATE = SPACE
+		       ADD  1 TO TICKET-KEY-NUM
+		       MOVE TICKET-KEY-NUM TO IDO
+		       MOVE SPACE TO TICKETTO
+		       MOVE SPACE TO TICKTD1O
+		       MOVE SPACE TO TICKTD2O
+		       MOVE -1 TO TICKETTL
 
-                   WHEN WS-STATE = 'A'
-		     PERFORM 3000-RMAP
-		     PERFORM 2000-CHECK-AID
-		     PERFORM 1000-NEW-MAP
+                     WHEN WS-STATE = 'A'
+		       PERFORM 3000-RMAP
 
-                   WHEN WS-STATE = 'B'
-		     PERFORM 3000-RMAP
-		     PERFORM 2000-CHECK-AID
-		     PERFORM 4000-WRITE
-                     MOVE 'CREATED' TO STATSO
-                     MOVE 'SUCCESSFULLY CREATED. PF2 TO ADD MORE'
-			TO ERRMSGO
-		     MOVE DFHBMASK TO STA
-		     MOVE DFHBMPRO TO STATSA
-		     MOVE DFHBMPRO TO TICKETTA
-		     MOVE DFHBMPRO TO TICKTD1A
-		     MOVE DFHBMPRO TO TICKTD2A
-		     PERFORM 1000-NEW-MAP
+                     WHEN WS-STATE = 'B'
+		       PERFORM 3000-RMAP
 
-		  END-EVALUATE
-	       ELSE
-		  PERFORM 110-INVALID-ACCESS
-	       END-IF
-	   ELSE
-	      PERFORM 110-INVALID-ACCESS
-	   END-IF.
-       100-EXIT.
-	   EXIT.
+                       IF WS-FLAG = 'Y'
+			 MOVE IDI TO NEW-TICKET-KEY
+			 MOVE USERID TO NEW-TICKET-REQUESTOR
+			 MOVE TICKETTI TO NEW-TICKET-TITLE
+			 MOVE USERID TO NEW-TICKET-LAST-UPDATE-BY
+			 MOVE TICKTD1I TO NEW-TICKET-DESCRIPTION(1:50)
+			 MOVE TICKTD2I TO NEW-TICKET-DESCRIPTION(51:50)
+			 PERFORM 1100-GET-DATE-TIME
+			 MOVE DATEO    TO NEW-TICKET-Last-Update(1:10)
+			 MOVE TIMEO    TO NEW-TICKET-Last-Update(11:10)
+			 MOVE IDI TO WS-LOG-TICKET-ID
+			 MOVE DATEO    TO WS-LOG-LAST-UPDATE(1:10)
+			 MOVE TIMEO    TO WS-LOG-LAST-UPDATE(12:8)
+			 MOVE USERID TO WS-LOG-LAST-UPDATE-BY
+			 PERFORM 4000-WRITE
+		       END-IF
 
-       110-INVALID-ACCESS.
+		       MOVE DFHBMASK TO STA
+		       MOVE DFHBMASK TO UPMA
+		       MOVE DFHBMASK TO UPDTA
+		       MOVE DFHBMASK TO UPBYA
+		       MOVE DFHBMPRO TO STATSA
+		       MOVE DFHBMPRO TO TICKETTA
+		       MOVE DFHBMPRO TO TICKTD1A
+		       MOVE DFHBMPRO TO TICKTD2A
+
+		   END-EVALUATE
+		   PERFORM 2100-CHECK-AID-MSG
+		   PERFORM 1000-NEW-MAP
+		ELSE
+		  PERFORM 110-INVALID
+		END-IF
+	    ELSE
+	      PERFORM 110-INVALID
+	    END-IF.
+       100-EXIT. EXIT.
+
+       110-INVALID.
 	   MOVE LENGTH OF WS-INVALID-ACCESS TO WS-LENGTH
       *$PP-DEBUG							REALCICS
       P    EXEC CICS SEND TEXT
@@ -887,7 +894,7 @@
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 220 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 203 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '1' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE ' ' TO DFH-DATA-CLASS (02)                              REALCICS
@@ -919,7 +926,7 @@
       P    END-EXEC.
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 225 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 208 TO DFH-SOURCE-LINE-NUM				REALCICS
            MOVE X'0E08' TO DFH-COMMAND EIBFN                            REALCICS
 	   MOVE 000 TO DFH-VARS-COUNT					REALCICS
            CALL 'CICS_Exec_Std' USING CICSICB GIVING DFH-RETURN-STATUS  REALCICS
@@ -932,16 +939,16 @@
       *$PP-LIST 							REALCICS
        110-EXIT. EXIT.
 
-       1000-NEW-MAP.
+       1100-GET-DATE-TIME.
 	   MOVE EIBDATE TO WS-DATE
 	   MOVE WS-DATE-X TO DATEO
       *$PP-DEBUG							REALCICS
       P    EXEC CICS ASKTIME
-      P       ABSTIME	 (WS-TIME)
+      P      ABSTIME	(WS-TIME)
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 232 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 215 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '1' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE 'T ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -958,15 +965,15 @@
       *$PP-LIST 							REALCICS
       *$PP-DEBUG							REALCICS
       P    EXEC CICS FORMATTIME
-      P       ABSTIME	 (WS-TIME)
-      P       DATESEP    ('/')
-      P       MMDDYYYY	 (DATEO)
-      P       TIME	 (TIMEO)
-      P       TIMESEP    (':')
-      P    END-EXEC
+      P      ABSTIME	(WS-TIME)
+      P      DATESEP    ('/')
+      P      MMDDYYYY	(DATEO)
+      P      TIME	(TIMEO)
+      P      TIMESEP    (':')
+      P    END-EXEC.
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 235 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 218 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '1' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE 'T ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1002,22 +1009,29 @@
 	   IF DFH-RETURN-STATUS < 0 STOP RUN				REALCICS
 	   ELSE IF DFH-RETURN-STATUS > 0 PERFORM DFH-GOTO-HANDLE	REALCICS
 	       END-IF END-IF						REALCICS
+	   .								REALCICS
       *$PP-LIST 							REALCICS
+       1100-EXIT.
+	   EXIT.
+
+       1000-NEW-MAP.
+	   PERFORM 1100-GET-DATE-TIME
 	   MOVE DFHBMASB TO TIMEA
 	   MOVE DFHBMASB TO DATEA
 	   MOVE DFHBMASB TO ERRMSGA
 	   MOVE LENGTH OF SM002MO TO WS-LENGTH
       *$PP-DEBUG							REALCICS
       P 	       EXEC CICS SEND
-      P             MAP('SM002M')
-      P                         MAPSET('SM02S')
-      P 			FROM(SM002MO)
-      P 			LENGTH(WS-LENGTH)
-      P       ERASE
+      P         MAP('SM002M')
+      P                           MAPSET('SM02S')
+      P 			  FROM(SM002MO)
+      P 			  LENGTH(WS-LENGTH)
+      P 	CURSOR
+      P 	ERASE
       P 		     END-EXEC.
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 246 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 234 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '7 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1041,6 +1055,9 @@
 	   ADD 0 WS-LENGTH GIVING DFH-DATAH (06)			REALCICS
 	   SET DFH-ADDR (06) TO ADDRESS OF DFH-DATAH (06)		REALCICS
 	   ADD 0 LENGTH OF DFH-DATAH (06) GIVING DFH-SIZE (06)		REALCICS
+	   MOVE 001 TO DFH-FLAG (07)					REALCICS
+           MOVE '8' TO DFH-DATA-TYPE (07)                               REALCICS
+           MOVE 'H ' TO DFH-DATA-CLASS (07)                             REALCICS
 	   MOVE 001 TO DFH-FLAG (09)					REALCICS
            MOVE '0' TO DFH-DATA-TYPE (09)                               REALCICS
            MOVE ' ' TO DFH-DATA-CLASS (09)                              REALCICS
@@ -1064,7 +1081,7 @@
       P 	 END-EXEC.
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 253 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 242 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '4 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1086,47 +1103,33 @@
 	       END-IF END-IF						REALCICS
 	   .								REALCICS
       *$PP-LIST 							REALCICS
-       1000-EXIT.
-	   EXIT.
+       1000-EXIT. EXIT.
 
        2000-CHECK-AID.
 	    EVALUATE TRUE
 	      WHEN EIBAID = DFHPF2
-		MOVE IDI TO NEW-TICKET-KEY
-		MOVE IDI TO WS-LOG-Ticket-ID
-		MOVE TICKETTI TO NEW-TICKET-Title
-		MOVE TICKTD1I TO NEW-TICKET-DESCRIPTION(1:50)
-		MOVE TICKTD2I TO NEW-TICKET-DESCRIPTION(51:50)
+		IF WS-STATE = SPACE
+                  MOVE 'A'  TO WS-STATE
+		END-IF
 
-               IF WS-STATE = 'B' THEN
-		 MOVE SPACE  TO WS-STATE
-	       ELSE
-		 EVALUATE TRUE
-		   WHEN NEW-TICKET-TITLE = SPACE
-		     MOVE WS-TICKET-REQUIRED TO ERRMSGO
+                IF WS-STATE = 'A' AND WS-FLAG = 'Y'
+                  MOVE 'B'  TO WS-STATE
+		END-IF
 
-		   WHEN NEW-TICKET-DESCRIPTION = SPACE
-                     MOVE 'TICKET DESCRIPTION IS REQUIRED'
-			 TO ERRMSGO
+                IF WS-STATE = 'B' AND WS-FLAG = 'N'
+		  MOVE SPACE  TO WS-STATE
+		END-IF
 
-		   WHEN OTHER
-                     MOVE 'B' TO WS-STATE
-                     MOVE 'VALID INPUT PRESS PF2 TO ADD'
-			 TO ERRMSGO
-		 END-EVALUATE
-	      END-IF
 	      WHEN EIBAID = DFHPF3
-		   EVALUATE WS-PGMID
+				 EVALUATE WS-PGMID
                     WHEN 'SM000'
       *$PP-DEBUG							REALCICS
-      P 		       EXEC CICS XCTL
-      P                              PROGRAM('SM000')
-      * 		     COMMAREA(WS-COMMAREA)
-      * 		     LENGTH(17)
-      P 	       END-EXEC
+      P 			     EXEC CICS XCTL
+      P                                      PROGRAM('SM000')
+      P 		 END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 289 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 266 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1144,12 +1147,12 @@
       *$PP-LIST 							REALCICS
                     WHEN 'SM001'
       *$PP-DEBUG							REALCICS
-      P 		  EXEC CICS XCTL
-      P                                     PROGRAM('SM000')
-      P 		  END-EXEC
+      P 		 EXEC CICS XCTL
+      P                                      PROGRAM('SM000')
+      P 		 END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 295 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 270 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1166,12 +1169,186 @@
 	       END-IF END-IF						REALCICS
       *$PP-LIST 							REALCICS
 		   END-EVALUATE
+
 	      WHEN EIBAID = DFHPF5
-		MOVE LOW-VALUES TO WS-STATE
+			      MOVE SPACE TO WS-STATE
+
+	      WHEN EIBAID = DFHENTER
+                IF WS-STATE = SPACE AND WS-FLAG = 'N'
+                  MOVE 'A' TO WS-STATE
+		END-IF
+                IF WS-STATE = 'B'
+		  MOVE SPACE TO WS-STATE
+		END-IF
+	      WHEN EIBAID = DFHCLEAR
+		CONTINUE
 	      WHEN OTHER
-		MOVE WS-INVALID-PFKEY TO  ERRMSGO
+		CONTINUE
 	    END-EVALUATE.
        2000-EXIT. EXIT.
+
+       2100-CHECK-AID-MSG.
+	    MOVE IDI TO NEW-TICKET-KEY
+	    MOVE IDI TO WS-LOG-TICKET-ID
+	    MOVE TICKETTI TO NEW-TICKET-TITLE
+	    MOVE TICKTD1I TO NEW-TICKET-DESCRIPTION(1:50)
+	    MOVE TICKTD2I TO NEW-TICKET-DESCRIPTION(51:50)
+	    EVALUATE TRUE
+	      WHEN EIBAID = DFHPF2
+
+                IF WS-STATE = SPACE AND WS-FLAG = 'N'
+                  MOVE 'ENTER TICKET DETAILS AND PRESS PF2'
+		   TO ERRMSGO
+		END-IF
+
+                IF WS-STATE = 'A'
+		  MOVE IDI  TO WS-ID
+		  MOVE TICKETTI TO WS-TITLE
+		  MOVE TICKTD1I TO WS-DES1
+		  MOVE TICKTD2I TO WS-DES2
+		  EVALUATE TRUE
+		    WHEN NEW-TICKET-TITLE = SPACE
+		      MOVE WS-TITLE-REQUIRED TO ERRMSGO
+		      MOVE -1 TO TICKETTL
+
+		    WHEN NEW-TICKET-DESCRIPTION = SPACE
+                      MOVE 'TICKET DESCRIPTION IS REQUIRED'
+		       TO ERRMSGO
+		      MOVE -1 TO TICKTD1L
+
+		    WHEN OTHER
+                      MOVE 'Y' TO WS-FLAG
+		      MOVE -1 TO TICKETTL
+                      MOVE 'VALID INPUT PRESS PF2 TO ADD'
+		       TO ERRMSGO
+		  END-EVALUATE
+
+		END-IF
+
+                IF WS-STATE = 'B'
+                  IF WS-FLAG = 'Y'
+                    MOVE 'N' TO WS-FLAG
+		  END-IF
+
+                  IF WS-FLAG = 'N'
+                    MOVE 'CREATED' TO STATSO
+		    MOVE -1 TO TICKETTL
+                    MOVE 'TICKET CREATED' TO UPR1O
+		    MOVE NEW-TICKET-Last-Update(1:10) TO UPDATEO
+		    MOVE NEW-TICKET-Last-Update(11:10) TO UPTIMEO
+		    MOVE NEW-TICKET-Last-Update-by TO UPBO
+                    MOVE 'SUCCESSFULLY CREATED. PF2 TO ADD MORE'
+		       TO ERRMSGO
+		  END-IF
+		END-IF
+
+	      WHEN EIBAID = DFHENTER
+		MOVE IDI  TO WS-ID
+		MOVE TICKETTI TO WS-TITLE
+		MOVE TICKTD1I TO WS-DES1
+		MOVE TICKTD2I TO WS-DES2
+		EVALUATE TRUE
+                WHEN WS-STATE = SPACE AND WS-FLAG NOT = 'N'
+                  MOVE 'N' TO WS-FLAG
+                  MOVE 'ENTER TICKET DETAILS AND PRESS PF2'
+		   TO ERRMSGO
+
+                WHEN WS-STATE = SPACE AND WS-FLAG = 'N'
+                  MOVE 'ENTER TICKET DETAILS AND PRESS PF2'
+		   TO ERRMSGO
+
+		WHEN OTHER
+		   EVALUATE TRUE
+		    WHEN NEW-TICKET-TITLE = SPACE
+                      MOVE 'TICKET TITLE IS REQUIRED'
+		       TO ERRMSGO
+		      MOVE -1 TO TICKETTL
+		      MOVE DFHUNIMD TO TICKETTA
+
+		    WHEN NEW-TICKET-DESCRIPTION = SPACE
+                      MOVE 'TICKET DESCRIPTION IS REQUIRED'
+		       TO ERRMSGO
+		      MOVE -1 TO TICKTD1L
+		      MOVE DFHUNIMD TO TICKTD1A
+
+		    WHEN OTHER
+                      MOVE 'Y' TO WS-FLAG
+                      MOVE 'VALID INPUT PRESS PF2 TO ADD'
+		       TO ERRMSGO
+		  END-EVALUATE
+		END-EVALUATE
+
+	      WHEN EIBAID = DFHPF5
+			      IF WS-STATE = SPACE
+                  MOVE 'ENTER TICKET DETAILS AND PRESS PF2'
+		  TO ERRMSGO
+		ELSE
+                  MOVE 'TRANSACTION IS ABORTED' TO ERRMSGO
+		END-IF
+
+	      WHEN EIBAID = DFHCLEAR
+                IF WS-STATE = 'B'
+		  MOVE TICKET-KEY TO IDO
+		  MOVE TICKET-TITLE TO TICKETTO
+		  MOVE TICKET-DESCRIPTION(1:50) TO TICKTD1O
+		  MOVE TICKET-DESCRIPTION(51:50) TO TICKTD2O
+                  MOVE 'CREATED' TO STATSO
+                  MOVE 'TICKET CREATED' TO UPR1O
+		  MOVE TICKET-Last-Update(1:10) TO UPDATEO
+		  MOVE TICKET-Last-Update(11:10) TO UPTIMEO
+		  MOVE TICKET-Last-Update-by TO UPBO
+                  MOVE 'SUCCESSFULLY CREATED. PF2 TO ADD MORE'
+		    TO ERRMSGO
+		END-IF
+
+                IF WS-STATE = 'A'
+		    MOVE T-ID	  TO IDO
+		    MOVE T-TITLE  TO TICKETTO
+		    MOVE T-DES1   TO TICKTD1O
+		    MOVE T-DES2   TO TICKTD2O
+		    MOVE -1 TO TICKETTL
+		    MOVE WS-INVALID-PFKEY TO ERRMSGO
+		END-IF
+
+		IF WS-STATE = SPACE
+		    MOVE TICKET-KEY-NUM TO IDO
+		    MOVE SPACE TO TICKETTO
+		    MOVE SPACE TO TICKTD1O
+		    MOVE SPACE TO TICKTD2O
+                    MOVE 'ENTER TICKET DETAILS AND PRESS PF2'
+			TO ERRMSGO
+		    MOVE -1 TO TICKETTL
+		END-IF
+
+	      WHEN OTHER
+		EVALUATE TRUE
+		  WHEN WS-STATE = SPACE
+		    MOVE TICKET-KEY-NUM TO IDO
+		    MOVE SPACE TO TICKETTO
+		    MOVE SPACE TO TICKTD1O
+		    MOVE SPACE TO TICKTD2O
+
+                  WHEN WS-STATE = 'A'
+		    MOVE NEW-TICKET-KEY TO IDO
+		    MOVE NEW-TICKET-TITLE TO TICKETTO
+		    MOVE NEW-TICKET-DESCRIPTION(1:50) TO TICKTD1O
+		    MOVE NEW-TICKET-DESCRIPTION(51:50) TO TICKTD2O
+
+                  WHEN WS-STATE = 'B'
+		    MOVE TICKET-KEY TO IDO
+		    MOVE TICKET-TITLE TO TICKETTO
+		    MOVE TICKET-DESCRIPTION(1:50) TO TICKTD1O
+		    MOVE TICKET-DESCRIPTION(51:50) TO TICKTD2O
+                    MOVE 'CREATED' TO STATSO
+                    MOVE 'TICKET CREATED' TO UPR1O
+		    MOVE TICKET-Last-Update(1:10) TO UPDATEO
+		    MOVE TICKET-Last-Update(11:10) TO UPTIMEO
+		    MOVE TICKET-Last-Update-by TO UPBO
+
+		END-EVALUATE
+		MOVE WS-INVALID-PFKEY TO ERRMSGO
+	    END-EVALUATE.
+       2100-EXIT. EXIT.
 
 
        3000-RMAP.
@@ -1183,7 +1360,7 @@
       P    END-EXEC.
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 308 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 457 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '7 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1218,14 +1395,15 @@
 
        4000-WRITE.
       *$PP-DEBUG							REALCICS
-      P    EXEC CICS
-      P     WRITE FILE('STF001C')
-      P     FROM (NEW-TICKET)
-      P     RIDFLD (NEW-TICKET-KEY)
+      P    EXEC CICS WRITE
+      P         FILE('STF001C')
+      P 	FROM (NEW-TICKET)
+      P 	RIDFLD (NEW-TICKET-KEY)
+      P 	RESP(WS-RETNCODE)
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 316 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 465 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1242,6 +1420,11 @@
            MOVE ' ' TO DFH-DATA-CLASS (06)                              REALCICS
 	   SET DFH-ADDR (06) TO ADDRESS OF NEW-TICKET-KEY		REALCICS
 	   ADD 0 LENGTH OF NEW-TICKET-KEY GIVING DFH-SIZE (06)		REALCICS
+	   MOVE 001 TO DFH-FLAG (01)					REALCICS
+           MOVE '1' TO DFH-DATA-TYPE (01)                               REALCICS
+           MOVE 'H ' TO DFH-DATA-CLASS (01)                             REALCICS
+	   SET DFH-ADDR (01) TO ADDRESS OF WS-RETNCODE			REALCICS
+	   ADD 0 LENGTH OF WS-RETNCODE GIVING DFH-SIZE (01)		REALCICS
            MOVE X'0604' TO DFH-COMMAND EIBFN                            REALCICS
 	   MOVE 006 TO DFH-VARS-COUNT					REALCICS
            CALL 'CICS_Exec_Std' USING CICSICB GIVING DFH-RETURN-STATUS  REALCICS
@@ -1250,18 +1433,23 @@
 	   IF DFH-RETURN-STATUS < 0 STOP RUN				REALCICS
 	   ELSE IF DFH-RETURN-STATUS > 0 PERFORM DFH-GOTO-HANDLE	REALCICS
 	       END-IF END-IF						REALCICS
+	   ADD 0 DFH-RESP GIVING WS-RETNCODE				REALCICS
       *$PP-LIST 							REALCICS
 
+           MOVE 'TICKET CREATED' TO WS-LOG-UPDATE-REMARKS
+	   MOVE USERID TO WS-LOG-LAST-UPDATE-BY
+	   MOVE NEW-TICKET-LAST-UPDATE TO WS-LOG-LAST-UPDATE
+
       *$PP-DEBUG							REALCICS
-      P    EXEC CICS
-      P     WRITE FILE('STF002D')
-      P     FROM (WS-LOG)
-      P     RIDFLD (WS-LOG-Ticket-ID)
-      P     RESP(WS-RETNCODE)
+      P    EXEC CICS WRITE
+      P         FILE('STF002D')
+      P 	FROM (WS-LOG)
+      P 	RIDFLD (WS-LOG-TICKET-ID)
+      P 	RESP(WS-RETNCODE)
       P    END-EXEC.
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 322 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 476 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1295,11 +1483,14 @@
 	   .								REALCICS
       *$PP-LIST 							REALCICS
        4000-EXIT. EXIT.
+
+
+
       *$PP-NOLIST CICS HI						REALCICS
        DFH-END SECTION. 						REALCICS
        DFH-CALL-END.							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 329 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 486 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE LOW-VALUE TO DFH-COMMAND				REALCICS
            CALL 'CICS_Module_End' USING CICSICB GIVING                  REALCICS
 	       DFH-RETURN-STATUS					REALCICS

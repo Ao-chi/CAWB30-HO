@@ -39,20 +39,31 @@
 
        01  WS-COMMAREA.
            05 WS-PGMID                           PIC X(06).
+           05 WS-STATE                           PIC X.
            05 WS-TICKET-PASSED                   PIC X(07).
            05 USERID.
               10  USERID7                        PIC X(7).
               10  FILLER                         PIC X(1).
            05 USR-TYPE.
-             15 USR-REQUESTOR                    PIC X.
-             15 USR-ADMIN                        PIC X.  
-             15 USR-APPROVER                     PIC X.
-             15 USR-SERVICE                      PIC X.
-           05 WS-STATE                           PIC X.
+              15 USR-REQUESTOR                   PIC X.
+              15 USR-ADMIN                       PIC X.  
+              15 USR-APPROVER                    PIC X.
+              15 USR-SERVICE                     PIC X.
+           05 COMM-TICKET-REC.
+              10 COMM-TICKET-ID                       PIC 9(07).
+              10 COMM-TICKET-KEY-NUM REDEFINES COMM-TICKET-ID PIC X(07).
+              10 COMM-TICKET-REQUESTOR                   PIC X(08).
+              10 COMM-TICKET-STATUS                      PIC X(10).
+              10 COMM-TICKET-TITLE                       PIC X(25).
+              10 COMM-TICKET-DESC                        PIC X(100).
+              10 COMM-TICKET-LAST-UPD                    PIC X(20). 
+              10 COMM-TICKET-LAST-UPD-BY                 PIC X(08). 
+              10 COMM-TICKET-UPD-REMARKS                 PIC X(50).  
 
        LINKAGE SECTION.
        01  DFHCOMMAREA.
            05 DF-PGMID                           PIC X(06).
+           05 DF-STATE                           PIC X.
            05 DF-TICKET-PASSED                   PIC X(07).
            05 DF-USERID.
               10  DF-USERID7                     PIC X(7).
@@ -62,7 +73,16 @@
              15 DF-USR-ADMIN                     PIC X.  
              15 DF-USR-APPROVER                  PIC X.
              15 DF-USR-SERVICE                   PIC X.
-           05 DF-STATE                           PIC X.
+           05 DF-TICKET-REC.
+              10 DF-TICKET-ID                       PIC 9(07).
+              10 DF-TICKET-KEY-NUM REDEFINES DF-TICKET-ID PIC 9(06).
+              10 DF-TICKET-REQUESTOR                   PIC X(08).
+              10 DF-TICKET-STATUS                      PIC X(10).
+              10 DF-TICKET-TITLE                       PIC X(25).
+              10 DF-TICKET-DESC                        PIC X(100).
+              10 DF-TICKET-LAST-UPD                    PIC X(20). 
+              10 DF-TICKET-LAST-UPD-BY                 PIC X(08). 
+              10 DF-TICKET-UPD-REMARKS                 PIC X(50).   
 
        PROCEDURE DIVISION.
        100-PROCESS.
@@ -72,9 +92,10 @@
            MOVE DFHCOMMAREA TO WS-COMMAREA
            IF WS-PGMID = 'SM000' OR WS-PGMID = 'SM001' OR
               WS-PGMID = 'SM012'
-              IF EIBCALEN NOT = +0
+              IF WS-STATE NOT = LOW-VALUES
                  PERFORM 200-REC-MAP
               ELSE 
+                 MOVE 1 TO WS-STATE
                  PERFORM 110-NEW-MAP
               END-IF   
            ELSE

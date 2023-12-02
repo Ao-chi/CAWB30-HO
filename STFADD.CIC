@@ -91,11 +91,14 @@
 		  15 FILLER PIC X(4).					REALCICS
       *$PP-LIST CICS HA 						REALCICS
        01  WS-CURRENT-MAP  VALUE 'sm0001s'        PIC X(7).
+      *01  WS-TIME				 PIC 9(15).
+       01  WS-DATE				 PIC 9(7).
+       01  WS-DATE-X REDEFINES WS-DATE		 PIC X(7).
        01  WS-USERID			 PIC X(8).
        01  WS-LENGTH			 PIC S9(4) COMP.
        01  WS-REC-LENGTH		 PIC S9(4) COMP VALUE +227.
        01  WS-KEY-LENGTH		 PIC S9(4) COMP VALUE +6.
-       01  WS-REC3-LENGTH		 PIC S9(4) COMP VALUE +90.
+       01  WS-REC3-LENGTH		 PIC S9(4) COMP VALUE +89.
        01  WS-KEY3-LENGTH		 PIC S9(4) COMP VALUE +9.
        01  WS-TIME			 PIC 9(15) COMP-3.
        01  WS-ERR-MSG			 PIC X(50).
@@ -110,82 +113,82 @@
        01  K				 PIC 9(03).
        01  WS-INVALID-RESP               PIC X(13) VALUE 'INVALID RESP'.
        01  WS-MASS-REC.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000006 ISCB101 ONGOING   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000007 ISCB102 APPROVED  '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000008 ISCB103 ONGOING   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000009 ISCB104 COMPLETED '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000010 ISCB105 CLOSED    '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000011 ISCB106 APPROVED  '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000012 ISCB107 COMPLETED '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000013 ISCB108 APPROVED  '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000014 ISCB109 CLOSED    '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000015 ISCB110 CREATED   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000016 ISCB110 CREATED   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000017 ISCB110 CREATED   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000018 ISCB110 APPROVED  '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000019 ISCB110 CREATED   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000020 ISCB120 ONGOING   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000021 ISCB120 ONGOING   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000022 ISCB120 CREATED   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000023 ISCB120 ONGOING   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000024 ISCB120 ONGOING   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000025 ISCB120 APPROVED  '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000026 ISCB120 APPROVED  '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000027 ISCB120 CREATED   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000028 ISCB120 CREATED   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000029 ISCB120 CREATED   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000030 ISCB130 APPROVED  '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000031 ISCB130 ONGOING   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000032 ISCB130 CREATED   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000033 ISCB130 ONGOING   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000034 ISCB130 ONGOING   '.
-	   05 FILLER	 PIC X(25)    VALUE
-              '000035 ISCB130 APPROVED  '.
+	   05 FILLER	 PIC X(24)    VALUE
+              '000006ISCB101 ONGOING   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000007ISCB102 APPROVED  '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000008ISCB103 ONGOING   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000009ISCB104 COMPLETED '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000010ISCB105 CLOSED    '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000011ISCB106 APPROVED  '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000012ISCB107 COMPLETED '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000013ISCB108 APPROVED  '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000014ISCB109 CLOSED    '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000015ISCB110 CREATED   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000016ISCB110 CREATED   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000017ISCB110 CREATED   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000018ISCB110 APPROVED  '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000019ISCB110 CREATED   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000020ISCB120 ONGOING   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000021ISCB120 ONGOING   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000022ISCB120 CREATED   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000023ISCB120 ONGOING   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000024ISCB120 ONGOING   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000025ISCB120 APPROVED  '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000026ISCB120 APPROVED  '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000027ISCB120 CREATED   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000028ISCB120 CREATED   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000029ISCB120 CREATED   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000030ISCB130 APPROVED  '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000031ISCB130 ONGOING   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000032ISCB130 CREATED   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000033ISCB130 ONGOING   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000034ISCB130 ONGOING   '.
+	   05 FILLER   PIC X(24)    VALUE
+              '000035ISCB130 APPROVED  '.
        01  FILLER REDEFINES WS-MASS-REC.
 	   05 WS-REC-TABLE	     OCCURS 30.
-	      10 Ticket-ID		    PIC X(7).
+	      10 Ticket-ID		    PIC X(6).
 	      10 Requestor		    PIC X(8).
 	      10 TKT-Stat		    PIC X(10).
        01  WS-REC-CONSTANTS.
            05 Ticket-Title           PIC X(25)  VALUE 'TITLE'.
            05 Ticket-Description     PIC X(100) VALUE 'DESCRIPTION'.
-	   05 Last-Update	     PIC X(20)	VALUE
-               '22/09/2022 10:11:23'.
+	   05 Last-Update	     PIC X(20).
+      *        '22/09/2022 10:11:23'.
            05 Last-Update-by         PIC X(8)  VALUE 'ISCB145 '.
-           05 Last-Update-Remarks    PIC X(50) VALUE 'REMARKS'.
+	   05 Last-Update-Remarks    PIC X(50).
 
        01  WS-REC.
-	   05 WS-REC-KEY		 PIC X(07).
-	   05 WS-REC-KEY-NUM REDEFINES WS-REC-KEY PIC 9(07).
+	   05 WS-REC-KEY		 PIC X(06).
+	   05 WS-REC-KEY-NUM REDEFINES WS-REC-KEY PIC 9(06).
 	   05 WS-REC-Requestor		 PIC X(8).
 	   05 WS-REC-Status		 PIC X(10).
 	   05 WS-REC-Title		 PIC X(25).
@@ -194,13 +197,15 @@
 	   05 WS-REC-Last-Update-by	 PIC X(8).
 	   05 WS-REC-Update-Remarks	 PIC X(50).
        01  WS-REC3.
-	   05 WS-REC3-Ticket-ID 	 PIC X(07).
-	   05 WS-REC3-Seq-Number	 PIC 9(03).
+	   05 WS-LOG-KEYS.
+	      10 WS-REC3-Ticket-ID	    PIC X(06).
+	      10 WS-REC3-Seq-Number	    PIC 9(03).
 	   05 WS-REC3-Last-Update	 PIC X(20).
 	   05 WS-REC3-Last-Update-by	 PIC X(8).
 	   05 WS-REC3-Update-Remarks	 PIC X(50).
 	   05 FILLER			 PIC X(2).
        77  WS-RESPONSE			 PIC S9(08) COMP.
+       01  WS-RIDFLD			 PIC X(09).
       *
       P     COPY DFHAID.
       *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHAID.COB
@@ -624,7 +629,7 @@
       P 	EXEC CICS IGNORE CONDITION ERROR END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'STFADD' TO DFH-SOURCE-NAME                             REALCICS
-	   MOVE 151 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 156 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '0' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE ' ' TO DFH-DATA-CLASS (02)                              REALCICS
@@ -638,16 +643,90 @@
       *$PP-LIST 							REALCICS
 		MOVE 1 TO I.
 		MOVE 1 TO K
-
+		move 1 TO J
 		PERFORM 30 TIMES
+	   MOVE EIBDATE TO WS-DATE
+      *$PP-DEBUG							REALCICS
+      P    EXEC CICS ASKTIME
+      P 	ABSTIME    (WS-TIME)
+      P    END-EXEC
+      *$PP-NOLIST							REALCICS
+           MOVE 'STFADD' TO DFH-SOURCE-NAME                             REALCICS
+	   MOVE 162 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 001 TO DFH-FLAG (02)					REALCICS
+           MOVE '1' TO DFH-DATA-TYPE (02)                               REALCICS
+           MOVE 'T ' TO DFH-DATA-CLASS (02)                             REALCICS
+	   SET DFH-ADDR (02) TO ADDRESS OF WS-TIME			REALCICS
+	   ADD 0 LENGTH OF WS-TIME GIVING DFH-SIZE (02) 		REALCICS
+           MOVE X'4A02' TO DFH-COMMAND EIBFN                            REALCICS
+	   MOVE 002 TO DFH-VARS-COUNT					REALCICS
+           CALL 'CICS_Exec_Std' USING CICSICB GIVING DFH-RETURN-STATUS  REALCICS
+           IF DFH-RETURN-STATUS = -1 CALL 'CICS_Link_Abend' USING       REALCICS
+	       CICSICB END-IF						REALCICS
+	   IF DFH-RETURN-STATUS < 0 STOP RUN				REALCICS
+	   ELSE IF DFH-RETURN-STATUS > 0 PERFORM DFH-GOTO-HANDLE	REALCICS
+	       END-IF END-IF						REALCICS
+      *$PP-LIST 							REALCICS
+      *$PP-DEBUG							REALCICS
+      P    EXEC CICS FORMATTIME
+      P 	ABSTIME    (WS-TIME)
+      P         DATESEP    ('/')
+      P 	MMDDYYYY   (Last-Update(1:10))
+      P 	TIME	   (Last-Update(12:9))
+      P         TIMESEP    (':')
+      P    END-EXEC
+      *$PP-NOLIST							REALCICS
+           MOVE 'STFADD' TO DFH-SOURCE-NAME                             REALCICS
+	   MOVE 165 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 001 TO DFH-FLAG (02)					REALCICS
+           MOVE '1' TO DFH-DATA-TYPE (02)                               REALCICS
+           MOVE 'T ' TO DFH-DATA-CLASS (02)                             REALCICS
+	   SET DFH-ADDR (02) TO ADDRESS OF WS-TIME			REALCICS
+	   ADD 0 LENGTH OF WS-TIME GIVING DFH-SIZE (02) 		REALCICS
+	   MOVE 001 TO DFH-FLAG (09)					REALCICS
+           MOVE '8' TO DFH-DATA-TYPE (09)                               REALCICS
+           MOVE '1 ' TO DFH-DATA-CLASS (09)                             REALCICS
+           MOVE '/' TO DFH-DATA1 (09)                                   REALCICS
+	   SET DFH-ADDR (09) TO ADDRESS OF DFH-DATA1 (09)		REALCICS
+	   ADD 0 LENGTH OF DFH-DATA1 (09) GIVING DFH-SIZE (09)		REALCICS
+	   MOVE 001 TO DFH-FLAG (22)					REALCICS
+           MOVE '1' TO DFH-DATA-TYPE (22)                               REALCICS
+           MOVE 'A ' TO DFH-DATA-CLASS (22)                             REALCICS
+	   SET DFH-ADDR (22) TO ADDRESS OF LAST-UPDATE ( 1 : 10 )	REALCICS
+	   ADD 0 LENGTH OF LAST-UPDATE ( 1 : 10 ) GIVING DFH-SIZE (22)	REALCICS
+	   MOVE 001 TO DFH-FLAG (15)					REALCICS
+           MOVE '1' TO DFH-DATA-TYPE (15)                               REALCICS
+           MOVE '8 ' TO DFH-DATA-CLASS (15)                             REALCICS
+	   SET DFH-ADDR (15) TO ADDRESS OF LAST-UPDATE ( 12 : 9 )	REALCICS
+	   ADD 0 LENGTH OF LAST-UPDATE ( 12 : 9 ) GIVING DFH-SIZE (15)	REALCICS
+	   MOVE 001 TO DFH-FLAG (17)					REALCICS
+           MOVE '8' TO DFH-DATA-TYPE (17)                               REALCICS
+           MOVE '1 ' TO DFH-DATA-CLASS (17)                             REALCICS
+           MOVE ':' TO DFH-DATA1 (17)                                   REALCICS
+	   SET DFH-ADDR (17) TO ADDRESS OF DFH-DATA1 (17)		REALCICS
+	   ADD 0 LENGTH OF DFH-DATA1 (17) GIVING DFH-SIZE (17)		REALCICS
+           MOVE X'4A04' TO DFH-COMMAND EIBFN                            REALCICS
+	   MOVE 022 TO DFH-VARS-COUNT					REALCICS
+           CALL 'CICS_Exec_Std' USING CICSICB GIVING DFH-RETURN-STATUS  REALCICS
+           IF DFH-RETURN-STATUS = -1 CALL 'CICS_Link_Abend' USING       REALCICS
+	       CICSICB END-IF						REALCICS
+	   IF DFH-RETURN-STATUS < 0 STOP RUN				REALCICS
+	   ELSE IF DFH-RETURN-STATUS > 0 PERFORM DFH-GOTO-HANDLE	REALCICS
+	       END-IF END-IF						REALCICS
+      *$PP-LIST 							REALCICS
 		     MOVE Ticket-ID(I)	     TO
 			  WS-REC-KEY
 		     MOVE Last-Update	      TO
 			 WS-REC-Last-Update
 		     MOVE Last-Update-by      TO
 			 WS-REC-Last-Update-by
-		     MOVE Last-Update-Remarks TO
-			 WS-REC-Update-Remarks
+                     STRING 'QUICK UPDATE: RESOLVED AND CLOSED! '
+			 DELIMITED BY SIZE
+			 J DELIMITED BY SIZE
+			 INTO  WS-REC-Update-Remarks
+		     END-STRING
+      * 	     MOVE Last-Update-Remarks TO
+      * 		 WS-REC-Update-Remarks
       * 	    MOVE 1 TO K
 			 MOVE WS-REC-KEY TO WS-REC3-Ticket-ID
 			 MOVE K TO WS-REC3-Seq-Number
@@ -657,20 +736,21 @@
 			      WS-REC3-Last-Update-by
 			 MOVE WS-REC-Update-Remarks TO
 			      WS-REC3-Update-Remarks
+
       *$PP-DEBUG							REALCICS
-      P                  EXEC CICS WRITE FILE('STF002D')
+      P                  EXEC CICS WRITE FILE('STF002E')
       P 		      FROM (WS-REC3)
-      P 		      RIDFLD (WS-REC3-Ticket-ID)
+      P 		      RIDFLD (WS-LOG-KEYS)
       P 		      LENGTH (WS-REC3-LENGTH)
       P 		      RESP2 (WS-RESPONSE)
       P 		END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'STFADD' TO DFH-SOURCE-NAME                             REALCICS
-	   MOVE 173 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 195 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
-           MOVE 'STF002D' TO DFH-DATA8 (02)                             REALCICS
+           MOVE 'STF002E' TO DFH-DATA8 (02)                             REALCICS
 	   SET DFH-ADDR (02) TO ADDRESS OF DFH-DATA8 (02)		REALCICS
 	   ADD 0 LENGTH OF DFH-DATA8 (02) GIVING DFH-SIZE (02)		REALCICS
 	   MOVE 001 TO DFH-FLAG (04)					REALCICS
@@ -681,8 +761,8 @@
 	   MOVE 001 TO DFH-FLAG (06)					REALCICS
            MOVE '1' TO DFH-DATA-TYPE (06)                               REALCICS
            MOVE ' ' TO DFH-DATA-CLASS (06)                              REALCICS
-	   SET DFH-ADDR (06) TO ADDRESS OF WS-REC3-TICKET-ID		REALCICS
-	   ADD 0 LENGTH OF WS-REC3-TICKET-ID GIVING DFH-SIZE (06)	REALCICS
+	   SET DFH-ADDR (06) TO ADDRESS OF WS-LOG-KEYS			REALCICS
+	   ADD 0 LENGTH OF WS-LOG-KEYS GIVING DFH-SIZE (06)		REALCICS
 	   MOVE 001 TO DFH-FLAG (05)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (05)                               REALCICS
            MOVE 'H ' TO DFH-DATA-CLASS (05)                             REALCICS
@@ -705,7 +785,7 @@
       P 		 END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'STFADD' TO DFH-SOURCE-NAME                             REALCICS
-	   MOVE 180 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 202 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '1' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE ' ' TO DFH-DATA-CLASS (02)                              REALCICS
@@ -726,13 +806,14 @@
 			 END-IF
 			 ADD 1 TO I
 			ADD 1 TO K
+			ADD 1 TO J
 		END-PERFORM
       *$PP-DEBUG							REALCICS
       P 	EXEC CICS RETURN
       P 	END-EXEC.
       *$PP-NOLIST							REALCICS
            MOVE 'STFADD' TO DFH-SOURCE-NAME                             REALCICS
-	   MOVE 187 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 210 TO DFH-SOURCE-LINE-NUM				REALCICS
            MOVE X'0E08' TO DFH-COMMAND EIBFN                            REALCICS
 	   MOVE 000 TO DFH-VARS-COUNT					REALCICS
            CALL 'CICS_Exec_Std' USING CICSICB GIVING DFH-RETURN-STATUS  REALCICS
@@ -748,7 +829,7 @@
        DFH-END SECTION. 						REALCICS
        DFH-CALL-END.							REALCICS
            MOVE 'STFADD' TO DFH-SOURCE-NAME                             REALCICS
-	   MOVE 190 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 213 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE LOW-VALUE TO DFH-COMMAND				REALCICS
            CALL 'CICS_Module_End' USING CICSICB GIVING                  REALCICS
 	       DFH-RETURN-STATUS					REALCICS

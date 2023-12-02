@@ -501,102 +501,125 @@
     39
     40	     01  WS-COMMAREA.
     41		 05 WS-PGMID			       PIC X(06).
-    42		 05 WS-TICKET-PASSED		       PIC X(07).
-    43		 05 USERID.
-    44		    10	USERID7 		       PIC X(7).
-    45		    10	FILLER			       PIC X(1).
-    46		 05 USR-TYPE.
-    47		   15 USR-REQUESTOR		       PIC X.
-    48		   15 USR-ADMIN 		       PIC X.
-    49		   15 USR-APPROVER		       PIC X.
-    50		   15 USR-SERVICE		       PIC X.
-    51		 05 WS-STATE			       PIC X.
-    52
-    53	     LINKAGE SECTION.
-    54	     01  DFHCOMMAREA.
-    55		 05 DF-PGMID			       PIC X(06).
-    56		 05 DF-TICKET-PASSED		       PIC X(07).
-    57		 05 DF-USERID.
-    58		    10	DF-USERID7		       PIC X(7).
-    59		    10	FILLER			       PIC X(1).
-    60		 05 DF-USR-TYPE.
-    61		   15 DF-USR-REQUESTOR		       PIC X.
-    62		   15 DF-USR-ADMIN		       PIC X.
-    63		   15 DF-USR-APPROVER		       PIC X.
-    64		   15 DF-USR-SERVICE		       PIC X.
-    65		 05 DF-STATE			       PIC X.
-    66
-    67	     PROCEDURE DIVISION 					      REALCICS
-    68	     100-PROCESS.
-    69		 EXEC CICS IGNORE CONDITION
-    70			   ERROR
-    71		 END-EXEC
-    72		 MOVE DFHCOMMAREA TO WS-COMMAREA
-    73           IF WS-PGMID = 'SM000' OR WS-PGMID = 'SM001' OR
-    74              WS-PGMID = 'SM012'
-    75		    IF EIBCALEN NOT = +0
-    76		       PERFORM 200-REC-MAP
-    77		    ELSE
-    78		       PERFORM 110-NEW-MAP
-    79		    END-IFCA-Realia CACXPREP D:\work\CAWB30-HO\SM006.COB
+    42		 05 WS-STATE			       PIC X.
+    43		 05 WS-TICKET-PASSED		       PIC X(07).
+    44		 05 USERID.
+    45		    10	USERID7 		       PIC X(7).
+    46		    10	FILLER			       PIC X(1).
+    47		 05 USR-TYPE.
+    48		    15 USR-REQUESTOR		       PIC X.
+    49		    15 USR-ADMIN		       PIC X.
+    50		    15 USR-APPROVER		       PIC X.
+    51		    15 USR-SERVICE		       PIC X.
+    52		 05 COMM-TICKET-REC.
+    53		    10 COMM-TICKET-ID			    PIC 9(07).
+    54		    10 COMM-TICKET-KEY-NUM REDEFINES COMM-TICKET-ID PIC X(07).
+    55		    10 COMM-TICKET-REQUESTOR		       PIC X(08).
+    56		    10 COMM-TICKET-STATUS		       PIC X(10).
+    57		    10 COMM-TICKET-TITLE		       PIC X(25).
+    58		    10 COMM-TICKET-DESC 		       PIC X(100).
+    59		    10 COMM-TICKET-LAST-UPD		       PIC X(20).
+    60		    10 COMM-TICKET-LAST-UPD-BY		       PIC X(08).
+    61		    10 COMM-TICKET-UPD-REMARKS		       PIC X(50).
+    62
+    63	     LINKAGE SECTION.
+    64	     01  DFHCOMMAREA.
+    65		 05 DF-PGMID			       PIC X(06).
+    66		 05 DF-STATE			       PIC X.
+    67		 05 DF-TICKET-PASSED		       PIC X(07).
+    68		 05 DF-USERID.
+    69		    10	DF-USERID7		       PIC X(7).
+    70		    10	FILLER			       PIC X(1).
+    71		 05 DF-USR-TYPE.
+    72		   15 DF-USR-REQUESTOR		       PIC X.
+    73		   15 DF-USR-ADMIN		       PIC X.
+    74		   15 DF-USR-APPROVER		       PIC X.
+    75		   15 DF-USR-SERVICE		       PIC X.
+    76		 05 DF-TICKET-REC.
+    77		    10 DF-TICKET-ID			  PIC 9(07).
+    78		    10 DF-TICKET-KEY-NUM REDEFINES DF-TICKET-ID PIC 9(06).
+    79		    10 DF-TICKET-REQUESTOR		     PIC X(08).CA-Realia CACXPREP D:\work\CAWB30-HO\SM006.COB
 
 
-    80		 ELSE
-    81		     MOVE SPACES TO ERRMSGO
-    82		     MOVE LENGTH OF WS-INVALID-ACCESS TO WS-LENGTH
-    83		     EXEC CICS SEND TEXT
-    84			     FROM (WS-INVALID-ACCESS)
-    85			     LENGTH (WS-LENGTH)
-    86			     ERASE
-    87			END-EXEC
-    88		     EXEC CICS RETURN
-    89		     END-EXEC
-    90		 END-IF.
-    91	     100-EXIT.
-    92		 EXIT.
-    93
-    94	     110-NEW-MAP.
-    95		 MOVE EIBDATE TO WS-DATE.
-    96		 MOVE WS-DATE-X TO DATEO.
-    97		 EXEC CICS ASKTIME
-    98		     ABSTIME  (WS-TIME)
-    99		     END-EXEC
-   100		     EXEC CICS FORMATTIME
-   101		     ABSTIME  (WS-TIME)
-   102               DATESEP  ('/')
-   103		     MMDDYYYY (DATEO)
-   104		     TIME     (TIMEO)
-   105               TIMESEP  (':')
-   106		 END-EXEC
-   107		 MOVE DFHBMASB TO TIMEA
-   108		 MOVE DFHBMASB TO DATEA
-   109		 MOVE -1       TO TKTNUML
-   110		 MOVE LENGTH OF SM006MO TO WS-LENGTH
-   111		 EXEC CICS SEND
-   112                 MAP('SM006M')
-   113                 MAPSET('SM06S')
-   114		       FROM(SM006MO)
-   115		       LENGTH(WS-LENGTH)
-   116		       ERASE
-   117		 END-EXEC
-   118		 EXEC CICS RETURN
-   119                    TRANSID('SM06')
-   120			      COMMAREA(WS-COMMAREA)
-   121		     END-EXEC.
-   122	     110-EXIT.
-   123		 EXIT.
-   124
-   125	     200-REC-MAP.
-   126		 EXEC CICS RECEIVE
-   127                MAP('SM006M')
-   128                MAPSET('SM06S')
-   129		      INTO (SM006MI)
-   130		 END-EXEC
-   131		 IF EIBRESP = DFHRESP(MAPFAIL)
-   132		    MOVE WS-MAPFAIL TO ERRMSGO
-   133		 END-IF.
-   134	     200-EXIT.
-   135		 EXIT.
+    80		    10 DF-TICKET-STATUS 		     PIC X(10).
+    81		    10 DF-TICKET-TITLE			     PIC X(25).
+    82		    10 DF-TICKET-DESC			     PIC X(100).
+    83		    10 DF-TICKET-LAST-UPD		     PIC X(20).
+    84		    10 DF-TICKET-LAST-UPD-BY		     PIC X(08).
+    85		    10 DF-TICKET-UPD-REMARKS		     PIC X(50).
+    86
+    87	     PROCEDURE DIVISION 					      REALCICS
+    88	     100-PROCESS.
+    89		 EXEC CICS IGNORE CONDITION
+    90			   ERROR
+    91		 END-EXEC
+    92		 MOVE DFHCOMMAREA TO WS-COMMAREA
+    93           IF WS-PGMID = 'SM000' OR WS-PGMID = 'SM001' OR
+    94              WS-PGMID = 'SM012'
+    95		    IF WS-STATE NOT = LOW-VALUES
+    96		       PERFORM 200-REC-MAP
+    97		    ELSE
+    98		       MOVE 1 TO WS-STATE
+    99		       PERFORM 110-NEW-MAP
+   100		    END-IF
+   101		 ELSE
+   102		     MOVE SPACES TO ERRMSGO
+   103		     MOVE LENGTH OF WS-INVALID-ACCESS TO WS-LENGTH
+   104		     EXEC CICS SEND TEXT
+   105			     FROM (WS-INVALID-ACCESS)
+   106			     LENGTH (WS-LENGTH)
+   107			     ERASE
+   108			END-EXEC
+   109		     EXEC CICS RETURN
+   110		     END-EXEC
+   111		 END-IF.
+   112	     100-EXIT.
+   113		 EXIT.
+   114
+   115	     110-NEW-MAP.
+   116		 MOVE EIBDATE TO WS-DATE.
+   117		 MOVE WS-DATE-X TO DATEO.
+   118		 EXEC CICS ASKTIME
+   119		     ABSTIME  (WS-TIME)
+   120		     END-EXEC
+   121		     EXEC CICS FORMATTIME
+   122		     ABSTIME  (WS-TIME)
+   123               DATESEP  ('/')
+   124		     MMDDYYYY (DATEO)
+   125		     TIME     (TIMEO)
+   126               TIMESEP  (':')
+   127		 END-EXEC
+   128		 MOVE DFHBMASB TO TIMEA
+   129		 MOVE DFHBMASB TO DATEA
+   130		 MOVE -1       TO TKTNUML
+   131		 MOVE LENGTH OF SM006MO TO WS-LENGTH
+   132		 EXEC CICS SEND
+   133                 MAP('SM006M')
+   134                 MAPSET('SM06S')
+   135		       FROM(SM006MO)
+   136		       LENGTH(WS-LENGTH)
+   137		       ERASECA-Realia CACXPREP D:\work\CAWB30-HO\SM006.COB
+
+
+   138		 END-EXEC
+   139		 EXEC CICS RETURN
+   140                    TRANSID('SM06')
+   141			      COMMAREA(WS-COMMAREA)
+   142		     END-EXEC.
+   143	     110-EXIT.
+   144		 EXIT.
+   145
+   146	     200-REC-MAP.
+   147		 EXEC CICS RECEIVE
+   148                MAP('SM006M')
+   149                MAPSET('SM06S')
+   150		      INTO (SM006MI)
+   151		 END-EXEC
+   152		 IF EIBRESP = DFHRESP(MAPFAIL)
+   153		    MOVE WS-MAPFAIL TO ERRMSGO
+   154		 END-IF.
+   155	     200-EXIT.
+   156		 EXIT.
 CA-Realia CACXPREP D:\work\CAWB30-HO\SM006.COB
 
 
@@ -614,6 +637,6 @@
 		      PPCODE
 		      DCHK
 
-		Source Lines Translated:     582
+		Source Lines Translated:     603
 		Translation Time:	     .01 sec
-		Translation Speed:	  820000 lines per min
+		Translation Speed:	   30000 lines per min

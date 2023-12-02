@@ -41,6 +41,11 @@
 	   02  FILLER REDEFINES STATSF.
 	       03  STATSA			      PIC X.
 	   02  STATSI				      PIC X(007).
+	   02  UPML				      PIC S9(4) COMP.
+	   02  UPMF				      PIC X.
+	   02  FILLER REDEFINES UPMF.
+	       03  UPMA 			      PIC X.
+	   02  UPMI				      PIC X(020).
 	   02  UPR1L				      PIC S9(4) COMP.
 	   02  UPR1F				      PIC X.
 	   02  FILLER REDEFINES UPR1F.
@@ -51,6 +56,11 @@
 	   02  FILLER REDEFINES UPR2F.
 	       03  UPR2A			      PIC X.
 	   02  UPR2I				      PIC X(025).
+	   02  UPDTL				      PIC S9(4) COMP.
+	   02  UPDTF				      PIC X.
+	   02  FILLER REDEFINES UPDTF.
+	       03  UPDTA			      PIC X.
+	   02  UPDTI				      PIC X(020).
 	   02  UPDATEL				      PIC S9(4) COMP.
 	   02  UPDATEF				      PIC X.
 	   02  FILLER REDEFINES UPDATEF.
@@ -61,11 +71,16 @@
 	   02  FILLER REDEFINES UPTIMEF.
 	       03  UPTIMEA			      PIC X.
 	   02  UPTIMEI				      PIC X(008).
+	   02  UPBYL				      PIC S9(4) COMP.
+	   02  UPBYF				      PIC X.
+	   02  FILLER REDEFINES UPBYF.
+	       03  UPBYA			      PIC X.
+	   02  UPBYI				      PIC X(020).
 	   02  UPBL				      PIC S9(4) COMP.
 	   02  UPBF				      PIC X.
 	   02  FILLER REDEFINES UPBF.
 	       03  UPBA 			      PIC X.
-	   02  UPBI				      PIC X(006).
+	   02  UPBI				      PIC X(007).
 	   02  ERRMSGL				      PIC S9(4) COMP.
 	   02  ERRMSGF				      PIC X.
 	   02  FILLER REDEFINES ERRMSGF.
@@ -99,10 +114,16 @@
 	   02  STATSO				      PIC X(007).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
+	   02  UPMO				      PIC X(020).
+	   02  FILLER				      PIC XX.
+	   02  FILLER				      PIC X.
 	   02  UPR1O				      PIC X(025).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  UPR2O				      PIC X(025).
+	   02  FILLER				      PIC XX.
+	   02  FILLER				      PIC X.
+	   02  UPDTO				      PIC X(020).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  UPDATEO				      PIC X(010).
@@ -111,7 +132,10 @@
 	   02  UPTIMEO				      PIC X(008).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  UPBO				      PIC X(006).
+	   02  UPBYO				      PIC X(020).
+	   02  FILLER				      PIC XX.
+	   02  FILLER				      PIC X.
+	   02  UPBO				      PIC X(007).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  ERRMSGO				      PIC X(058).

@@ -170,6 +170,22 @@
                PROCESS=STANDARD,                                       CCASAMPLE
                FILENAME='STF002D.DAT',                                 CCASAMPLE
                CREATE=NO                                                CASAMPLE 
+*STF01E File                                                            CASAMPLE
+         DFHFCT TYPE=FILE,                                             CCASAMPLE
+               FILE=STF002E,                                           CCASAMPLE
+               ACCMETH=VSAM,                                           CCASAMPLE
+               FILSTAT=(ENABLED),                                      CCASAMPLE
+               LOG=YES,                                                CCASAMPLE
+               SERVREQ=(UPDATE,BROWSE,DELETE,ADD,READ)                  CASAMPLE
+*STF01e File                                                            CASAMPLE
+         DFHXFT TYPE=FILE,                                             CCASAMPLE
+               FILE=STF002E,                                           CCASAMPLE
+               KEY=(9,0),                                              CCASAMPLE
+               RECLEN=00089,                                           CCASAMPLE
+               ACCMETH=KSDS,                                           CCASAMPLE
+               PROCESS=STANDARD,                                       CCASAMPLE
+               FILENAME='STF002E.DAT',                                 CCASAMPLE
+               CREATE=NO                                                CASAMPLE                
 *MASTER NAME File                                                       CASAMPLE
          DFHFCT TYPE=FILE,                                             CCASAMPLE
                FILE=NAMEFILE,                                          CCASAMPLE
@@ -225,6 +241,9 @@
                PROGRAM=SM006,                                          CCASAMPLE
                TRANSID=SM06                                             CASAMPLE
          DFHPCT TYPE=ENTRY,                                            CCASAMPLE
+               PROGRAM=SM012,                                          CCASAMPLE
+               TRANSID=SM12                                             CASAMPLE
+         DFHPCT TYPE=ENTRY,                                            CCASAMPLE
                PROGRAM=UA001,                                          CCASAMPLE
                TRANSID=SM07                                             CASAMPLE 
          DFHPCT TYPE=ENTRY,                                            CCASAMPLE
@@ -258,11 +277,15 @@
          DFHPPT TYPE=ENTRY,                                            CCASAMPLE
                MAPSET=SM02S                                             CASAMPLE 
          DFHPPT TYPE=ENTRY,                                            CCASAMPLE
+               MAPSET=SM03S                                             CASAMPLE 
+         DFHPPT TYPE=ENTRY,                                            CCASAMPLE
                MAPSET=SM04S                                             CASAMPLE
          DFHPPT TYPE=ENTRY,                                            CCASAMPLE
                MAPSET=SM05S                                             CASAMPLE  
          DFHPPT TYPE=ENTRY,                                            CCASAMPLE
                MAPSET=SM06S                                             CASAMPLE 
+         DFHPPT TYPE=ENTRY,                                            CCASAMPLE
+               MAPSET=SM012S                                            CASAMPLE
          DFHPPT TYPE=ENTRY,                                            CCASAMPLE
                MAPSET=UA002S                                            CASAMPLE 
          DFHPPT TYPE=ENTRY,                                            CCASAMPLE
@@ -290,6 +313,9 @@
                PGMLANG=COBOL                                            CASAMPLE
          DFHPPT TYPE=ENTRY,                                            CCASAMPLE
                PROGRAM=SM006,                                          CCASAMPLE
+               PGMLANG=COBOL                                            CASAMPLE
+         DFHPPT TYPE=ENTRY,                                            CCASAMPLE
+               PROGRAM=SM012,                                          CCASAMPLE
                PGMLANG=COBOL                                            CASAMPLE
          DFHPPT TYPE=ENTRY,                                            CCASAMPLE
                PROGRAM=UA001,                                          CCASAMPLE

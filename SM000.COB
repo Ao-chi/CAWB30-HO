@@ -23,6 +23,18 @@
                    15  WS-APPROVER               PIC X.
                    15  WS-SERVICE                PIC X.
                10  WS-UPDATEDBY                  PIC X(8).
+       01  WS-STF-KEY-LEN                        PIC S9(4) COMP VALUE 7.        
+       01  WS-TICKET-REC.
+           05 WS-TICKET-ID                       PIC 9(07).
+           05 WS-TICKET-KEY-NUM REDEFINES WS-TICKET-ID PIC X(07).
+           05 WS-TICKET-REQUESTOR                   PIC X(08).
+           05 WS-TICKET-STATUS                      PIC X(10).
+           05 WS-TICKET-TITLE                       PIC X(25).
+           05 WS-TICKET-DESC                        PIC X(100).
+           05 WS-TICKET-LAST-UPD                    PIC X(20). 
+           05 WS-TICKET-LAST-UPD-BY                 PIC X(08). 
+           05 WS-TICKET-UPD-REMARKS                 PIC X(50).
+
        01  WS-CURRENT-MAP  VALUE 'SM00S'         PIC X(7).
        01  WS-TIME                               PIC 9(15) COMP-3.
        01  WS-DATE                               PIC 9(7).
@@ -44,6 +56,7 @@
 
        01  WS-COMMAREA.
            05 WS-PGMID                           PIC X(06).
+           05 WS-STATE                           PIC X.
            05 WS-TICKET-PASSED                   PIC X(07).
            05 USERID.
               10  USERID7                        PIC X(7).
@@ -53,7 +66,16 @@
               15 USR-ADMIN                       PIC X.  
               15 USR-APPROVER                    PIC X.
               15 USR-SERVICE                     PIC X.
-           05 WS-STATE                           PIC X.
+      *    05 COMM-TICKET-REC.
+      *       10 COMM-TICKET-ID                       PIC 9(07).
+      *       10 COMM-TICKET-KEY-NUM REDEFINES COMM-TICKET-ID PIC X(07).
+      *       10 COMM-TICKET-REQUESTOR                   PIC X(08).
+      *       10 COMM-TICKET-STATUS                      PIC X(10).
+      *       10 COMM-TICKET-TITLE                       PIC X(25).
+      *       10 COMM-TICKET-DESC                        PIC X(100).
+      *       10 COMM-TICKET-LAST-UPD                    PIC X(20). 
+      *       10 COMM-TICKET-LAST-UPD-BY                 PIC X(08). 
+      *       10 COMM-TICKET-UPD-REMARKS                 PIC X(50).   
    
        77 WS-RETNCODE                            PIC S9(8) COMP.
            COPY SM00S.
@@ -63,6 +85,7 @@
        LINKAGE SECTION.
         01  DFHCOMMAREA.
            05 DF-PGMID                           PIC X(06).
+           05 DF-STATE                           PIC X.
            05 DF-TICKET-PASSED                   PIC X(07).
            05 DF-USERID.
               10  DF-USERID7                     PIC X(7).
@@ -72,8 +95,17 @@
              15 DF-USR-ADMIN                     PIC X.  
              15 DF-USR-APPROVER                  PIC X.
              15 DF-USR-SERVICE                   PIC X.
-           05 DF-STATE                           PIC X.
-
+      *    05 DF-TICKET-REC.
+      *       10 DF-TICKET-ID                       PIC 9(07).
+      *       10 DF-TICKET-KEY-NUM REDEFINES DF-TICKET-ID PIC 9(06).
+      *       10 DF-TICKET-REQUESTOR                   PIC X(08).
+      *       10 DF-TICKET-STATUS                      PIC X(10).
+      *       10 DF-TICKET-TITLE                       PIC X(25).
+      *       10 DF-TICKET-DESC                        PIC X(100).
+      *       10 DF-TICKET-LAST-UPD                    PIC X(20). 
+      *       10 DF-TICKET-LAST-UPD-BY                 PIC X(08). 
+      *       10 DF-TICKET-UPD-REMARKS                 PIC X(50).   
+   
        PROCEDURE DIVISION.
        100-PROCESS.
            EXEC CICS IGNORE CONDITION
@@ -221,7 +253,7 @@
            END-EXEC
            EXEC CICS FORMATTIME
                 ABSTIME    (WS-TIME)
-                DATESEP    ('-')
+                DATESEP    ('/')
                 MMDDYYYY   (DATEO)
                 TIME       (TIMEO)
                 TIMESEP    (':')
@@ -291,19 +323,20 @@
            EXIT.
 
        21C-UPDATE-SM003.
+           MOVE LOW-VALUES TO WS-STATE
            MOVE TICKETI TO WS-TICKET-PASSED
            MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-           EXEC CICS LINK
+           EXEC CICS XCTL
                 PROGRAM('SM003')
                 COMMAREA(WS-COMMAREA)
                 LENGTH(WS-LENGTH)
                 RESP(WS-RETNCODE)
-           END-EXEC
-           MOVE 'SM003' TO ERRMSGO.
+           END-EXEC.
        21C-EXIT.
            EXIT.
 
        21D-CLOSE-SM004.
+           MOVE LOW-VALUES TO WS-STATE
            MOVE TICKETI TO WS-TICKET-PASSED
            MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
            EXEC CICS LINK
@@ -329,12 +362,24 @@
 
        21F-CANCEL-SM006.
            MOVE TICKETI TO WS-TICKET-PASSED
-           MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-           EXEC CICS LINK
-                PROGRAM('SM006')
-                COMMAREA(WS-COMMAREA)
-                LENGTH(WS-LENGTH)
-           END-EXEC.
+           MOVE LOW-VALUES TO WS-STATE
+           IF TICKETI NOT = LOW-VALUES OR SPACES
+              PERFORM 500-CHECK-TICKET
+      *       MOVE WS-TICKET-REC TO COMM-TICKET-REC
+              MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+              EXEC CICS XCTL
+                   PROGRAM('SM006')
+                   COMMAREA(WS-COMMAREA)
+                   LENGTH(WS-LENGTH)
+              END-EXEC
+           ELSE
+              MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+              EXEC CICS XCTL
+                   PROGRAM('SM006')
+                   COMMAREA(WS-COMMAREA)
+                   LENGTH(WS-LENGTH)
+              END-EXEC 
+           END-IF.   
        21F-EXIT.
            EXIT.
            
@@ -655,3 +700,18 @@
        400-EXIT.
            EXIT.
        
+       500-CHECK-TICKET.
+           MOVE WS-TICKET-PASSED TO WS-TICKET-KEY-NUM
+           EXEC CICS 
+                READ FILE('STF001C')
+                INTO (WS-TICKET-REC)
+                RIDFLD (WS-TICKET-KEY-NUM)
+                KEYLENGTH (WS-STF-KEY-LEN)
+                
+                EQUAL
+           END-EXEC
+           IF EIBRESP = DFHRESP(NOTFND) OR EIBRESP2 = +80
+              MOVE 'TICKET NOT FOUND' TO ERRMSGO
+           END-IF.
+       500-EXIT.
+           EXIT.

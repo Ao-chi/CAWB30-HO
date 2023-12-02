@@ -16,13 +16,13 @@
       *                     COPYBOOK REDEFINES                         *
       *----------------------------------------------------------------*
        01  DETL-LINE REDEFINES SM001MI.
-           05 FILLER                              PIC X(104).
+           05 FILLER                              PIC X(103).
            05 DETL-SELECT                         OCCURS 11.
               10 DETL-SELECTL                     PIC S9(4) COMP.
               10 DETL-SELECTF                     PIC X.
 	           10 FILLER REDEFINES DETL-SELECTF.
                  15 DETL-SELECTA                  PIC X.
-	           10 DETL-SELECTI                     PIC X(001). 
+	           10 DETL-SELECTI                     PIC X(001).
            05 DETL-DETAIL                         OCCURS 11.
               10 DETL-DETAILL                     PIC S9(4) COMP.
               10 DETL-DETAILF                     PIC X.
@@ -85,13 +85,16 @@
        01  WS-DATE                               PIC 9(7).
        01  WS-DATE-X REDEFINES WS-DATE           PIC X(7).
        01  WS-LENGTH                             PIC S9(4) COMP.
-       01  WS-FLAG                               PIC X    VALUE 'N'.
+       01  WS-FLAGS.
+           05 WS-FLAG                            PIC X    VALUE 'N'.
+           05 WS-PAGE-CHANGED                    PIC X VALUE 'N'.
        01  WS-SELECTED-VALUE                     PIC X.
        01  WS-COUNTERS.
            05 WS-INDEX                           PIC 9(02).   
            05 WS-I                               PIC 9(02).                        
            05 WS-SELECT-COUNT                    PIC 9.
            05 WS-PAGE-UPDOWN                     PIC 9(02).
+
 
        01  WS-ERRMSGS.
            05 WS-INVALID-ACCESS                  PIC X(15) VALUE
@@ -122,8 +125,10 @@
        01  WS-LASTPAGE                           PIC X(1).
        01  WS-FIRSTPAGE                          PIC X(1).
        01  WS-PAGE-CTR                           PIC 9(02).
+
        01  WS-COMMAREA.
            05 WS-PGMID                           PIC X(06).
+           05 WS-STATE                           PIC X.
            05 WS-TICKET-PASSED                   PIC X(07).
            05 USERID.
               10  USERID7                        PIC X(7).
@@ -151,7 +156,6 @@
            05 WS-FUSER                           PIC X(07).
            05 WS-PAGE                            PIC 9(02).
            05 WS-PAGE-END                        PIC 9(01).
-           05 WS-STATE                           PIC X.
            05 WS-QITEM                           PIC S9(4) COMP.
            05 WS-QITEM-START                     PIC S9(4) COMP.
            05 WS-QITEM-END                       PIC S9(4) COMP.
@@ -169,6 +173,7 @@
        LINKAGE SECTION.
        01  DFHCOMMAREA.
            05 DF-PGMID                           PIC X(06).
+           05 DF-STATE                           PIC X. 
            05 DF-TICKET-PASSED                   PIC X(07).
            05 DF-USERID.
               10  DF-USERID7                     PIC X(7).
@@ -196,7 +201,6 @@
            05 DF-FUSER                           PIC X(07).
            05 DF-PAGE                            PIC 9(02).
            05 DF-PAGE-END                        PIC 9(01).
-           05 DF-STATE                           PIC X. 
            05 DF-QITEM                           PIC S9(4) COMP.
            05 DF-QITEM-START                     PIC S9(4) COMP.
            05 DF-QITEM-END                       PIC S9(4) COMP.
@@ -223,7 +227,7 @@
               WS-PGMID = 'SM002' OR WS-PGMID = 'SM003' OR 
               WS-PGMID = 'SM004' OR WS-PGMID = 'SM005' OR
               WS-PGMID = 'SM006'
-               IF EIBCALEN NOT = +26
+               IF WS-STATE NOT = LOW-VALUES
                   PERFORM 200-REC-MAP
                ELSE
                    MOVE WS-SELECT-OPTION TO ERRMSG1O 
@@ -293,13 +297,12 @@
                 MAP('SM001M')
                 MAPSET('SM01S')
                 INTO (SM001MI)
-                RESP(WS-RETNCODE)
            END-EXEC
-           IF EIBRESP = DFHRESP(MAPFAIL)
-              MOVE WS-INVALID-PFKEY TO ERRMSG1O
-              PERFORM 600-MOVE-Q-TO-SCREEN  
-              PERFORM 111-CREATE-MAP
-           END-IF
+      *    IF EIBRESP = DFHRESP(MAPFAIL)
+      *       MOVE WS-INVALID-PFKEY TO ERRMSG1O
+      *       PERFORM 600-MOVE-Q-TO-SCREEN  
+      *       PERFORM 111-CREATE-MAP
+      *    END-IF
               PERFORM 500-CHECK-EIBAID
               PERFORM 600-MOVE-Q-TO-SCREEN  
               PERFORM 111-CREATE-MAP.
@@ -339,15 +342,18 @@
 
        500-CHECK-EIBAID.
            EVALUATE EIBAID
+           WHEN DFHCLEAR  
+                MOVE WS-INVALID-PFKEY TO ERRMSG1O
+                PERFORM 600-MOVE-Q-TO-SCREEN  
+                PERFORM 111-CREATE-MAP
            WHEN DFHPF2
                 IF USR-REQUESTOR  = 'Y'
-                   MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-                   EXEC CICS LINK 
+      *            MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+                   EXEC CICS XCTL 
                         PROGRAM ('SM002')
                         COMMAREA (WS-COMMAREA)
-                        LENGTH (WS-LENGTH)
+                        LENGTH (+26)
                    END-EXEC
-                   MOVE 'SM002' TO ERRMSG1O
                 ELSE
                    MOVE WS-INVALID-ACCESS TO ERRMSG1O
                 END-IF   
@@ -380,181 +386,18 @@
                 PERFORM 600-MOVE-Q-TO-SCREEN
                 PERFORM 111-CREATE-MAP
            WHEN DFHENTER 
-                MOVE PAGEI TO WS-CURR-PAGE
-                IF CURR-PAGE IS NUMERIC
-                   PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL 
-                           WS-INDEX > WS-MAX-PAGE
-                     IF CURR-PAGE = WS-INDEX
-                        SUBTRACT PREV-PAGE FROM CURR-PAGE GIVING 
-                                 WS-PAGE-UPDOWN
-      *                 IF CURR-PAGE < 1 OR CURR-PAGE > 4 
-      *                    MOVE 
-      *                 END-IF         
-                        IF CURR-PAGE > PREV-PAGE
-                           IF WS-PAGE-UPDOWN = 1       
-                              ADD 11 TO WS-QITEM-PAGE
-                              PERFORM 530-PAGE-UP-ENTER
-                           ELSE    
-                              MOVE 1 TO WS-I
-                              PERFORM UNTIL WS-I = CURR-PAGE
-                                      ADD 11 TO WS-QITEM-PAGE
-                                      ADD 1 TO WS-I
-                              END-PERFORM
-                              PERFORM 530-PAGE-UP-ENTER
-                           END-IF             
-                        ELSE 
-                           IF WS-PAGE-UPDOWN = 1
-                              SUBTRACT 11 FROM WS-QITEM-PAGE
-                             PERFORM 540-PAGEDOWN-ENTER
-                           ELSE 
-                              MOVE PREV-PAGE TO WS-I
-                              PERFORM UNTIL WS-I = CURR-PAGE
-                                      SUBTRACT 11 FROM WS-QITEM-PAGE
-                                      SUBTRACT 1 FROM WS-I
-                              END-PERFORM   
-                              PERFORM 540-PAGEDOWN-ENTER
-                           END-IF   
-                        END-IF
-                     END-IF
-                   END-PERFORM
-                ELSE 
-                    PERFORM 600-MOVE-Q-TO-SCREEN
-                    PERFORM 111-CREATE-MAP  
-                END-IF
-                   
-                PERFORM 600-MOVE-Q-TO-SCREEN
-
-                MOVE 1 TO WS-INDEX
-                MOVE 0 TO WS-SELECT-COUNT
-                PERFORM UNTIL WS-INDEX > 11  
-                   IF DETL-SELECTI(WS-INDEX) NOT = '-' AND 
-                      DETL-SELECTI(WS-INDEX) NOT = SPACES AND
-                      DETL-SELECTI(WS-INDEX) NOT = LOW-VALUES
-                      IF DETL-SELECTI(WS-INDEX) = 'U' OR 
-                         DETL-SELECTI(WS-INDEX) = 'C' OR 
-                         DETL-SELECTI(WS-INDEX) = 'A' OR 
-                         DETL-SELECTI(WS-INDEX) = 'X'
-                         ADD 1 TO WS-SELECT-COUNT
-                         MOVE DETL-SELECTI(WS-INDEX) TO 
-                              WS-SELECTED-VALUE
-                         MOVE DETL-DETAILI(WS-INDEX) TO WS-STF01-REC
-                         MOVE WS-STF-REQ2(WS-INDEX) TO 
-                              WS-STF01-REQ
-                      END-IF
-                    IF WS-SELECT-COUNT = 1
-                       EVALUATE WS-SELECTED-VALUE
-                        WHEN 'U'
-                            IF WS-STF01-STATUS = 'APPROVED' OR 
-                               'ONGOING'
-                               IF USR-REQUESTOR = 'Y'  OR 
-                                  USR-SERVICE = 'Y'  
-                                  IF WS-STF01-REQ = USERID
-                                     MOVE LENGTH OF WS-COMMAREA TO 
-                                       WS-LENGTH
-                                     EXEC CICS LINK 
-                                          PROGRAM ('SM003')
-                                          COMMAREA (WS-COMMAREA)
-                                          LENGTH (WS-LENGTH)
-                                     END-EXEC
-                                     MOVE 'SM003' TO ERRMSG1O
-                                  ELSE 
-                                     MOVE WS-INVALID-TIX-ACC TO ERRMSG1O   
-                                  END-IF
-                               ELSE
-                                   MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
-                               END-IF   
-                            ELSE
-                                MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
-                            END-IF
-                        WHEN 'C'
-                             IF WS-STF01-STATUS = 'COMPLETED'
-                                IF WS-STF01-REQ = USERID
-                                   MOVE LENGTH OF WS-COMMAREA 
-                                        TO WS-LENGTH
-                                   EXEC CICS LINK 
-                                        PROGRAM ('SM004')
-                                        COMMAREA (WS-COMMAREA)
-                                        LENGTH (WS-LENGTH)
-                                   END-EXEC
-                                   MOVE 'SM004' TO ERRMSG1O  
-                                ELSE 
-                                   MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
-                                   MOVE DFHUNIMD TO 
-                                        DETL-SELECTA(WS-INDEX)
-                                   MOVE -1 TO DETL-SELECTL(WS-INDEX)
-                                END-IF   
-                             ELSE
-                                MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
-                                MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
-                                MOVE -1 TO DETL-SELECTL(WS-INDEX)
-                             END-IF   
-                        WHEN 'A'
-                             IF WS-STF01-STATUS = 'CREATED' 
-                                IF WS-STF01-REQ = USERID
-                                   MOVE LENGTH OF WS-COMMAREA 
-                                        TO WS-LENGTH
-                                   EXEC CICS LINK 
-                                        PROGRAM ('SM005')
-                                        COMMAREA (WS-COMMAREA)
-                                        LENGTH (WS-LENGTH)
-                                   END-EXEC
-                                   MOVE 'SM005' TO ERRMSG1O
-                                ELSE
-                                   MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
-                                   MOVE DFHUNIMD TO 
-                                        DETL-SELECTA(WS-INDEX)
-                                   MOVE -1 TO DETL-SELECTL(WS-INDEX)
-                                END-IF   
-                              ELSE
-                                MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
-                                MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
-                                MOVE -1 TO DETL-SELECTL(WS-INDEX)
-                              END-IF    
-                        WHEN 'X'
-                             IF WS-STF01-REQ = USERID
-                                MOVE LENGTH OF WS-COMMAREA 
-                                     TO WS-LENGTH
-                                EXEC CICS LINK 
-                                     PROGRAM ('SM006')
-                                     COMMAREA (WS-COMMAREA)
-                                     LENGTH (WS-LENGTH)
-                                END-EXEC
-                                MOVE 'SM006' TO ERRMSG1O   
-                             ELSE
-                                MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
-                                MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
-                                   MOVE -1 TO DETL-SELECTL(WS-INDEX)
-                             END-IF   
-                        WHEN OTHER
-                             MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
-                             MOVE -1 TO DETL-SELECTL(WS-INDEX)
-                             MOVE WS-INVALID-VALUE TO ERRMSG1O 
-                             PERFORM 600-MOVE-Q-TO-SCREEN  
-                             PERFORM 111-CREATE-MAP            
-                       END-EVALUATE  
-                    ELSE 
-                      MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
-                      MOVE -1 TO DETL-SELECTL(WS-INDEX)
-                      MOVE WS-MULTIPLE-SELECT TO ERRMSG1O
-                      PERFORM 600-MOVE-Q-TO-SCREEN
-                      PERFORM 111-CREATE-MAP    
-                      IF WS-SELECT-COUNT < 1
-                         MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
-                         MOVE -1 TO DETL-SELECTL(WS-INDEX)
-                         MOVE WS-FIELD-REQ TO ERRMSG1O
-                         PERFORM 600-MOVE-Q-TO-SCREEN
-                         PERFORM 111-CREATE-MAP    
-                      END-IF   
-                    END-IF
-                 END-IF  
-                   ADD 1 TO WS-INDEX  
-                   
-                END-PERFORM
+      *         IF WS-PAGE-CHANGED = 'Y'
+      *            PERFORM 550-PAGE-CHANGED
+      *         ELSE   
+                PERFORM 550-PAGE-CHANGED
+                
+      *         END-IF
            WHEN OTHER
                 MOVE 'INAVLID PFKEY PRESSED' TO ERRMSG1O  
                 PERFORM 600-MOVE-Q-TO-SCREEN  
                 PERFORM 111-CREATE-MAP 
-           END-EVALUATE.     
+           END-EVALUATE
+            MOVE 'N' TO WS-PAGE-CHANGED.  
        500-EXIT.
            EXIT.    
     
@@ -592,6 +435,194 @@
        520-EXIT.
            EXIT.
 
+       550-PAGE-CHANGED.
+           MOVE PAGEI TO WS-CURR-PAGE
+           IF CURR-PAGE IS NUMERIC
+              PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL 
+                      WS-INDEX > WS-MAX-PAGE
+                IF CURR-PAGE = WS-INDEX
+                   SUBTRACT PREV-PAGE FROM CURR-PAGE GIVING 
+                            WS-PAGE-UPDOWN    
+                   EVALUATE TRUE            
+                    WHEN CURR-PAGE > PREV-PAGE
+                      IF WS-PAGE-UPDOWN = 1       
+                         ADD 11 TO WS-QITEM-PAGE
+                         PERFORM 530-PAGE-UP-ENTER
+                          MOVE 'Y' TO WS-PAGE-CHANGED
+                      ELSE    
+                         MOVE 1 TO WS-I
+                         PERFORM UNTIL WS-I = CURR-PAGE
+                                 ADD 11 TO WS-QITEM-PAGE
+                                 ADD 1 TO WS-I
+                         END-PERFORM
+                         PERFORM 530-PAGE-UP-ENTER
+                          MOVE 'Y' TO WS-PAGE-CHANGED
+                      END-IF             
+                    WHEN CURR-PAGE < PREV-PAGE
+                      IF WS-PAGE-UPDOWN = 1
+                         SUBTRACT 11 FROM WS-QITEM-PAGE
+                        PERFORM 540-PAGEDOWN-ENTER
+                         MOVE 'Y' TO WS-PAGE-CHANGED
+                      ELSE 
+                         MOVE PREV-PAGE TO WS-I
+                         PERFORM UNTIL WS-I = CURR-PAGE
+                                 SUBTRACT 11 FROM WS-QITEM-PAGE
+                                 SUBTRACT 1 FROM WS-I
+                         END-PERFORM   
+                         PERFORM 540-PAGEDOWN-ENTER
+                          MOVE 'Y' TO WS-PAGE-CHANGED
+                      END-IF   
+                    WHEN OTHER
+                         PERFORM 560-CHECK-OPTION-FIELDS
+                   END-EVALUATE
+                END-IF
+              END-PERFORM
+           ELSE 
+               PERFORM 600-MOVE-Q-TO-SCREEN
+               PERFORM 111-CREATE-MAP  
+           END-IF.
+       550-EXIT. 
+           EXIT.    
+       
+       560-CHECK-OPTION-FIELDS.
+           PERFORM 600-MOVE-Q-TO-SCREEN
+           MOVE 1 TO WS-INDEX
+           MOVE 0 TO WS-SELECT-COUNT
+           PERFORM UNTIL WS-INDEX > 11  
+              IF DETL-SELECTI(WS-INDEX) NOT = '-' AND 
+                 DETL-SELECTI(WS-INDEX) NOT = SPACES AND
+                 DETL-SELECTI(WS-INDEX) NOT = LOW-VALUES
+                 IF DETL-SELECTI(WS-INDEX) = 'U' OR 
+                    DETL-SELECTI(WS-INDEX) = 'C' OR 
+                    DETL-SELECTI(WS-INDEX) = 'A' OR 
+                    DETL-SELECTI(WS-INDEX) = 'X'
+                    ADD 1 TO WS-SELECT-COUNT
+                    MOVE DETL-SELECTI(WS-INDEX) TO WS-SELECTED-VALUE
+                    MOVE DETL-DETAILI(WS-INDEX) TO WS-STF01-REC
+                    MOVE WS-STF-REQ2(WS-INDEX)  TO WS-STF01-REQ
+                 ELSE 
+                    MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+                    MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                    MOVE WS-INVALID-VALUE TO ERRMSG1O 
+                    PERFORM 600-MOVE-Q-TO-SCREEN  
+                    PERFORM 111-CREATE-MAP       
+                 END-IF
+               IF WS-SELECT-COUNT = 1 OR 0
+                  EVALUATE WS-SELECTED-VALUE
+                   WHEN 'U'
+                       IF WS-STF01-STATUS = 'APPROVED' OR 
+                          'ONGOING'
+                          IF USR-REQUESTOR = 'Y'  OR 
+                             USR-SERVICE = 'Y'  
+                             IF WS-STF01-REQ = USERID
+                                MOVE LENGTH OF WS-COMMAREA TO 
+                                  WS-LENGTH
+                                EXEC CICS LINK 
+                                     PROGRAM ('SM003')
+                                     COMMAREA (WS-COMMAREA)
+                                     LENGTH (WS-LENGTH)
+                                END-EXEC
+                                MOVE 'SM003' TO ERRMSG1O
+                             ELSE 
+                                MOVE WS-INVALID-TIX-ACC TO ERRMSG1O   
+                             END-IF
+                          ELSE
+                              MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                          END-IF   
+                       ELSE
+                           MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                       END-IF
+                   WHEN 'C'
+                        IF WS-STF01-STATUS = 'COMPLETED'
+                           IF WS-STF01-REQ = USERID
+                              MOVE LENGTH OF WS-COMMAREA 
+                                   TO WS-LENGTH
+                              EXEC CICS LINK 
+                                   PROGRAM ('SM004')
+                                   COMMAREA (WS-COMMAREA)
+                                   LENGTH (WS-LENGTH)
+                              END-EXEC
+                              MOVE 'SM004' TO ERRMSG1O  
+                           ELSE 
+                              MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                              MOVE DFHUNIMD TO 
+                                   DETL-SELECTA(WS-INDEX)
+                              MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                           END-IF   
+                        ELSE
+                           MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                           MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+                           MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                        END-IF   
+                   WHEN 'A'
+                        IF WS-STF01-STATUS = 'CREATED' 
+                           IF WS-STF01-REQ = USERID
+                              MOVE LENGTH OF WS-COMMAREA 
+                                   TO WS-LENGTH
+                              EXEC CICS LINK 
+                                   PROGRAM ('SM005')
+                                   COMMAREA (WS-COMMAREA)
+                                   LENGTH (WS-LENGTH)
+                              END-EXEC
+                              MOVE 'SM005' TO ERRMSG1O
+                           ELSE
+                              MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                              MOVE DFHUNIMD TO 
+                                   DETL-SELECTA(WS-INDEX)
+                              MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                           END-IF   
+                         ELSE
+                           MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                           MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+                           MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                         END-IF    
+                   WHEN 'X'
+                        IF WS-STF01-REQ = USERID
+                           MOVE LENGTH OF WS-COMMAREA 
+                                TO WS-LENGTH
+                           EXEC CICS LINK 
+                                PROGRAM ('SM006')
+                                COMMAREA (WS-COMMAREA)
+                                LENGTH (WS-LENGTH)
+                           END-EXEC
+                           MOVE 'SM006' TO ERRMSG1O   
+                        ELSE
+                           MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                           MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+                           MOVE -1       TO DETL-SELECTL(WS-INDEX)
+                        END-IF   
+                   WHEN 0 
+                        MOVE DFHUNIMD     TO DETL-SELECTA(WS-INDEX)
+                        MOVE -1           TO DETL-SELECTL(WS-INDEX)
+                        MOVE WS-FIELD-REQ TO ERRMSG1O 
+                        PERFORM 600-MOVE-Q-TO-SCREEN  
+                        PERFORM 111-CREATE-MAP        
+                   WHEN OTHER
+                        MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+                        MOVE -1       TO DETL-SELECTL(WS-INDEX)
+                        MOVE WS-INVALID-VALUE TO ERRMSG1O 
+                        PERFORM 600-MOVE-Q-TO-SCREEN  
+                        PERFORM 111-CREATE-MAP            
+                  END-EVALUATE  
+               ELSE 
+                 MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+                 MOVE -1       TO DETL-SELECTL(WS-INDEX)
+                 MOVE WS-MULTIPLE-SELECT TO ERRMSG1O
+                 PERFORM 600-MOVE-Q-TO-SCREEN
+                 PERFORM 111-CREATE-MAP    
+                 IF WS-SELECT-COUNT < 1
+                    MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+                    MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                    MOVE WS-FIELD-REQ TO ERRMSG1O
+                    PERFORM 600-MOVE-Q-TO-SCREEN
+                    PERFORM 111-CREATE-MAP    
+                 END-IF   
+               END-IF
+              END-IF  
+              ADD 1 TO WS-INDEX  
+           END-PERFORM.
+       560-EXIT.
+           EXIT.
        600-MOVE-Q-TO-SCREEN.
             MOVE PAGEO TO WS-PREV-PAGE
             MOVE WS-QITEM-PAGE TO WS-QITEM

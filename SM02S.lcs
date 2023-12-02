@@ -1,4 +1,4 @@
-CA-Realia CICS Ver:6.0.27  SM02S.bms                                                                     23NOV23 23:25:50 PAGE  1
+CA-Realia CICS Ver:6.0.27  SM02S.bms                                                                     29NOV23 22:32:55 PAGE  1
 
     1 SM02S    DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      C
     2                CTRL=(FREEKB,FRSET),TIOAPFX=YES,EXTATT=NO,              C
@@ -18,35 +18,35 @@
    16          DFHMDF POS=(05,02),LENGTH=20,ATTRB=(ASKIP,NORM),              C
    17                INITIAL='TICKET TITLE       :'
    18 TICKETT  DFHMDF POS=(05,24),LENGTH=25,ATTRB=(UNPROT,NORM,IC,FSET)
-   19          DFHMDF POS=(06,02),LENGTH=20,ATTRB=(ASKIP,NORM),              C
+   19          DFHMDF POS=(06,02),LENGTH=20,ATTRB=(ASKIP,NORM),              *
    20                INITIAL='TICKET DESCRIPTION :'
-   21 TICKTD1  DFHMDF POS=(06,24),LENGTH=40,ATTRB=(UNPROT,NORM,FSET)
-   22 TICKTD2  DFHMDF POS=(07,24),LENGTH=40,ATTRB=(UNPROT,NORM,FSET)
-   23 ST         DFHMDF POS=(08,02),LENGTH=20,ATTRB=(ASKIP,DRK),             C
+   21 TICKTD1  DFHMDF POS=(06,24),LENGTH=40,ATTRB=(UNPROT,NORM,IC,FSET)
+   22 TICKTD2  DFHMDF POS=(07,24),LENGTH=40,ATTRB=(UNPROT,NORM,IC,FSET)
+   23 ST       DFHMDF POS=(08,02),LENGTH=20,ATTRB=(ASKIP,DRK),               *
    24                INITIAL='STATUS             :'
    25 STATS    DFHMDF POS=(08,24),LENGTH=07
-   26          DFHMDF POS=(09,02),LENGTH=20,ATTRB=(ASKIP,DRK),               C
+   26 UPM      DFHMDF POS=(09,02),LENGTH=20,ATTRB=(ASKIP,DRK),               *
    27                INITIAL='UPDATE REMARKS     :'
    28 UPR1     DFHMDF POS=(09,24),LENGTH=25
    29 UPR2     DFHMDF POS=(10,24),LENGTH=25
-   30          DFHMDF POS=(11,02),LENGTH=20,ATTRB=(ASKIP,DRK),               C
+   30 UPDT     DFHMDF POS=(11,02),LENGTH=20,ATTRB=(ASKIP,DRK),               *
    31                INITIAL='UPDATE DATE/TIME   :'
    32 UPDATE   DFHMDF POS=(11,24),LENGTH=10
    33 UPTIME   DFHMDF POS=(11,36),LENGTH=08
-   34          DFHMDF POS=(12,02),LENGTH=20,ATTRB=(ASKIP,DRK),               C
+   34 UPBY     DFHMDF POS=(12,02),LENGTH=20,ATTRB=(ASKIP,DRK),               *
    35                INITIAL='UPDATE BY          :'
-   36 UPB      DFHMDF POS=(12,24),LENGTH=06
+   36 UPB      DFHMDF POS=(12,24),LENGTH=07
    37 ERRMSG   DFHMDF POS=(23,02),LENGTH=58,ATTRB=(ASKIP,NORM,FSET)
-   38          DFHMDF POS=(24,03),LENGTH=09,ATTRB=(ASKIP,NORM),              C
+   38          DFHMDF POS=(24,03),LENGTH=09,ATTRB=(ASKIP,NORM),              *
    39                INITIAL='PF2 - ADD'
-   40          DFHMDF POS=(24,14),LENGTH=10,ATTRB=(ASKIP,NORM),              C
+   40          DFHMDF POS=(24,14),LENGTH=10,ATTRB=(ASKIP,NORM),              *
    41                INITIAL='PF3 - EXIT'
-   42          DFHMDF POS=(24,28),LENGTH=11,ATTRB=(ASKIP,NORM),              C
+   42          DFHMDF POS=(24,28),LENGTH=11,ATTRB=(ASKIP,NORM),              *
    43                INITIAL='PF5 - ABORT'
    44          DFHMSD TYPE=FINAL
       SM02S loaded with 1 MAPS, 26 FIELDS and 204 Bytes of Literals
 
-   45          ENDCA-Realia CICS Ver:6.0.27  SM02S.bms                                                                     23NOV23 23:25:50 PAGE  2
+   45          ENDCA-Realia CICS Ver:6.0.27  SM02S.bms                                                                     29NOV23 22:32:55 PAGE  2
 
       COBOL COPY file generated
 

@@ -469,132 +469,153 @@
    545
    546	      01  WS-COMMAREA.
    547		  05 WS-PGMID				PIC X(06).
-   548		  05 WS-TICKET-PASSED			PIC X(07).
-   549		  05 USERID.   550		     10  USERID7			PIC X(7).
-   551		     10  FILLER 			PIC X(1).
-   552		  05 USR-TYPE.
-   553		    15 USR-REQUESTOR			PIC X.
-   554		    15 USR-ADMIN			PIC X.
-   555		    15 USR-APPROVER			PIC X.
-   556		    15 USR-SERVICE			PIC X.
-   557		  05 WS-STATE				PIC X.
-   558
-   559	      LINKAGE SECTION.
-   561	      01  DFHEIBLK.						       R
-   562		  05 EIBTIME  PIC S9(7) COMP-3. 			       R
-   563		  05 EIBDATE  PIC S9(7) COMP-3. 			       R
-   564		  05 EIBTRNID PIC X(4). 				       R
-   565		  05 EIBTASKN PIC S9(7) COMP-3. 			       R
-   566		  05 EIBTRMID PIC X(4). 				       R
-   567		  05 DFHEIGDI PIC S9(4) COMP-4. 			       R
-   568		  05 EIBCPOSN PIC S9(4) COMP-4. 			       R
-   569		  05 EIBCALEN PIC S9(4) COMP-4. 			       R
-   570		  05 EIBAID   PIC X.					       R
-   571		  05 EIBFN    PIC X(2). 				       R
-   572		  05 EIBRCODE PIC X(6). 				       R
-   573		  05 EIBDS    PIC X(8). 				       R
-   574		  05 EIBREQID PIC X(8). 				       R
-   575		  05 EIBRSRCE PIC X(8). 				       R
-   576		  05 EIBSYNC  PIC X.					       R
-   577		  05 EIBFREE  PIC X.					       R
-   578		  05 EIBRECV  PIC X.					       R
-   579		  05 EIBSEND  PIC X.					       R
-   580		  05 EIBATT   PIC X.					       R
-   581		  05 EIBEOC   PIC X.					       R
-   582		  05 EIBFMH   PIC X.					       R
-   583		  05 EIBCOMPL PIC X.					       R
-   584		  05 EIBSIG   PIC X.					       R
-   585		  05 EIBCONF  PIC X.					       R
-   586		  05 EIBERR   PIC X.					       R
-   587		  05 EIBERRCD PIC X(4). 				       R
-   588		  05 EIBSYNRB PIC X.					       R
-   589		  05 EIBNODAT PIC X.					       R
-   590		  05 EIBRESP  PIC S9(8) COMP-4. 			       R
-   591		  05 EIBRESP2 PIC S9(8) COMP-4. 			       R
-   592		  05 EIBRLDBK PIC X.					       R
-   593		  05 EIBCARESERVED PIC X(32).				       R
-   595	      01  DFHCOMMAREA.
-   596		  05 DF-PGMID				PIC X(06).
-   597		  05 DF-TICKET-PASSED			PIC X(07).
-   598		  05 DF-USERID.
-   599		     10  DF-USERID7			PIC X(7).
-   600		     10  FILLER 			PIC X(1).
-   601		  05 DF-USR-TYPE.
-   602		    15 DF-USR-REQUESTOR 		PIC X.
-   603		    15 DF-USR-ADMIN			PIC X.
-   604		    15 DF-USR-APPROVER			PIC X.
-   605		    15 DF-USR-SERVICE			PIC X.
-   606		  05 DF-STATE				PIC X.
-   607
-   608	      PROCEDURE DIVISION					       R
-   610		  USING DFHEIBLK DFHCOMMAREA.				       R
-   635	      100-PROCESS.
-   637		  EXEC CICS IGNORE CONDITION   638			    ERROR
-   639		  END-EXEC
-   654		  MOVE DFHCOMMAREA TO WS-COMMAREA
-   655            IF WS-PGMID = 'SM000' OR WS-PGMID = 'SM001' OR
-   656               WS-PGMID = 'SM012'
-   657		     IF EIBCALEN NOT = +0
-   658			PERFORM 200-REC-MAP
-   659		     ELSE
-   660			PERFORM 110-NEW-MAP
-   661		     END-IF
-   662		  ELSE
-   663		      MOVE SPACES TO ERRMSGO
-   664		      MOVE LENGTH OF WS-INVALID-ACCESS TO WS-LENGTH
-   666		      EXEC CICS SEND TEXT
-   667			      FROM (WS-INVALID-ACCESS)
-   668			      LENGTH (WS-LENGTH)
-   669			      ERASE
-   670			 END-EXEC
-   701		      EXEC CICS RETURN
-   702		      END-EXEC
-   715		  END-IF.
-   716	      100-EXIT.
-   717		  EXIT.
-   718
-   719	      110-NEW-MAP.
-   720		  MOVE EIBDATE TO WS-DATE.
-   721		  MOVE WS-DATE-X TO DATEO.
-   723		  EXEC CICS ASKTIME
-   724		      ABSTIME  (WS-TIME)
-   725		      END-EXEC
-   744		      EXEC CICS FORMATTIME
+   548		  05 WS-STATE				PIC X.
+   549		  05 WS-TICKET-PASSED			PIC X(07).   550		  05 USERID.
+   551		     10  USERID7			PIC X(7).
+   552		     10  FILLER 			PIC X(1).
+   553		  05 USR-TYPE.
+   554		     15 USR-REQUESTOR			PIC X.
+   555		     15 USR-ADMIN			PIC X.
+   556		     15 USR-APPROVER			PIC X.
+   557		     15 USR-SERVICE			PIC X.
+   558		  05 COMM-TICKET-REC.
+   559		     10 COMM-TICKET-ID			     PIC 9(07).
+   560		     10 COMM-TICKET-KEY-NUM REDEFINES COMM-TICKET-ID PIC X(07).
+   561		     10 COMM-TICKET-REQUESTOR			PIC X(08).
+   562		     10 COMM-TICKET-STATUS			PIC X(10).
+   563		     10 COMM-TICKET-TITLE			PIC X(25).
+   564		     10 COMM-TICKET-DESC			PIC X(100).
+   565		     10 COMM-TICKET-LAST-UPD			PIC X(20).
+   566		     10 COMM-TICKET-LAST-UPD-BY 		PIC X(08).
+   567		     10 COMM-TICKET-UPD-REMARKS 		PIC X(50).
+   568
+   569	      LINKAGE SECTION.
+   571	      01  DFHEIBLK.						       R
+   572		  05 EIBTIME  PIC S9(7) COMP-3. 			       R
+   573		  05 EIBDATE  PIC S9(7) COMP-3. 			       R
+   574		  05 EIBTRNID PIC X(4). 				       R
+   575		  05 EIBTASKN PIC S9(7) COMP-3. 			       R
+   576		  05 EIBTRMID PIC X(4). 				       R
+   577		  05 DFHEIGDI PIC S9(4) COMP-4. 			       R
+   578		  05 EIBCPOSN PIC S9(4) COMP-4. 			       R
+   579		  05 EIBCALEN PIC S9(4) COMP-4. 			       R
+   580		  05 EIBAID   PIC X.					       R
+   581		  05 EIBFN    PIC X(2). 				       R
+   582		  05 EIBRCODE PIC X(6). 				       R
+   583		  05 EIBDS    PIC X(8). 				       R
+   584		  05 EIBREQID PIC X(8). 				       R
+   585		  05 EIBRSRCE PIC X(8). 				       R
+   586		  05 EIBSYNC  PIC X.					       R
+   587		  05 EIBFREE  PIC X.					       R
+   588		  05 EIBRECV  PIC X.					       R
+   589		  05 EIBSEND  PIC X.					       R
+   590		  05 EIBATT   PIC X.					       R
+   591		  05 EIBEOC   PIC X.					       R
+   592		  05 EIBFMH   PIC X.					       R
+   593		  05 EIBCOMPL PIC X.					       R
+   594		  05 EIBSIG   PIC X.					       R
+   595		  05 EIBCONF  PIC X.					       R
+   596		  05 EIBERR   PIC X.					       R
+   597		  05 EIBERRCD PIC X(4). 				       R
+   598		  05 EIBSYNRB PIC X.					       R
+   599		  05 EIBNODAT PIC X.					       R
+   600		  05 EIBRESP  PIC S9(8) COMP-4. 			       R
+   601		  05 EIBRESP2 PIC S9(8) COMP-4. 			       R
+   602		  05 EIBRLDBK PIC X.					       R
+   603		  05 EIBCARESERVED PIC X(32).				       R
+   605	      01  DFHCOMMAREA.
+   606		  05 DF-PGMID				PIC X(06).
+   607		  05 DF-STATE				PIC X.
+   608		  05 DF-TICKET-PASSED			PIC X(07).
+   609		  05 DF-USERID.
+   610		     10  DF-USERID7			PIC X(7).
+   611		     10  FILLER 			PIC X(1).   612		  05 DF-USR-TYPE.
+   613		    15 DF-USR-REQUESTOR 		PIC X.
+   614		    15 DF-USR-ADMIN			PIC X.
+   615		    15 DF-USR-APPROVER			PIC X.
+   616		    15 DF-USR-SERVICE			PIC X.
+   617		  05 DF-TICKET-REC.
+   618		     10 DF-TICKET-ID			   PIC 9(07).
+   619		     10 DF-TICKET-KEY-NUM REDEFINES DF-TICKET-ID PIC 9(06).
+   620		     10 DF-TICKET-REQUESTOR		      PIC X(08).
+   621		     10 DF-TICKET-STATUS		      PIC X(10).
+   622		     10 DF-TICKET-TITLE 		      PIC X(25).
+   623		     10 DF-TICKET-DESC			      PIC X(100).
+   624		     10 DF-TICKET-LAST-UPD		      PIC X(20).
+   625		     10 DF-TICKET-LAST-UPD-BY		      PIC X(08).
+   626		     10 DF-TICKET-UPD-REMARKS		      PIC X(50).
+   627
+   628	      PROCEDURE DIVISION					       R
+   630		  USING DFHEIBLK DFHCOMMAREA.				       R
+   655	      100-PROCESS.
+   657		  EXEC CICS IGNORE CONDITION
+   658			    ERROR
+   659		  END-EXEC
+   674		  MOVE DFHCOMMAREA TO WS-COMMAREA
+   675            IF WS-PGMID = 'SM000' OR WS-PGMID = 'SM001' OR
+   676               WS-PGMID = 'SM012'
+   677		     IF WS-STATE NOT = LOW-VALUES
+   678			PERFORM 200-REC-MAP
+   679		     ELSE
+   680			MOVE 1 TO WS-STATE
+   681			PERFORM 110-NEW-MAP
+   682		     END-IF
+   683		  ELSE
+   684		      MOVE SPACES TO ERRMSGO
+   685		      MOVE LENGTH OF WS-INVALID-ACCESS TO WS-LENGTH
+   687		      EXEC CICS SEND TEXT
+   688			      FROM (WS-INVALID-ACCESS)
+   689			      LENGTH (WS-LENGTH)
+   690			      ERASE
+   691			 END-EXEC
+   722		      EXEC CICS RETURN
+   723		      END-EXEC
+   736		  END-IF.
+   737	      100-EXIT.
+   738		  EXIT.
+   739
+   740	      110-NEW-MAP.
+   741		  MOVE EIBDATE TO WS-DATE.
+   742		  MOVE WS-DATE-X TO DATEO.
+   744		  EXEC CICS ASKTIME
    745		      ABSTIME  (WS-TIME)
-   746                DATESEP  ('/')
-   747		      MMDDYYYY (DATEO)
-   748		      TIME     (TIMEO)
-   749                TIMESEP  (':')
-   750		  END-EXEC
-   790		  MOVE DFHBMASB TO TIMEA
-   791		  MOVE DFHBMASB TO DATEA
-   792		  MOVE -1	TO TKTNUML
-   793		  MOVE LENGTH OF SM006MO TO WS-LENGTH
-   795		  EXEC CICS SEND
-   796                  MAP('SM006M')
-   797                  MAPSET('SM06S')
-   798			FROM(SM006MO)
-   799			LENGTH(WS-LENGTH)
-   800			ERASE
-   801		  END-EXEC
-   844		  EXEC CICS RETURN
-   845                     TRANSID('SM06')
-   846			       COMMAREA(WS-COMMAREA)
-   847		      END-EXEC.
-   872	      110-EXIT.
-   873		  EXIT.
-   874
-   875	      200-REC-MAP.
-   877		  EXEC CICS RECEIVE
-   878                 MAP('SM006M')
-   879                 MAPSET('SM06S')
-   880		       INTO (SM006MI)   881		  END-EXEC
-   915		  IF EIBRESP = DFHRESP(MAPFAIL)
-   917		  IF EIBRESP =	       036				       R
-   918		     MOVE WS-MAPFAIL TO ERRMSGO
-   919		  END-IF.
-   920	      200-EXIT.
-   921		  EXIT.CA-Realia COBOL Version 6.0.45	 D:\work\CAWB30-HO\SM006.cic	       PAGE   12
+   746		      END-EXEC
+   765		      EXEC CICS FORMATTIME
+   766		      ABSTIME  (WS-TIME)
+   767                DATESEP  ('/')
+   768		      MMDDYYYY (DATEO)
+   769		      TIME     (TIMEO)
+   770                TIMESEP  (':')
+   771		  END-EXEC
+   811		  MOVE DFHBMASB TO TIMEA
+   812		  MOVE DFHBMASB TO DATEA   813		  MOVE -1	TO TKTNUML
+   814		  MOVE LENGTH OF SM006MO TO WS-LENGTH
+   816		  EXEC CICS SEND
+   817                  MAP('SM006M')
+   818                  MAPSET('SM06S')
+   819			FROM(SM006MO)
+   820			LENGTH(WS-LENGTH)
+   821			ERASE
+   822		  END-EXEC
+   865		  EXEC CICS RETURN
+   866                     TRANSID('SM06')
+   867			       COMMAREA(WS-COMMAREA)
+   868		      END-EXEC.
+   893	      110-EXIT.
+   894		  EXIT.
+   895
+   896	      200-REC-MAP.
+   898		  EXEC CICS RECEIVE
+   899                 MAP('SM006M')
+   900                 MAPSET('SM06S')
+   901		       INTO (SM006MI)
+   902		  END-EXEC
+   936		  IF EIBRESP = DFHRESP(MAPFAIL)
+   938		  IF EIBRESP =	       036				       R
+   939		     MOVE WS-MAPFAIL TO ERRMSGO
+   940		  END-IF.
+   941	      200-EXIT.
+   942		  EXIT.CA-Realia COBOL Version 6.0.45	 D:\work\CAWB30-HO\SM006.cic	       PAGE   12
 
 
 
@@ -623,9 +644,9 @@ DEBUGXREF	  DIALECT-VS2
 
 			Error level limit: W
 
-			Source lines compiled:	     932
-			Compilation time (mm:ss.ss):  0:00.68
-			Compilation speed (lines/minute): 82235
+			Source lines compiled:	     953
+			Compilation time (mm:ss.ss):  0:00.71
+			Compilation speed (lines/minute): 80535
 
-			Compilation date (yy/mm/dd): 23/11/25
-			     Time of day (hh:mm:ss): 16:21:23
+			Compilation date (yy/mm/dd): 23/12/02
+			     Time of day (hh:mm:ss): 16:16:34

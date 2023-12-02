@@ -171,6 +171,22 @@
 	       PROCESS=STANDARD,				       CCASAMPLE
                FILENAME='STF002D.DAT',                                 CCASAMPLE
 	       CREATE=NO						CASAMPLE
+*STF01E File								CASAMPLE
+	 DFHFCT TYPE=FILE,					       CCASAMPLE
+	       FILE=STF002E,					       CCASAMPLE
+	       ACCMETH=VSAM,					       CCASAMPLE
+	       FILSTAT=(ENABLED),				       CCASAMPLE
+	       LOG=YES, 					       CCASAMPLE
+	       SERVREQ=(UPDATE,BROWSE,DELETE,ADD,READ)			CASAMPLE
+*STF01e File								CASAMPLECA-Realia CICS RDT Import Utility Version 6.0.27 D:\work\CAWB30-HO\HANDSON.rdt
+	 DFHXFT TYPE=FILE,					       CCASAMPLE
+	       FILE=STF002E,					       CCASAMPLE
+	       KEY=(9,0),					       CCASAMPLE
+	       RECLEN=00089,					       CCASAMPLE
+	       ACCMETH=KSDS,					       CCASAMPLE
+	       PROCESS=STANDARD,				       CCASAMPLE
+               FILENAME='STF002E.DAT',                                 CCASAMPLE
+	       CREATE=NO						CASAMPLE
 *MASTER NAME File							CASAMPLE
 	 DFHFCT TYPE=FILE,					       CCASAMPLE
 	       FILE=NAMEFILE,					       CCASAMPLE
@@ -178,7 +194,7 @@
 	       FILSTAT=(ENABLED),				       CCASAMPLE
 	       LOG=YES, 					       CCASAMPLE
 	       SERVREQ=(UPDATE,BROWSE,DELETE,ADD,READ)			CASAMPLE
-*MASTER NAME File							CASAMPLECA-Realia CICS RDT Import Utility Version 6.0.27 D:\work\CAWB30-HO\HANDSON.rdt
+*MASTER NAME File							CASAMPLE
 	 DFHXFT TYPE=FILE,					       CCASAMPLE
 	       FILE=NAMEFILE,					       CCASAMPLE
 	       KEY=(4,0),					       CCASAMPLE
@@ -222,9 +238,12 @@
 	 DFHPCT TYPE=ENTRY,					       CCASAMPLE
 	       PROGRAM=SM005,					       CCASAMPLE
 	       TRANSID=SM05						CASAMPLE
-	 DFHPCT TYPE=ENTRY,					       CCASAMPLE
+	 DFHPCT TYPE=ENTRY,					       CCASAMPLECA-Realia CICS RDT Import Utility Version 6.0.27 D:\work\CAWB30-HO\HANDSON.rdt
 	       PROGRAM=SM006,					       CCASAMPLE
 	       TRANSID=SM06						CASAMPLE
+	 DFHPCT TYPE=ENTRY,					       CCASAMPLE
+	       PROGRAM=SM012,					       CCASAMPLE
+	       TRANSID=SM12						CASAMPLE
 	 DFHPCT TYPE=ENTRY,					       CCASAMPLE
 	       PROGRAM=UA001,					       CCASAMPLE
 	       TRANSID=SM07						CASAMPLE
@@ -238,7 +257,7 @@
 	       PROGRAM=STFADD,					       CCASAMPLE
 	       TRANSID=STAD						CASAMPLE
 	 DFHPCT TYPE=ENTRY,					       CCASAMPLE
-	       PROGRAM=SM0004,					       CCASAMPLECA-Realia CICS RDT Import Utility Version 6.0.27 D:\work\CAWB30-HO\HANDSON.rdt
+	       PROGRAM=SM0004,					       CCASAMPLE
 	       TRANSID=STAB						CASAMPLE
 *Sample Print Transaction						CASAMPLE
 
@@ -259,11 +278,15 @@
 	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
 	       MAPSET=SM02S						CASAMPLE
 	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
+	       MAPSET=SM03S						CASAMPLE
+	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
 	       MAPSET=SM04S						CASAMPLE
 	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
 	       MAPSET=SM05S						CASAMPLE
 	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
 	       MAPSET=SM06S						CASAMPLE
+	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
+	       MAPSET=SM012S						CASAMPLE
 	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
 	       MAPSET=UA002S						CASAMPLE
 	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
@@ -275,7 +298,7 @@
 	       PROGRAM=SM000,					       CCASAMPLE
 	       PGMLANG=COBOL						CASAMPLE
 	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
-	       PROGRAM=SM001,					       CCASAMPLE
+	       PROGRAM=SM001,					       CCASAMPLECA-Realia CICS RDT Import Utility Version 6.0.27 D:\work\CAWB30-HO\HANDSON.rdt
 	       PGMLANG=COBOL						CASAMPLE
 	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
 	       PROGRAM=SM002,					       CCASAMPLE
@@ -293,12 +316,15 @@
 	       PROGRAM=SM006,					       CCASAMPLE
 	       PGMLANG=COBOL						CASAMPLE
 	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
+	       PROGRAM=SM012,					       CCASAMPLE
+	       PGMLANG=COBOL						CASAMPLE
+	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
 	       PROGRAM=UA001,					       CCASAMPLE
 	       PGMLANG=COBOL						CASAMPLE
 	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
 	       PROGRAM=UA002,					       CCASAMPLE
 	       PGMLANG=COBOL						CASAMPLE
-	 DFHPPT TYPE=ENTRY,					       CCASAMPLECA-Realia CICS RDT Import Utility Version 6.0.27 D:\work\CAWB30-HO\HANDSON.rdt
+	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
 	       PROGRAM=SMADDSTF,				       CCASAMPLE
 	       PGMLANG=COBOL						CASAMPLE
 	 DFHPPT TYPE=ENTRY,					       CCASAMPLE
@@ -332,7 +358,7 @@
 	       FEATURE=(COLOR,EXTDS,HILIGHT,UCTRAN,AUDALARM)		CASAMPLE
 *Alt1 Sample Application						CASAMPLE
 	 DFHTCT TYPE=TERMINAL,					       CCASAMPLE
-	       TRMIDNT=T002,					       CCASAMPLE
+	       TRMIDNT=T002,					       CCASAMPLECA-Realia CICS RDT Import Utility Version 6.0.27 D:\work\CAWB30-HO\HANDSON.rdt
 	       TRMTYPE=3270,					       CCASAMPLE
 	       DEFSCRN=(24,80), 				       CCASAMPLE
 	       FEATURE=(COLOR,EXTDS,HILIGHT,UCTRAN,AUDALARM)		CASAMPLE
@@ -358,7 +384,7 @@
 	 DFHTCT TYPE=TERMINAL,					       CCASAMPLE
 	       TRMIDNT=T006,					       CCASAMPLE
 	       TRMTYPE=3270,					       CCASAMPLE
-	       DEFSCRN=(24,132),				       CCASAMPLECA-Realia CICS RDT Import Utility Version 6.0.27 D:\work\CAWB30-HO\HANDSON.rdt
+	       DEFSCRN=(24,132),				       CCASAMPLE
 	       FEATURE=(COLOR,EXTDS,HILIGHT,UCTRAN,AUDALARM)		CASAMPLE
 *Alt6 Sample Application						CASAMPLE
 	 DFHTCT TYPE=TERMINAL,					       CCASAMPLE

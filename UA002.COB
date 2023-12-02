@@ -80,6 +80,7 @@ CBL XOPTS(COBOL2)
       *--------------------------------------------------------------*
        01  WS-COMMAREA.
            05 WS-PGMID                           PIC X(06).
+           05 WS-STATE                           PIC X.
            05 WS-TICKET-PASSED                   PIC X(07).
            05 USERID.
               10  USERID7                        PIC X(7).
@@ -107,7 +108,6 @@ CBL XOPTS(COBOL2)
            05 WS-FUSER                           PIC X(07).
            05 WS-PAGE                            PIC 9(02).
            05 WS-PAGE-END                        PIC 9(01).
-           05 WS-STATE                           PIC X.
            05 WS-ADDED-USER                   PIC X(08).
            05 WS-USER-DETL.
               10 WS-USER-ADD                     PIC X(08).
@@ -122,6 +122,7 @@ CBL XOPTS(COBOL2)
        LINKAGE SECTION.
         01  DFHCOMMAREA.
            05 DF-PGMID                           PIC X(06).
+           05 DF-STATE                           PIC X. 
            05 DF-TICKET-PASSED                   PIC X(07).
            05 DF-USERID.
               10  DF-USERID7                     PIC X(7).
@@ -149,7 +150,6 @@ CBL XOPTS(COBOL2)
            05 DF-FUSER                           PIC X(07).
            05 DF-PAGE                            PIC 9(02).
            05 DF-PAGE-END                        PIC 9(01).
-           05 DF-STATE                           PIC X. 
            05 DF-ADDED-USER                      PIC X(08).
            05 DF-USER-DETL.
               10 DF-USER                         PIC X(08). 
@@ -349,21 +349,13 @@ CBL XOPTS(COBOL2)
                  EVALUATE TRUE
                    WHEN WS-STATE = 1 
                         MOVE 1 TO WS-STATE
-                        MOVE LOW-VALUES TO USRIDI
-                        MOVE LOW-VALUES TO REQTAGI
-                        MOVE LOW-VALUES TO ADMTAGI
-                        MOVE LOW-VALUES TO APRTAGI
-                        MOVE LOW-VALUES TO SRVTAGI
+                        PERFORM 340-MOVE-LOW-VALUES
                         MOVE 'ENTER USER DETAILS AND PRESS PF2'
                              TO ERRMSG8O 
                         MOVE -1 TO USRIDL  
                    WHEN WS-STATE = 2
                         MOVE 1 TO WS-STATE
-                        MOVE LOW-VALUES TO USRIDI
-                        MOVE LOW-VALUES TO REQTAGI
-                        MOVE LOW-VALUES TO ADMTAGI
-                        MOVE LOW-VALUES TO APRTAGI
-                        MOVE LOW-VALUES TO SRVTAGI
+                        PERFORM 340-MOVE-LOW-VALUES
                         MOVE 'ENTER USER DETAILS AND PRESS PF2'
                              TO ERRMSG8O 
                         MOVE -1 TO USRIDL    
@@ -399,11 +391,7 @@ CBL XOPTS(COBOL2)
                     ELSE 
                        IF WS-STATE = 3 
                           MOVE 1 TO WS-STATE
-                          MOVE LOW-VALUES TO USRIDI
-                          MOVE LOW-VALUES TO REQTAGI
-                          MOVE LOW-VALUES TO ADMTAGI
-                          MOVE LOW-VALUES TO APRTAGI
-                          MOVE LOW-VALUES TO SRVTAGI
+                          PERFORM 340-MOVE-LOW-VALUES
                           MOVE 'ENTER USER DETAILS AND PRESS PF2'
                                TO ERRMSG8O 
                           MOVE -1 TO USRIDL
@@ -524,6 +512,15 @@ CBL XOPTS(COBOL2)
            MOVE DFHBMUNP TO APRTAGA
            MOVE DFHBMUNP TO SRVTAGA.
        330-EXIT.
+           EXIT.    
+
+       340-MOVE-LOW-VALUES.
+           MOVE LOW-VALUES TO USRIDI
+           MOVE LOW-VALUES TO REQTAGI
+           MOVE LOW-VALUES TO ADMTAGI
+           MOVE LOW-VALUES TO APRTAGI
+           MOVE LOW-VALUES TO SRVTAGI.
+       340-EXIT.
            EXIT.    
 
        400-WRITE-USER.

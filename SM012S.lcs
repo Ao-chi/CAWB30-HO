@@ -1,0 +1,64 @@
+CA-Realia CICS Ver:6.0.27  SM012S.bms                                                                    02DEV23 16:16:28 PAGE  1
+
+    1 SM012S  DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,       *
+    2                CTRL=(FREEKB,FRSET),TIOAPFX=YES,EXTATT=NO,              *
+    3                MAPATTS=(COLOR,HILIGHT)
+    4 SM012M   DFHMDI SIZE=(24,80)
+    5          DFHMDF POS=(01,01),LENGTH=06,ATTRB=(ASKIP,NORM),              *
+    6                INITIAL='SM012'
+    7          DFHMDF POS=(01,32),LENGTH=18,ATTRB=(ASKIP,NORM),              *
+    8                INITIAL='SERVICE MANAGEMENT'
+    9 DATE     DFHMDF POS=(01,70),LENGTH=10,ATTRB=(ASKIP,NORM,FSET)
+   10          DFHMDF POS=(02,32),LENGTH=19,ATTRB=(ASKIP,NORM),              *
+   11                INITIAL='UPDATE LOGS DISPLAY'
+   12 TIME     DFHMDF POS=(02,70),LENGTH=08,ATTRB=(ASKIP,NORM,FSET)
+   13          DFHMDF POS=(05,01),LENGTH=15,ATTRB=(ASKIP,NORM),              *
+   14                INITIAL='TICKET NUMBER :'
+   15 TKTNUM   DFHMDF POS=(05,18),LENGTH=06
+   16          DFHMDF POS=(05,41),LENGTH=08,ATTRB=(ASKIP,NORM),              *
+   17                INITIAL='STATUS :'
+   18 STAT     DFHMDF POS=(05,52),LENGTH=10
+   19          DFHMDF POS=(06,01),LENGTH=15,ATTRB=(ASKIP,NORM),              *
+   20                INITIAL='TO DATE       :'
+   21 TDATE    DFHMDF POS=(06,18),LENGTH=08
+   22          DFHMDF POS=(06,41),LENGTH=11,ATTRB=(ASKIP,NORM),              *
+   23                INITIAL='FROM DATE :'
+   24 FRMDT    DFHMDF POS=(06,55),LENGTH=08,ATTRB=(UNPROT,IC,NORM)
+   25          DFHMDF POS=(08,03),LENGTH=07,ATTRB=(ASKIP,NORM),              *
+   26                INITIAL='UPDT BY'
+   27          DFHMDF POS=(08,15),LENGTH=16,ATTRB=(ASKIP,NORM),              *
+   28                INITIAL='UPDATE DATE/TIME'
+   29          DFHMDF POS=(08,45),LENGTH=16,ATTRB=(ASKIP,NORM),              *
+   30                INITIAL='UPDATE REMARKS'
+   31 DETL1    DFHMDF POS=(10,03),LENGTH=57,ATTRB=(ASKIP,NORM)
+   32 DETL2    DFHMDF POS=(12,03),LENGTH=57,ATTRB=(ASKIP,NORM)
+   33 DETL3    DFHMDF POS=(14,03),LENGTH=57,ATTRB=(ASKIP,NORM)
+   34 DETL4    DFHMDF POS=(16,03),LENGTH=57,ATTRB=(ASKIP,NORM)
+   35 DETL5    DFHMDF POS=(18,03),LENGTH=57,ATTRB=(ASKIP,NORM)
+   36 DETL6    DFHMDF POS=(20,03),LENGTH=57,ATTRB=(ASKIP,NORM)
+   37 REM1     DFHMDF POS=(11,35),LENGTH=25,ATTRB=(ASKIP,NORM)
+   38 REM2     DFHMDF POS=(13,35),LENGTH=25,ATTRB=(ASKIP,NORM)
+   39 REM3     DFHMDF POS=(15,35),LENGTH=25,ATTRB=(ASKIP,NORM)
+   40 REM4     DFHMDF POS=(17,35),LENGTH=25,ATTRB=(ASKIP,NORM)
+   41 REM5     DFHMDF POS=(19,35),LENGTH=25,ATTRB=(ASKIP,NORM)
+   42 REM6     DFHMDF POS=(21,35),LENGTH=25,ATTRB=(ASKIP,NORM)
+   43          DFHMDF POS=(23,02),LENGTH=10,ATTRB=(ASKIP,NORM),              *
+   44                INITIAL='PF3 - EXIT'
+   45          DFHMDF POS=(23,16),LENGTH=10,ATTRB=(ASKIP,NORM),              *
+   46                INITIAL='PF5 - FIND'
+   47          DFHMDF POS=(23,33),LENGTH=10,ATTRB=(ASKIP,NORM),              *
+   48                INITIAL='PF7 - UP'
+   49          DFHMDF POS=(23,48),LENGTH=11,ATTRB=(ASKIP,NORM),              *
+   50                INITIAL='PF8 - DOWN'
+   51          DFHMDF POS=(23,65),LENGTH=12,ATTRB=(ASKIP,NORM),              *
+   52                INITIAL='PF12 - RESET'
+   53 ERRMSG   DFHMDF POS=(22,01),LENGTH=71,ATTRB=(ASKIP,NORM,FSET)
+   54          DFHMSD TYPE=FINAL
+      SM012S loaded with 1 MAPS, 34 FIELDS and 184 Bytes of Literals
+
+   55          ENDCA-Realia CICS Ver:6.0.27  SM012S.bms                                                                    02DEV23 16:16:28 PAGE  2
+
+      COBOL COPY file generated
+
+      Mapset generated. Object size is 1,145.
+
