@@ -525,7 +525,7 @@
    627	      100-PROCESS.
    629		       EXEC CICS IGNORE CONDITION ERROR END-EXEC
    644		       MOVE 1 TO I.
-   645		       MOVE 1 TO K
+   645	     *	       MOVE 1 TO K
    646		       move 1 TO J
    647		       PERFORM 30 TIMES
    648		  MOVE EIBDATE TO WS-DATE
@@ -551,7 +551,7 @@
    727			    END-STRING
    728	     *		    MOVE Last-Update-Remarks TO
    729	     *			WS-REC-Update-Remarks
-   730	     *		   MOVE 1 TO K
+   730			   MOVE 1 TO K
    731				MOVE WS-REC-KEY TO WS-REC3-Ticket-ID
    732				MOVE K TO WS-REC3-Seq-Number
    733				MOVE WS-REC-Last-Update TO
@@ -573,7 +573,7 @@
    785				END-EXEC
    806				END-IF
    807				ADD 1 TO I
-   808			       ADD 1 TO K
+   808	     *		       ADD 1 TO K
    809			       ADD 1 TO J
    810		       END-PERFORM
    812		       EXEC CICS RETURN
@@ -608,8 +608,8 @@ DEBUGXREF	  DIALECT-VS2
 			Error level limit: W
 
 			Source lines compiled:	     838
-			Compilation time (mm:ss.ss):  0:00.70
-			Compilation speed (lines/minute): 71828
+			Compilation time (mm:ss.ss):  0:00.68
+			Compilation speed (lines/minute): 73941
 
-			Compilation date (yy/mm/dd): 23/12/01
-			     Time of day (hh:mm:ss): 19:49:23
+			Compilation date (yy/mm/dd): 23/12/04
+			     Time of day (hh:mm:ss): 09:40:39

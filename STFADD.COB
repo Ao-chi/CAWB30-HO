@@ -155,7 +155,7 @@
        100-PROCESS.
 	        EXEC CICS IGNORE CONDITION ERROR END-EXEC
                 MOVE 1 TO I.
-                MOVE 1 TO K
+      *         MOVE 1 TO K
                 move 1 TO J
                 PERFORM 30 TIMES
            MOVE EIBDATE TO WS-DATE
@@ -182,7 +182,7 @@
                      END-STRING    
       *              MOVE Last-Update-Remarks TO 
       *                  WS-REC-Update-Remarks   
-      *             MOVE 1 TO K
+                    MOVE 1 TO K
                          MOVE WS-REC-KEY TO WS-REC3-Ticket-ID
                          MOVE K TO WS-REC3-Seq-Number  
                          MOVE WS-REC-Last-Update TO 
@@ -204,7 +204,7 @@
                          END-EXEC
                          END-IF 
                          ADD 1 TO I   
-                        ADD 1 TO K
+      *                 ADD 1 TO K
                         ADD 1 TO J
                 END-PERFORM
                 EXEC CICS RETURN

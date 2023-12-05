@@ -1,6 +1,11 @@
       * SYMBOLIC MAP of SM012S Created by CACXBMS Version 6.0.27
        01  SM012MI.
 	   02  FILLER				      PIC X(12).
+	   02  PAGEL				      PIC S9(4) COMP.
+	   02  PAGEF				      PIC X.
+	   02  FILLER REDEFINES PAGEF.
+	       03  PAGEA			      PIC X.
+	   02  PAGEI				      PIC X(002).
 	   02  DATEL				      PIC S9(4) COMP.
 	   02  DATEF				      PIC X.
 	   02  FILLER REDEFINES DATEF.
@@ -98,6 +103,9 @@
 	   02  ERRMSGI				      PIC X(071).
        01  SM012MO REDEFINES SM012MI.
 	   02  FILLER				      PIC X(12).
+	   02  FILLER				      PIC XX.
+	   02  FILLER				      PIC X.
+	   02  PAGEO				      PIC X(002).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  DATEO				      PIC X(010).

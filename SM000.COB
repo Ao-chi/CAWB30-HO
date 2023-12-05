@@ -66,6 +66,8 @@
               15 USR-ADMIN                       PIC X.  
               15 USR-APPROVER                    PIC X.
               15 USR-SERVICE                     PIC X.
+           05 WS-SM012-STATE                     PIC X.  
+           05 WS-SM012-PGMID                     PIC X(06).
       *    05 COMM-TICKET-REC.
       *       10 COMM-TICKET-ID                       PIC 9(07).
       *       10 COMM-TICKET-KEY-NUM REDEFINES COMM-TICKET-ID PIC X(07).
@@ -95,6 +97,8 @@
              15 DF-USR-ADMIN                     PIC X.  
              15 DF-USR-APPROVER                  PIC X.
              15 DF-USR-SERVICE                   PIC X.
+           05 DF-SM012-STATE                     PIC X.   
+           05 DF-SM012-PGMID                     PIC X(06). 
       *    05 DF-TICKET-REC.
       *       10 DF-TICKET-ID                       PIC 9(07).
       *       10 DF-TICKET-KEY-NUM REDEFINES DF-TICKET-ID PIC 9(06).
@@ -120,11 +124,10 @@
               WS-PGMID = 'SM002' OR WS-PGMID = 'SM003' OR 
               WS-PGMID = 'SM004' OR WS-PGMID = 'SM005' OR
               WS-PGMID = 'SM006' OR EIBTRNID = 'SM00'
-                 MOVE 'SM000' TO WS-PGMID
                  MOVE WS-TYPE TO USR-TYPE
                  MOVE WS-USERID TO USERID
-                 IF EIBCALEN NOT = +0 
-      *          IF WS-STATE NOT = LOW-VALUES
+      *          IF EIBCALEN NOT = +0 
+                 IF WS-STATE NOT = LOW-VALUES
                     PERFORM 200-REC-MAP
                  ELSE
                     MOVE 'ENTER OPTION AND PRESS ENTER' TO ERRMSGO 
@@ -300,6 +303,7 @@
            EXIT.
        
        21A-SEARCH-SM001.
+            MOVE 'SM000' TO WS-PGMID
            MOVE LOW-VALUES TO WS-STATE
            MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
            EXEC CICS XCTL
@@ -311,6 +315,7 @@
            EXIT.
 
        21B-SUBMIT-SM002.
+            MOVE 'SM000' TO WS-PGMID
            MOVE LOW-VALUES TO WS-STATE
            MOVE TICKETI TO WS-TICKET-PASSED
            MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
@@ -323,6 +328,7 @@
            EXIT.
 
        21C-UPDATE-SM003.
+            MOVE 'SM000' TO WS-PGMID
            MOVE LOW-VALUES TO WS-STATE
            MOVE TICKETI TO WS-TICKET-PASSED
            MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
@@ -336,10 +342,11 @@
            EXIT.
 
        21D-CLOSE-SM004.
+           MOVE 'SM000' TO WS-PGMID
            MOVE LOW-VALUES TO WS-STATE
            MOVE TICKETI TO WS-TICKET-PASSED
            MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-           EXEC CICS LINK
+           EXEC CICS XCTL
                 PROGRAM('SM004')
                 COMMAREA(WS-COMMAREA)
                 LENGTH(WS-LENGTH)
@@ -349,9 +356,15 @@
            EXIT.
        
        21E-APPROVE-SM005.
-           MOVE TICKETI TO WS-TICKET-PASSED
+           MOVE 'SM000' TO WS-PGMID
+           IF TICKETI = LOW-VALUES
+              MOVE LOW-VALUES TO WS-STATE
+           ELSE 
+              MOVE 1 TO WS-STATE
+              MOVE TICKETI TO WS-TICKET-PASSED
+           END-IF 
            MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-           EXEC CICS LINK
+           EXEC CICS XCTL
                 PROGRAM('SM005')
                 COMMAREA(WS-COMMAREA)
                 LENGTH(WS-LENGTH)
@@ -361,6 +374,7 @@
            EXIT.
 
        21F-CANCEL-SM006.
+           MOVE 'SM000' TO WS-PGMID
            MOVE TICKETI TO WS-TICKET-PASSED
            MOVE LOW-VALUES TO WS-STATE
            IF TICKETI NOT = LOW-VALUES OR SPACES
@@ -384,6 +398,7 @@
            EXIT.
            
        21G-ADMIN-UA001.
+           MOVE 'SM000' TO WS-PGMID
            EXEC CICS LINK
                 PROGRAM('UA001')
                 COMMAREA(WS-COMMAREA)

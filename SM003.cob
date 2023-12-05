@@ -21,9 +21,9 @@
 
       * PRE-DEFINE DATA DAPAT MGA ITO AY 
       * GALING SA COMMAREA FROM PREVIOUS MAP
-       01 DAPAT-COMMAREA.
-          05 TICKETADD                      PIC X(07) VALUE '000006'.
-          05 REQUESTOR                      PIC X(01) VALUE 'Y'.
+      *01 DAPAT-COMMAREA.
+      *   05 TICKETADD                      PIC X(07) VALUE '000006'.
+      *   05 REQUESTOR                      PIC X(01) VALUE 'Y'.
       *   05 USERID                         PIC X(07) VALUE 'ISCB110'.
 
 
@@ -89,6 +89,8 @@
               15 USR-ADMIN                       PIC X.  
               15 USR-APPROVER                    PIC X.
               15 USR-SERVICE                     PIC X.
+           05 WS-SM012-STATE                     PIC X.  
+           05 WS-SM012-PGMID                     PIC X(06).
            05 WS-TICKET-NUM                      PIC X(07).
            05 WS-FLAG                            PIC X(01).
            05 ESC-BACKUP.              
@@ -110,6 +112,8 @@
              15 DF-USR-ADMIN                     PIC X.  
              15 DF-USR-APPROVER                  PIC X.
              15 DF-USR-SERVICE                   PIC X.
+           05 DF-SM012-STATE                     PIC X.   
+           05 DF-SM012-PGMID                     PIC X(06).   
            05 DF-TICKET-NUM                      PIC X(07).
            05 DF-FLAG                            PIC X(01).
            05 DF-ESC-BACKUP.              
@@ -305,7 +309,7 @@
             WHEN EIBAID = DFHCLEAR
               CONTINUE
 
-            WHEN EIBAID = DFHPF11
+            WHEN EIBAID = DFHPF12
               CONTINUE
 
             WHEN OTHER
@@ -515,8 +519,14 @@
                
               MOVE 'INVALID PFKEY PRESSED' TO ERRMSGO
 
-            WHEN EIBAID = DFHPF11
-              MOVE 'GO TO LOG' TO ERRMSGO
+            WHEN EIBAID = DFHPF12
+                 MOVE 'SM005' TO WS-SM012-PGMID
+      *          MOVE LOW-VALUES TO WS-STATE
+                 MOVE LOW-VALUES TO WS-SM012-STATE 
+                 EXEC CICS XCTL
+                      PROGRAM('SM012')
+                      COMMAREA(WS-COMMAREA)
+                 END-EXEC
 
             WHEN OTHER
               IF WS-STATE = 'A'

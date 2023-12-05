@@ -1,4 +1,4 @@
-CA-Realia CICS Ver:6.0.27  SM03S.bms                                                                     02DEV23 16:16:28 PAGE  1
+CA-Realia CICS Ver:6.0.27  SM03S.bms                                                                     04DEV23 20:43:28 PAGE  1
 
     1 SM03S    DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      *
     2                CTRL=(FREEKB,FRSET),TIOAPFX=YES,EXTATT=NO,              *
@@ -49,7 +49,7 @@
    47          DFHMSD TYPE=FINAL
       SM03S loaded with 1 MAPS, 29 FIELDS and 235 Bytes of Literals
 
-   48          ENDCA-Realia CICS Ver:6.0.27  SM03S.bms                                                                     02DEV23 16:16:28 PAGE  2
+   48          ENDCA-Realia CICS Ver:6.0.27  SM03S.bms                                                                     04DEV23 20:43:28 PAGE  2
 
       COBOL COPY file generated
 

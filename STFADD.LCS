@@ -522,7 +522,7 @@
    155	     100-PROCESS.
    156		      EXEC CICS IGNORE CONDITION ERROR END-EXEC
    157		      MOVE 1 TO I.
-   158		      MOVE 1 TO K
+   158	    *	      MOVE 1 TO K
    159		      move 1 TO J
    160		      PERFORM 30 TIMES
    161		 MOVE EIBDATE TO WS-DATE
@@ -551,7 +551,7 @@
    182			   END-STRING
    183	    *		   MOVE Last-Update-Remarks TO
    184	    *		       WS-REC-Update-Remarks
-   185	    *		  MOVE 1 TO K
+   185			  MOVE 1 TO K
    186			       MOVE WS-REC-KEY TO WS-REC3-Ticket-ID
    187			       MOVE K TO WS-REC3-Seq-Number
    188			       MOVE WS-REC-Last-Update TO
@@ -573,7 +573,7 @@
    204			       END-EXEC
    205			       END-IF
    206			       ADD 1 TO I
-   207			      ADD 1 TO K
+   207	    *		      ADD 1 TO K
    208			      ADD 1 TO J
    209		      END-PERFORM
    210		      EXEC CICS RETURN
@@ -597,5 +597,5 @@
 		      DCHK
 
 		Source Lines Translated:     564
-		Translation Time:	     .00 sec
-		Translation Speed:		 lines per min
+		Translation Time:	     .01 sec
+		Translation Speed:	  640000 lines per min

@@ -122,6 +122,22 @@
                PROCESS=STANDARD,                                       CCASAMPLE
                FILENAME='UAF001.DAT',                                  CCASAMPLE
                CREATE=NO                                                CASAMPLE
+*uaf002 File                                                            CASAMPLE
+         DFHFCT TYPE=FILE,                                             CCASAMPLE
+               FILE=UAF002,                                            CCASAMPLE
+               ACCMETH=VSAM,                                           CCASAMPLE
+               FILSTAT=(ENABLED),                                      CCASAMPLE
+               LOG=YES,                                                CCASAMPLE
+               SERVREQ=(UPDATE,BROWSE,DELETE,ADD,READ)                  CASAMPLE
+*uaf002 File                                                            CASAMPLE
+         DFHXFT TYPE=FILE,                                             CCASAMPLE
+               FILE=UAF002,                                            CCASAMPLE
+               KEY=(8,0),                                              CCASAMPLE
+               RECLEN=00020,                                           CCASAMPLE
+               ACCMETH=KSDS,                                           CCASAMPLE
+               PROCESS=STANDARD,                                       CCASAMPLE
+               FILENAME='UAF002.DAT',                                  CCASAMPLE
+               CREATE=NO                                                CASAMPLE
 *TICKET File                                                            CASAMPLE
          DFHFCT TYPE=FILE,                                             CCASAMPLE
                FILE=STF001,                                            CCASAMPLE
@@ -257,7 +273,10 @@
                TRANSID=STAD                                             CASAMPLE  
          DFHPCT TYPE=ENTRY,                                            CCASAMPLE
                PROGRAM=SM0004,                                         CCASAMPLE
-               TRANSID=STAB                                             CASAMPLE             
+               TRANSID=STAB                                             CASAMPLE       
+         DFHPCT TYPE=ENTRY,                                            CCASAMPLE
+               PROGRAM=UAADD,                                          CCASAMPLE
+               TRANSID=UADD                                             CASAMPLE         
 *Sample Print Transaction                                               CASAMPLE
 
 *                                                                       CASAMPLE
@@ -331,6 +350,9 @@
                PGMLANG=COBOL                                            CASAMPLE
          DFHPPT TYPE=ENTRY,                                            CCASAMPLE
                PROGRAM=SM0004,                                         CCASAMPLE
+               PGMLANG=COBOL                                            CASAMPLE
+         DFHPPT TYPE=ENTRY,                                            CCASAMPLE
+               PROGRAM=UAADD,                                          CCASAMPLE
                PGMLANG=COBOL                                            CASAMPLE
 *Sample Update                                                          CASAMPLE
 

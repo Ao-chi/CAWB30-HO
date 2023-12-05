@@ -82,6 +82,8 @@
              15 USR-ADMIN                        PIC X.  
              15 USR-APPROVER                     PIC X.
              15 USR-SERVICE                      PIC X.
+           05 WS-SM012-STATE                     PIC X.  
+           05 WS-SM012-PGMID                     PIC X(06).
            05 WS-FLAG                            PIC X(01).
            05 WS-HOLDER.
               10 WS-ID                          PIC X(06).
@@ -106,6 +108,8 @@
              15 DF-USR-ADMIN                     PIC X.  
              15 DF-USR-APPROVER                  PIC X.
              15 DF-USR-SERVICE                   PIC X.
+           05 DF-SM012-STATE                     PIC X.   
+           05 DF-SM012-PGMID                     PIC X(06).   
            05 DF-FLAG                            PIC X(01).
            05 HOLDER.
               10 T-ID                            PIC X(06).

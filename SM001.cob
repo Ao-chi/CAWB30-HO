@@ -88,13 +88,13 @@
        01  WS-FLAGS.
            05 WS-FLAG                            PIC X    VALUE 'N'.
            05 WS-PAGE-CHANGED                    PIC X VALUE 'N'.
+           05 WS-PAGE-INVALID                    PIC X.
        01  WS-SELECTED-VALUE                     PIC X.
        01  WS-COUNTERS.
            05 WS-INDEX                           PIC 9(02).   
            05 WS-I                               PIC 9(02).                        
            05 WS-SELECT-COUNT                    PIC 9.
            05 WS-PAGE-UPDOWN                     PIC 9(02).
-
 
        01  WS-ERRMSGS.
            05 WS-INVALID-ACCESS                  PIC X(15) VALUE
@@ -138,6 +138,8 @@
              15 USR-ADMIN                        PIC X.  
              15 USR-APPROVER                     PIC X.
              15 USR-SERVICE                      PIC X.
+           05 WS-SM012-STATE                     PIC X.  
+           05 WS-SM012-PGMID                     PIC X(06).
            05 WS-STF01-REC.
               10 WS-STF01-ID                     PIC X(07).
               10 FILL1                           PIC X(03).
@@ -183,6 +185,8 @@
              15 DF-USR-ADMIN                     PIC X.  
              15 DF-USR-APPROVER                  PIC X.
              15 DF-USR-SERVICE                   PIC X.
+           05 DF-SM012-STATE                     PIC X.   
+           05 DF-SM012-PGMID                     PIC X(06). 
            05 DF-STF01-REC.
               10 DF-STF01-ID                     PIC X(07).
               10 DF-FILLER                       PIC X(03).
@@ -229,6 +233,9 @@
               WS-PGMID = 'SM006'
                IF WS-STATE NOT = LOW-VALUES
                   PERFORM 200-REC-MAP
+                  PERFORM 500-CHECK-EIBAID
+                  PERFORM 600-MOVE-Q-TO-SCREEN  
+                  PERFORM 111-CREATE-MAP
                ELSE
                    MOVE WS-SELECT-OPTION TO ERRMSG1O 
                    MOVE 1 TO WS-STATE
@@ -297,15 +304,12 @@
                 MAP('SM001M')
                 MAPSET('SM01S')
                 INTO (SM001MI)
-           END-EXEC
+           END-EXEC.
       *    IF EIBRESP = DFHRESP(MAPFAIL)
       *       MOVE WS-INVALID-PFKEY TO ERRMSG1O
       *       PERFORM 600-MOVE-Q-TO-SCREEN  
       *       PERFORM 111-CREATE-MAP
       *    END-IF
-              PERFORM 500-CHECK-EIBAID
-              PERFORM 600-MOVE-Q-TO-SCREEN  
-              PERFORM 111-CREATE-MAP.
        200-EXIT.
            EXIT.    
 
@@ -344,11 +348,15 @@
            EVALUATE EIBAID
            WHEN DFHCLEAR  
                 MOVE WS-INVALID-PFKEY TO ERRMSG1O
+                MOVE -1 TO TITLEL
                 PERFORM 600-MOVE-Q-TO-SCREEN  
                 PERFORM 111-CREATE-MAP
+                
            WHEN DFHPF2
                 IF USR-REQUESTOR  = 'Y'
       *            MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+                   MOVE 'SM001' TO WS-PGMID
+                   MOVE LOW-VALUES TO WS-STATE
                    EXEC CICS XCTL 
                         PROGRAM ('SM002')
                         COMMAREA (WS-COMMAREA)
@@ -358,9 +366,9 @@
                    MOVE WS-INVALID-ACCESS TO ERRMSG1O
                 END-IF   
            WHEN DFHPF3
-                MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                 MOVE 'SM001' TO WS-PGMID
                 MOVE LOW-VALUES TO WS-STATE
+                MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                 EXEC CICS 
                     SEND CONTROL 
                     ERASE
@@ -386,12 +394,8 @@
                 PERFORM 600-MOVE-Q-TO-SCREEN
                 PERFORM 111-CREATE-MAP
            WHEN DFHENTER 
-      *         IF WS-PAGE-CHANGED = 'Y'
-      *            PERFORM 550-PAGE-CHANGED
-      *         ELSE   
                 PERFORM 550-PAGE-CHANGED
-                
-      *         END-IF
+
            WHEN OTHER
                 MOVE 'INAVLID PFKEY PRESSED' TO ERRMSG1O  
                 PERFORM 600-MOVE-Q-TO-SCREEN  
@@ -437,10 +441,12 @@
 
        550-PAGE-CHANGED.
            MOVE PAGEI TO WS-CURR-PAGE
-           IF CURR-PAGE IS NUMERIC
+           IF CURR-PAGE IS NUMERIC  
               PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL 
-                      WS-INDEX > WS-MAX-PAGE
+                      WS-INDEX > WS-MAX-PAGE      
+                MOVE 'Y' TO WS-PAGE-INVALID       
                 IF CURR-PAGE = WS-INDEX
+                   MOVE 'N' TO WS-PAGE-INVALID
                    SUBTRACT PREV-PAGE FROM CURR-PAGE GIVING 
                             WS-PAGE-UPDOWN    
                    EVALUATE TRUE            
@@ -477,6 +483,37 @@
                    END-EVALUATE
                 END-IF
               END-PERFORM
+              IF WS-PAGE-INVALID = 'Y'
+                 EVALUATE TRUE
+                   WHEN CURR-PAGE > WS-MAX-PAGE 
+                        MOVE 1 TO WS-I
+                        PERFORM UNTIL WS-I = WS-MAX-PAGE
+                                ADD 11 TO WS-QITEM-PAGE
+                                ADD 1 TO WS-I
+                        END-PERFORM
+                        MOVE -1 TO PAGEL
+                        MOVE WS-MAX-PAGE TO PAGEO
+                        MOVE WS-MAX-PAGE TO WS-PAGE
+                       IF WS-QITEM-PAGE > WS-QITEM-END 
+                          SUBTRACT 11 FROM WS-QITEM-PAGE
+                          MOVE WS-LAST-PAGE TO ERRMSG1O
+                       ELSE
+                          MOVE WS-SELECT-OPTION TO 
+                           ERRMSG1O
+                          PERFORM 600-MOVE-Q-TO-SCREEN
+                       END-IF
+                       PERFORM 111-CREATE-MAP         
+                   WHEN CURR-PAGE < 1
+                        MOVE PREV-PAGE TO WS-I
+                        PERFORM UNTIL WS-I = CURR-PAGE
+                                SUBTRACT 11 FROM WS-QITEM-PAGE
+                                SUBTRACT 1 FROM WS-I
+                        END-PERFORM   
+                        PERFORM 540-PAGEDOWN-ENTER
+                 END-EVALUATE   
+              ELSE 
+                  MOVE 'N' TO WS-PAGE-INVALID   
+              END-IF   
            ELSE 
                PERFORM 600-MOVE-Q-TO-SCREEN
                PERFORM 111-CREATE-MAP  
@@ -537,7 +574,7 @@
                            IF WS-STF01-REQ = USERID
                               MOVE LENGTH OF WS-COMMAREA 
                                    TO WS-LENGTH
-                              EXEC CICS LINK 
+                              EXEC CICS XCTL 
                                    PROGRAM ('SM004')
                                    COMMAREA (WS-COMMAREA)
                                    LENGTH (WS-LENGTH)
@@ -559,7 +596,7 @@
                            IF WS-STF01-REQ = USERID
                               MOVE LENGTH OF WS-COMMAREA 
                                    TO WS-LENGTH
-                              EXEC CICS LINK 
+                              EXEC CICS XCTL 
                                    PROGRAM ('SM005')
                                    COMMAREA (WS-COMMAREA)
                                    LENGTH (WS-LENGTH)
@@ -580,7 +617,7 @@
                         IF WS-STF01-REQ = USERID
                            MOVE LENGTH OF WS-COMMAREA 
                                 TO WS-LENGTH
-                           EXEC CICS LINK 
+                           EXEC CICS XCTL 
                                 PROGRAM ('SM006')
                                 COMMAREA (WS-COMMAREA)
                                 LENGTH (WS-LENGTH)
