@@ -10,17 +10,22 @@
 	   02  REQBYF				      PIC X.
 	   02  FILLER REDEFINES REQBYF.
 	       03  REQBYA			      PIC X.
-	   02  REQBYI				      PIC X(006).
+	   02  REQBYI				      PIC X(008).
 	   02  TKTLEL				      PIC S9(4) COMP.
 	   02  TKTLEF				      PIC X.
 	   02  FILLER REDEFINES TKTLEF.
 	       03  TKTLEA			      PIC X.
 	   02  TKTLEI				      PIC X(025).
-	   02  TKDESL				      PIC S9(4) COMP.
-	   02  TKDESF				      PIC X.
-	   02  FILLER REDEFINES TKDESF.
-	       03  TKDESA			      PIC X.
-	   02  TKDESI				      PIC X(040).
+	   02  TKDES1L				      PIC S9(4) COMP.
+	   02  TKDES1F				      PIC X.
+	   02  FILLER REDEFINES TKDES1F.
+	       03  TKDES1A			      PIC X.
+	   02  TKDES1I				      PIC X(050).
+	   02  TKDES2L				      PIC S9(4) COMP.
+	   02  TKDES2F				      PIC X.
+	   02  FILLER REDEFINES TKDES2F.
+	       03  TKDES2A			      PIC X.
+	   02  TKDES2I				      PIC X(050).
 	   02  STATL				      PIC S9(4) COMP.
 	   02  STATF				      PIC X.
 	   02  FILLER REDEFINES STATF.
@@ -30,17 +35,27 @@
 	   02  UPDTBYF				      PIC X.
 	   02  FILLER REDEFINES UPDTBYF.
 	       03  UPDTBYA			      PIC X.
-	   02  UPDTBYI				      PIC X(006).
-	   02  UPDREML				      PIC S9(4) COMP.
-	   02  UPDREMF				      PIC X.
-	   02  FILLER REDEFINES UPDREMF.
-	       03  UPDREMA			      PIC X.
-	   02  UPDREMI				      PIC X(025).
+	   02  UPDTBYI				      PIC X(008).
+	   02  UPDREM1L 			      PIC S9(4) COMP.
+	   02  UPDREM1F 			      PIC X.
+	   02  FILLER REDEFINES UPDREM1F.
+	       03  UPDREM1A			      PIC X.
+	   02  UPDREM1I 			      PIC X(025).
+	   02  UPDREM2L 			      PIC S9(4) COMP.
+	   02  UPDREM2F 			      PIC X.
+	   02  FILLER REDEFINES UPDREM2F.
+	       03  UPDREM2A			      PIC X.
+	   02  UPDREM2I 			      PIC X(025).
 	   02  UPDTL				      PIC S9(4) COMP.
 	   02  UPDTF				      PIC X.
 	   02  FILLER REDEFINES UPDTF.
 	       03  UPDTA			      PIC X.
-	   02  UPDTI				      PIC X(019).
+	   02  UPDTI				      PIC X(020).
+	   02  PF2L				      PIC S9(4) COMP.
+	   02  PF2F				      PIC X.
+	   02  FILLER REDEFINES PF2F.
+	       03  PF2A 			      PIC X.
+	   02  PF2I				      PIC X(012).
 	   02  ERRMSGL				      PIC S9(4) COMP.
 	   02  ERRMSGF				      PIC X.
 	   02  FILLER REDEFINES ERRMSGF.
@@ -63,25 +78,34 @@
 	   02  TKTNUMO				      PIC X(006).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  REQBYO				      PIC X(006).
+	   02  REQBYO				      PIC X(008).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  TKTLEO				      PIC X(025).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  TKDESO				      PIC X(040).
+	   02  TKDES1O				      PIC X(050).
+	   02  FILLER				      PIC XX.
+	   02  FILLER				      PIC X.
+	   02  TKDES2O				      PIC X(050).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  STATO				      PIC X(010).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  UPDTBYO				      PIC X(006).
+	   02  UPDTBYO				      PIC X(008).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  UPDREMO				      PIC X(025).
+	   02  UPDREM1O 			      PIC X(025).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
-	   02  UPDTO				      PIC X(019).
+	   02  UPDREM2O 			      PIC X(025).
+	   02  FILLER				      PIC XX.
+	   02  FILLER				      PIC X.
+	   02  UPDTO				      PIC X(020).
+	   02  FILLER				      PIC XX.
+	   02  FILLER				      PIC X.
+	   02  PF2O				      PIC X(012).
 	   02  FILLER				      PIC XX.
 	   02  FILLER				      PIC X.
 	   02  ERRMSGO				      PIC X(071).

@@ -1,4 +1,4 @@
-CA-Realia CICS Ver:6.0.27  SM01S.bms                                                                     30NOV23 11:40:37 PAGE  1
+CA-Realia CICS Ver:6.0.27  SM01S.bms                                                                     05DEV23 19:50:16 PAGE  1
 
     1 SM01S    DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      C
     2                CTRL=(FREEKB,FRSET),TIOAPFX=YES,EXTATT=NO,              C
@@ -57,7 +57,7 @@
    55 OPTN6    DFHMDF POS=(15,04),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET),     C
    56                 INITIAL='-'
    57          DFHMDF POS=(15,06),LENGTH=1,ATTRB=(ASKIP,NORM)
-   58 OPTN7    DFHMDF POS=(16,04),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET),     CCA-Realia CICS Ver:6.0.27  SM01S.bms                                                                     30NOV23 11:40:37 PAGE  2
+   58 OPTN7    DFHMDF POS=(16,04),LENGTH=01,ATTRB=(UNPROT,NORM,IC,FSET),     CCA-Realia CICS Ver:6.0.27  SM01S.bms                                                                     05DEV23 19:50:16 PAGE  2
 
    59                 INITIAL='-'
    60          DFHMDF POS=(16,06),LENGTH=1,ATTRB=(ASKIP,NORM)
@@ -99,7 +99,7 @@
    96          DFHMSD TYPE=FINAL
       SM01S loaded with 1 MAPS, 61 FIELDS and 198 Bytes of Literals
 
-   97          ENDCA-Realia CICS Ver:6.0.27  SM01S.bms                                                                     30NOV23 11:40:37 PAGE  3
+   97          ENDCA-Realia CICS Ver:6.0.27  SM01S.bms                                                                     05DEV23 19:50:16 PAGE  3
 
       COBOL COPY file generated
 

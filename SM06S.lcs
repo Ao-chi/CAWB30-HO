@@ -1,4 +1,4 @@
-CA-Realia CICS Ver:6.0.27  SM06S.bms                                                                     29NOV23 22:32:56 PAGE  1
+CA-Realia CICS Ver:6.0.27  SM06S.bms                                                                     05DEV23 19:59:46 PAGE  1
 
     1          PRINT NOGEN
     2 SM06S   DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,       *
@@ -11,47 +11,47 @@
     9                INITIAL='SERVICE MANAGEMENT'
    10          DFHMDF POS=(02,34),LENGTH=13,ATTRB=(ASKIP,NORM),              *
    11                INITIAL='CANCEL TICKET'
-   12 TKTNUM   DFHMDF POS=(05,25),LENGTH=06,ATTRB=(UNPROT,NORM,IC,NUM)
+   12 TKTNUM   DFHMDF POS=(05,25),LENGTH=06,ATTRB=(UNPROT,NUM,IC,NORM)
    13          DFHMDF POS=(05,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
    14                INITIAL='TICKET NUMBER      :'
-   15 REQBY    DFHMDF POS=(06,25),LENGTH=06
+   15 REQBY    DFHMDF POS=(06,25),LENGTH=08
    16          DFHMDF POS=(06,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
    17                INITIAL='REQUESTED BY       :'
    18 TKTLE    DFHMDF POS=(07,25),LENGTH=25
    19          DFHMDF POS=(07,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
    20                INITIAL='TICKET TITLE       :'
-   21 TKDES    DFHMDF POS=(08,25),LENGTH=40
-   22          DFHMDF POS=(09,25),LENGTH=40
+   21 TKDES1   DFHMDF POS=(08,25),LENGTH=50
+   22 TKDES2   DFHMDF POS=(09,25),LENGTH=50
    23          DFHMDF POS=(08,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
    24                INITIAL='TICKET DESCRIPTION :'
    25 STAT     DFHMDF POS=(10,25),LENGTH=10
    26          DFHMDF POS=(10,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
    27                INITIAL='STATUS             :'
-   28 UPDTBY   DFHMDF POS=(11,25),LENGTH=06
+   28 UPDTBY   DFHMDF POS=(11,25),LENGTH=08
    29          DFHMDF POS=(11,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
    30                INITIAL='UPDATE BY          :'
-   31 UPDREM   DFHMDF POS=(12,25),LENGTH=25,ATTRB=(UNPROT,NORM)
-   32          DFHMDF POS=(13,25),LENGTH=25,ATTRB=(UNPROT,NORM)
+   31 UPDREM1  DFHMDF POS=(12,25),LENGTH=25,ATTRB=(ASKIP,NORM)
+   32 UPDREM2  DFHMDF POS=(13,25),LENGTH=25,ATTRB=(ASKIP,NORM)
    33          DFHMDF POS=(12,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
    34                INITIAL='UPDATE REMARKS     :'
-   35 UPDT     DFHMDF POS=(14,25),LENGTH=19
+   35 UPDT     DFHMDF POS=(14,25),LENGTH=20
    36          DFHMDF POS=(14,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
    37                INITIAL='UPDATE DATE/TIME   :'
-   38          DFHMDF POS=(22,02),LENGTH=12,ATTRB=(ASKIP,NORM),              *
+   38 PF2      DFHMDF POS=(22,02),LENGTH=12,ATTRB=(ASKIP,NORM),              *
    39                INITIAL='PF2 - CANCEL'
    40          DFHMDF POS=(22,16),LENGTH=10,ATTRB=(ASKIP,NORM),              *
-   41                INITIAL='FF3 - EXIT'
+   41                INITIAL='PF3 - EXIT'
    42          DFHMDF POS=(22,33),LENGTH=11,ATTRB=(ASKIP,NORM),              *
    43                INITIAL='PF5 - ABORT'
    44          DFHMDF POS=(22,48),LENGTH=11,ATTRB=(ASKIP,NORM),              *
-   45                INITIAL='PF11 - LOGS'
+   45                INITIAL='PF12 - LOGS'
    46 ERRMSG   DFHMDF POS=(21,01),LENGTH=71,ATTRB=(ASKIP,NORM,FSET)
-   47 DATE     DFHMDF POS=(01,70),LENGTH=10,ATTRB=(ASKIP,NORM,IC,FSET)
-   48 TIME     DFHMDF POS=(02,70),LENGTH=08,ATTRB=(ASKIP,NORM,IC,FSET)
+   47 DATE     DFHMDF POS=(01,70),LENGTH=10,ATTRB=(ASKIP,NORM,FSET)
+   48 TIME     DFHMDF POS=(02,70),LENGTH=08,ATTRB=(ASKIP,NORM,FSET)
    49          DFHMSD TYPE=FINAL
       SM06S loaded with 1 MAPS, 28 FIELDS and 241 Bytes of Literals
 
-   50          ENDCA-Realia CICS Ver:6.0.27  SM06S.bms                                                                     29NOV23 22:32:56 PAGE  2
+   50          ENDCA-Realia CICS Ver:6.0.27  SM06S.bms                                                                     05DEV23 19:59:46 PAGE  2
 
       COBOL COPY file generated
 

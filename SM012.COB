@@ -395,10 +395,14 @@
                   END-EXEC  
                   EVALUATE WS-SM012-PGMID
                     WHEN 'SM003'
+                       MOVE 'SM012' TO WS-SM012-PGMID
+                       MOVE WS-STATE-HOLDER TO WS-STATE
                        EXEC CICS XCTL
                             PROGRAM('SM003')
                        END-EXEC
                     WHEN 'SM004'  
+                       MOVE 'SM012' TO WS-SM012-PGMID
+                       MOVE WS-STATE-HOLDER TO WS-STATE
                        EXEC CICS XCTL
                             PROGRAM('SM004')
                        END-EXEC
@@ -410,6 +414,8 @@
                             COMMAREA(WS-COMMAREA)
                        END-EXEC 
                     WHEN 'SM006'
+                       MOVE 'SM012' TO WS-SM012-PGMID
+                       MOVE WS-STATE-HOLDER TO WS-STATE
                        EXEC CICS XCTL
                             PROGRAM('SM006')
                        END-EXEC     

@@ -43,6 +43,6 @@ ERRMSG   DFHMDF POS=(23,02),LENGTH=58,ATTRB=(ASKIP,NORM,FSET)
          DFHMDF POS=(24,28),LENGTH=11,ATTRB=(ASKIP,NORM),              *
                INITIAL='PF5 - ABORT'
          DFHMDF POS=(24,50),LENGTH=11,ATTRB=(ASKIP,NORM),              *
-               INITIAL='PF11 - LOGS'
+               INITIAL='PF12 - LOGS'
          DFHMSD TYPE=FINAL
          END

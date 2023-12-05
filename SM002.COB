@@ -174,7 +174,7 @@
                          MOVE TICKTD2I TO NEW-TICKET-DESCRIPTION(51:50)
                          PERFORM 1100-GET-DATE-TIME
                          MOVE DATEO    TO NEW-TICKET-Last-Update(1:10)
-                         MOVE TIMEO    TO NEW-TICKET-Last-Update(11:10)
+                         MOVE TIMEO    TO NEW-TICKET-Last-Update(12:9)
                          MOVE IDI TO WS-LOG-TICKET-ID
                          MOVE DATEO    TO WS-LOG-LAST-UPDATE(1:10)
                          MOVE TIMEO    TO WS-LOG-LAST-UPDATE(12:8)
@@ -267,8 +267,10 @@
               WHEN EIBAID = DFHPF3
 		    	         EVALUATE WS-PGMID
                     WHEN 'SM000'
+                       MOVE LOW-VALUES TO WS-STATE
 		    	             EXEC CICS XCTL
 			                     PROGRAM('SM000')
+                           COMMAREA(WS-COMMAREA)
                          END-EXEC  
                     WHEN 'SM001'  
                          EXEC CICS XCTL
@@ -341,7 +343,7 @@
                     MOVE -1 TO TICKETTL
                     MOVE 'TICKET CREATED' TO UPR1O 
                     MOVE NEW-TICKET-Last-Update(1:10) TO UPDATEO
-                    MOVE NEW-TICKET-Last-Update(11:10) TO UPTIMEO
+                    MOVE NEW-TICKET-Last-Update(12:9) TO UPTIMEO
                     MOVE NEW-TICKET-Last-Update-by TO UPBO
                     MOVE 'SUCCESSFULLY CREATED. PF2 TO ADD MORE'
                        TO ERRMSGO 

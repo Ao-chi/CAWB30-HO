@@ -860,7 +860,7 @@
 			 MOVE TICKTD2I TO NEW-TICKET-DESCRIPTION(51:50)
 			 PERFORM 1100-GET-DATE-TIME
 			 MOVE DATEO    TO NEW-TICKET-Last-Update(1:10)
-			 MOVE TIMEO    TO NEW-TICKET-Last-Update(11:10)
+			 MOVE TIMEO    TO NEW-TICKET-Last-Update(12:9)
 			 MOVE IDI TO WS-LOG-TICKET-ID
 			 MOVE DATEO    TO WS-LOG-LAST-UPDATE(1:10)
 			 MOVE TIMEO    TO WS-LOG-LAST-UPDATE(12:8)
@@ -1127,21 +1127,28 @@
 	      WHEN EIBAID = DFHPF3
 				 EVALUATE WS-PGMID
                     WHEN 'SM000'
+		       MOVE LOW-VALUES TO WS-STATE
       *$PP-DEBUG							REALCICS
       P 			     EXEC CICS XCTL
       P                                      PROGRAM('SM000')
+      P 		   COMMAREA(WS-COMMAREA)
       P 		 END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 270 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 271 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
            MOVE 'SM000' TO DFH-DATA8 (02)                               REALCICS
 	   SET DFH-ADDR (02) TO ADDRESS OF DFH-DATA8 (02)		REALCICS
 	   ADD 0 LENGTH OF DFH-DATA8 (02) GIVING DFH-SIZE (02)		REALCICS
+	   MOVE 001 TO DFH-FLAG (03)					REALCICS
+           MOVE '1' TO DFH-DATA-TYPE (03)                               REALCICS
+           MOVE ' ' TO DFH-DATA-CLASS (03)                              REALCICS
+	   SET DFH-ADDR (03) TO ADDRESS OF WS-COMMAREA			REALCICS
+	   ADD 0 LENGTH OF WS-COMMAREA GIVING DFH-SIZE (03)		REALCICS
            MOVE X'0E04' TO DFH-COMMAND EIBFN                            REALCICS
-	   MOVE 002 TO DFH-VARS-COUNT					REALCICS
+	   MOVE 003 TO DFH-VARS-COUNT					REALCICS
            CALL 'CICS_Exec_Std' USING CICSICB GIVING DFH-RETURN-STATUS  REALCICS
            IF DFH-RETURN-STATUS = -1 CALL 'CICS_Link_Abend' USING       REALCICS
 	       CICSICB END-IF						REALCICS
@@ -1156,7 +1163,7 @@
       P 		 END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 274 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 276 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '2' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1239,7 +1246,7 @@
 		    MOVE -1 TO TICKETTL
                     MOVE 'TICKET CREATED' TO UPR1O
 		    MOVE NEW-TICKET-Last-Update(1:10) TO UPDATEO
-		    MOVE NEW-TICKET-Last-Update(11:10) TO UPTIMEO
+		    MOVE NEW-TICKET-Last-Update(12:9) TO UPTIMEO
 		    MOVE NEW-TICKET-Last-Update-by TO UPBO
                     MOVE 'SUCCESSFULLY CREATED. PF2 TO ADD MORE'
 		       TO ERRMSGO
@@ -1364,7 +1371,7 @@
       P    END-EXEC.
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 461 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 463 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '7 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1407,7 +1414,7 @@
       P    END-EXEC
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 469 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 471 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1453,7 +1460,7 @@
       P    END-EXEC.
       *$PP-NOLIST							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 480 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 482 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE 001 TO DFH-FLAG (02)					REALCICS
            MOVE '8' TO DFH-DATA-TYPE (02)                               REALCICS
            MOVE '8 ' TO DFH-DATA-CLASS (02)                             REALCICS
@@ -1494,7 +1501,7 @@
        DFH-END SECTION. 						REALCICS
        DFH-CALL-END.							REALCICS
            MOVE 'SM002' TO DFH-SOURCE-NAME                              REALCICS
-	   MOVE 490 TO DFH-SOURCE-LINE-NUM				REALCICS
+	   MOVE 492 TO DFH-SOURCE-LINE-NUM				REALCICS
 	   MOVE LOW-VALUE TO DFH-COMMAND				REALCICS
            CALL 'CICS_Module_End' USING CICSICB GIVING                  REALCICS
 	       DFH-RETURN-STATUS					REALCICS

@@ -257,7 +257,9 @@
               END-IF
 
             WHEN EIBAID = DFHPF3
-             IF WS-STATE = 'C' OR 'A'
+      *      IF WS-STATE = 'C' OR 'A'
+               MOVE LOW-VALUES TO WS-STATE
+                MOVE LOW-VALUES TO WS-TICKET-PASSED  
                EVALUATE WS-PGMID
                  WHEN 'SM000'
                       EXEC CICS XCTL
@@ -278,7 +280,7 @@
 			                   LENGTH(133) 
                       END-EXEC
                END-EVALUATE            
-             END-IF
+      *      END-IF
 
             WHEN EIBAID = DFHPF5
               IF WS-STATE = 'B' AND WS-FLAG = 'Y'
@@ -520,8 +522,7 @@
               MOVE 'INVALID PFKEY PRESSED' TO ERRMSGO
 
             WHEN EIBAID = DFHPF12
-                 MOVE 'SM005' TO WS-SM012-PGMID
-      *          MOVE LOW-VALUES TO WS-STATE
+                 MOVE 'SM003' TO WS-SM012-PGMID
                  MOVE LOW-VALUES TO WS-SM012-STATE 
                  EXEC CICS XCTL
                       PROGRAM('SM012')

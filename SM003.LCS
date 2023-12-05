@@ -785,670 +785,671 @@
    257		    END-IF
    258
    259		  WHEN EIBAID = DFHPF3
-   260             IF WS-STATE = 'C' OR 'A'
-   261		     EVALUATE WS-PGMID
-   262                 WHEN 'SM000'
-   263			    EXEC CICS XCTL
-   264                                           PROGRAM('SM000')
-   265						 COMMAREA(WS-COMMAREA)
-   266						 LENGTH(133)
-   267			    END-EXEC
-   268                 WHEN 'SM001'
-   269			    EXEC CICS XCTL
-   270                                           PROGRAM('SM001')
-   271						 COMMAREA(WS-COMMAREA)
-   272						 LENGTH(133)
-   273			    END-EXEC
-   274                 WHEN 'SM012'
-   275			     EXEC CICS XCTL
-   276                                           PROGRAM('SM001')
-   277						 COMMAREA(WS-COMMAREA)
-   278						 LENGTH(133)
-   279			    END-EXEC
-   280		     END-EVALUATE
-   281		   END-IF
-   282
-   283		  WHEN EIBAID = DFHPF5
-   284              IF WS-STATE = 'B' AND WS-FLAG = 'Y'
-   285		      MOVE SPACE TO WS-STATE
-   286		      MOVE NULL TO WS-TICKET-NUM
-   287	    *	      MOVE NULL TO MAP3I
-   288		    END-IF
-   289
-   290		  WHEN EIBAID = DFHENTER
-   291		    IF WS-STATE = SPACE
-   292		      IF WS-TICKET-NUM = NULL
-   293			CONTINUE
-   294		      ELSE
-   295                  MOVE 'A' TO WS-STATE
-   296		      END-IF
-   297		    END-IF
-   298
-   299              IF WS-STATE = 'B' AND WS-FLAG = 'Y'
-   300                  MOVE 'N' TO WS-FLAG
-   301		    END-IF
-   302
-   303              IF WS-STATE = 'C' AND WS-FLAG = 'N'
-   304		       MOVE SPACE TO WS-STATE
-   305		       MOVE NULL TO WS-TICKET-NUM
-   306	    *	       MOVE NULL TO MAP3I
-   307		    END-IF
-   308
-   309		  WHEN EIBAID = DFHCLEAR
-   310		    CONTINUE
-   311
-   312		  WHEN EIBAID = DFHPF12
-   313		    CONTINUECA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
+   260      *      IF WS-STATE = 'C' OR 'A'
+   261		     MOVE LOW-VALUES TO WS-STATE
+   262		      MOVE LOW-VALUES TO WS-TICKET-PASSED
+   263		     EVALUATE WS-PGMID
+   264                 WHEN 'SM000'
+   265			    EXEC CICS XCTL
+   266                                           PROGRAM('SM000')
+   267						 COMMAREA(WS-COMMAREA)
+   268						 LENGTH(133)
+   269			    END-EXEC
+   270                 WHEN 'SM001'
+   271			    EXEC CICS XCTL
+   272                                           PROGRAM('SM001')
+   273						 COMMAREA(WS-COMMAREA)
+   274						 LENGTH(133)
+   275			    END-EXEC
+   276                 WHEN 'SM012'
+   277			     EXEC CICS XCTL
+   278                                           PROGRAM('SM001')
+   279						 COMMAREA(WS-COMMAREA)
+   280						 LENGTH(133)
+   281			    END-EXEC
+   282		     END-EVALUATE
+   283	    *	   END-IF
+   284
+   285		  WHEN EIBAID = DFHPF5
+   286              IF WS-STATE = 'B' AND WS-FLAG = 'Y'
+   287		      MOVE SPACE TO WS-STATE
+   288		      MOVE NULL TO WS-TICKET-NUM
+   289	    *	      MOVE NULL TO MAP3I
+   290		    END-IF
+   291
+   292		  WHEN EIBAID = DFHENTER
+   293		    IF WS-STATE = SPACE
+   294		      IF WS-TICKET-NUM = NULL
+   295			CONTINUE
+   296		      ELSE
+   297                  MOVE 'A' TO WS-STATE
+   298		      END-IF
+   299		    END-IF
+   300
+   301              IF WS-STATE = 'B' AND WS-FLAG = 'Y'
+   302                  MOVE 'N' TO WS-FLAG
+   303		    END-IF
+   304
+   305              IF WS-STATE = 'C' AND WS-FLAG = 'N'
+   306		       MOVE SPACE TO WS-STATE
+   307		       MOVE NULL TO WS-TICKET-NUM
+   308	    *	       MOVE NULL TO MAP3I
+   309		    END-IF
+   310
+   311		  WHEN EIBAID = DFHCLEAR
+   312		    CONTINUE
+   313CA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
 
 
-   314
-   315		  WHEN OTHER
-   316		    CONTINUE
-   317
-   318		 END-EVALUATE.
-   319	     2000-EXIT. EXIT.
-   320
-   321	     2100-CHECK-AID-MSG.
-   322		 EVALUATE TRUE
-   323		  WHEN EIBAID = DFHPF2
-   324		    IF WS-STATE = SPACE
-   325                MOVE 'DISABLED PFKEY PRESSED' TO ERRMSGO
-   326		    END-IF
-   327
-   328              IF WS-STATE = 'A'
-   329		      MOVE -1 TO IDL
-   330		      MOVE DFHBMUNP TO IDA
-   331		      MOVE WS-TICKET-NUM TO IDO
-   332                MOVE 'DISABLED PFKEY PRESSED' TO ERRMSGO
-   333		    END-IF
-   334
-   335		    EVALUATE TRUE
+   314		  WHEN EIBAID = DFHPF12
+   315		    CONTINUE
+   316
+   317		  WHEN OTHER
+   318		    CONTINUE
+   319
+   320		 END-EVALUATE.
+   321	     2000-EXIT. EXIT.
+   322
+   323	     2100-CHECK-AID-MSG.
+   324		 EVALUATE TRUE
+   325		  WHEN EIBAID = DFHPF2
+   326		    IF WS-STATE = SPACE
+   327                MOVE 'DISABLED PFKEY PRESSED' TO ERRMSGO
+   328		    END-IF
+   329
+   330              IF WS-STATE = 'A'
+   331		      MOVE -1 TO IDL
+   332		      MOVE DFHBMUNP TO IDA
+   333		      MOVE WS-TICKET-NUM TO IDO
+   334                MOVE 'DISABLED PFKEY PRESSED' TO ERRMSGO
+   335		    END-IF
    336
-   337              WHEN WS-STATE = 'B' AND WS-FLAG = 'W'
-   338		      MOVE -1 TO TICKETTL
-   339                MOVE 'NO CHANGES' TO ERRMSGO
-   340                MOVE 'N' TO WS-FLAG
-   341		      PERFORM 2120-STATEB
-   342
-   343              WHEN WS-STATE = 'B' AND WS-FLAG = 'N'
-   344		      PERFORM 3000-READ-RECORD
-   345		      PERFORM 2120-STATEB
-   346                MOVE 'PRESS ENTER TO VALIDATE' TO ERRMSGO
-   347
-   348             WHEN WS-STATE = 'B' AND WS-FLAG = 'Y'
-   349		      PERFORM 3000-READ-RECORD
-   350		      PERFORM 2120-STATEB
-   351                MOVE 'PRESS ENTER TO VALIDATE' TO ERRMSGO
-   352
-   353		    END-EVALUATE
+   337		    EVALUATE TRUE
+   338
+   339              WHEN WS-STATE = 'B' AND WS-FLAG = 'W'
+   340		      MOVE -1 TO TICKETTL
+   341                MOVE 'NO CHANGES' TO ERRMSGO
+   342                MOVE 'N' TO WS-FLAG
+   343		      PERFORM 2120-STATEB
+   344
+   345              WHEN WS-STATE = 'B' AND WS-FLAG = 'N'
+   346		      PERFORM 3000-READ-RECORD
+   347		      PERFORM 2120-STATEB
+   348                MOVE 'PRESS ENTER TO VALIDATE' TO ERRMSGO
+   349
+   350             WHEN WS-STATE = 'B' AND WS-FLAG = 'Y'
+   351		      PERFORM 3000-READ-RECORD
+   352		      PERFORM 2120-STATEB
+   353                MOVE 'PRESS ENTER TO VALIDATE' TO ERRMSGO
    354
-   355              IF WS-STATE = 'C' AND WS-FLAG = 'N'
-   356                 MOVE 'DISABLED PFKEY PRESSED' TO ERRMSGO
-   357		    END-IF
-   358
-   359              IF WS-STATE = 'B' AND WS-FLAG = 'K'
-   360		       PERFORM 3500-CHECK-EDIT
-   361		       PERFORM 3100-UPDATE-FILE
-   362		       MOVE WS-TICKET-NUM TO WS-LOG-Ticket-ID
-   363		       MOVE 0 TO WS-LOG-Seq-Number
-   364		       PERFORM 3400-CREATE-LOG
-   365		       PERFORM 2110-STATEA-FLAGY
-   366		       MOVE DFHBMPRO TO IDA
-   367		       MOVE DFHBMPRO TO TICKETTA
-   368		       MOVE DFHBMPRO TO TICKTD1A
-   369		       MOVE DFHBMPRO TO TICKTD2A
-   370		       MOVE DFHBMPRO TO REQA
-   371		       MOVE DFHBMPRO TO STATSACA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
+   355		    END-EVALUATE
+   356
+   357              IF WS-STATE = 'C' AND WS-FLAG = 'N'
+   358                 MOVE 'DISABLED PFKEY PRESSED' TO ERRMSGO
+   359		    END-IF
+   360
+   361              IF WS-STATE = 'B' AND WS-FLAG = 'K'
+   362		       PERFORM 3500-CHECK-EDIT
+   363		       PERFORM 3100-UPDATE-FILE
+   364		       MOVE WS-TICKET-NUM TO WS-LOG-Ticket-ID
+   365		       MOVE 0 TO WS-LOG-Seq-Number
+   366		       PERFORM 3400-CREATE-LOG
+   367		       PERFORM 2110-STATEA-FLAGY
+   368		       MOVE DFHBMPRO TO IDA
+   369		       MOVE DFHBMPRO TO TICKETTA
+   370		       MOVE DFHBMPRO TO TICKTD1A
+   371		       MOVE DFHBMPRO TO TICKTD2ACA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
 
 
-   372		       MOVE DFHBMPRO TO UPBA
-   373		       MOVE DFHBMPRO TO UPR1A
-   374		       MOVE DFHBMPRO TO UPR2A
-   375		       MOVE DFHBMPRO TO UPDATEA
-   376		       MOVE DFHBMPRO TO UPTIMEA
-   377
-   378             MOVE 'TICKET UPDATED, PRESS ENTER TO UPDATE ANOTHER TICKET'
-   379		     TO ERRMSGO
-   380                 MOVE 'N' TO WS-FLAG
-   381                 MOVE 'C' TO WS-STATE
-   382
-   383		    END-IF
+   372		       MOVE DFHBMPRO TO REQA
+   373		       MOVE DFHBMPRO TO STATSA
+   374		       MOVE DFHBMPRO TO UPBA
+   375		       MOVE DFHBMPRO TO UPR1A
+   376		       MOVE DFHBMPRO TO UPR2A
+   377		       MOVE DFHBMPRO TO UPDATEA
+   378		       MOVE DFHBMPRO TO UPTIMEA
+   379
+   380             MOVE 'TICKET UPDATED, PRESS ENTER TO UPDATE ANOTHER TICKET'
+   381		     TO ERRMSGO
+   382                 MOVE 'N' TO WS-FLAG
+   383                 MOVE 'C' TO WS-STATE
    384
-   385		  WHEN EIBAID = DFHPF5
-   386		    IF WS-STATE = SPACE
-   387                MOVE 'DISABLED PFKEY PRESSED' TO ERRMSGO
-   388		    END-IF
-   389
-   390              IF WS-STATE = SPACE AND WS-FLAG = 'Y'
-   391                MOVE 'UPDATE ABORTED' TO ERRMSGO
-   392		      MOVE NULL TO WS-FLAG
-   393		    END-IF
-   394
-   395              IF WS-STATE = 'A'
-   396		      MOVE -1 TO IDL
-   397		      MOVE DFHBMUNP TO IDA
-   398		      MOVE WS-TICKET-NUM TO IDO
-   399                MOVE 'DISABLED PFKEY PRESSED' TO ERRMSGO
-   400		    END-IF
-   401
-   402              IF WS-STATE = 'B' AND WS-FLAG = 'N'
-   403		      PERFORM 3000-READ-RECORD
-   404		      PERFORM 2110-STATEA-FLAGY
-   405                MOVE 'UPDATE ABORTED' TO ERRMSGO
-   406                MOVE 'Y' TO WS-FLAG
-   407		      MOVE DFHBMPRO TO IDA
-   408		    END-IF
-   409
-   410              IF WS-STATE = 'B' AND WS-FLAG = 'V'
-   411		      PERFORM 3000-READ-RECORD
-   412		      PERFORM 2110-STATEA-FLAGY
-   413                MOVE 'N' TO WS-FLAG
-   414                MOVE 'UPDATE ABORTED' TO ERRMSGO
-   415		      MOVE DFHBMPRO TO IDA
-   416		    END-IF
-   417
-   418              IF WS-STATE = 'C' AND WS-FLAG = 'N'
-   419                 MOVE 'DISABLED PFKEY PRESSED' TO ERRMSGO
-   420		    END-IF
-   421
-   422		  WHEN EIBAID = DFHENTER
-   423		    IF WS-STATE = SPACE AND WS-TICKET-NUM = NULL
-   424                MOVE 'ENTER TICKET NUMBER AND PRESS ENTER' TO ERRMSGO
-   425		    END-IF
-   426
-   427              IF WS-STATE = 'A' AND WS-FLAG = 'N'
-   428		      MOVE -1 TO IDL
-   429		      MOVE DFHBMUNP TO IDACA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
+   385		    END-IF
+   386
+   387		  WHEN EIBAID = DFHPF5
+   388		    IF WS-STATE = SPACE
+   389                MOVE 'DISABLED PFKEY PRESSED' TO ERRMSGO
+   390		    END-IF
+   391
+   392              IF WS-STATE = SPACE AND WS-FLAG = 'Y'
+   393                MOVE 'UPDATE ABORTED' TO ERRMSGO
+   394		      MOVE NULL TO WS-FLAG
+   395		    END-IF
+   396
+   397              IF WS-STATE = 'A'
+   398		      MOVE -1 TO IDL
+   399		      MOVE DFHBMUNP TO IDA
+   400		      MOVE WS-TICKET-NUM TO IDO
+   401                MOVE 'DISABLED PFKEY PRESSED' TO ERRMSGO
+   402		    END-IF
+   403
+   404              IF WS-STATE = 'B' AND WS-FLAG = 'N'
+   405		      PERFORM 3000-READ-RECORD
+   406		      PERFORM 2110-STATEA-FLAGY
+   407                MOVE 'UPDATE ABORTED' TO ERRMSGO
+   408                MOVE 'Y' TO WS-FLAG
+   409		      MOVE DFHBMPRO TO IDA
+   410		    END-IF
+   411
+   412              IF WS-STATE = 'B' AND WS-FLAG = 'V'
+   413		      PERFORM 3000-READ-RECORD
+   414		      PERFORM 2110-STATEA-FLAGY
+   415                MOVE 'N' TO WS-FLAG
+   416                MOVE 'UPDATE ABORTED' TO ERRMSGO
+   417		      MOVE DFHBMPRO TO IDA
+   418		    END-IF
+   419
+   420              IF WS-STATE = 'C' AND WS-FLAG = 'N'
+   421                 MOVE 'DISABLED PFKEY PRESSED' TO ERRMSGO
+   422		    END-IF
+   423
+   424		  WHEN EIBAID = DFHENTER
+   425		    IF WS-STATE = SPACE AND WS-TICKET-NUM = NULL
+   426                MOVE 'ENTER TICKET NUMBER AND PRESS ENTER' TO ERRMSGO
+   427		    END-IF
+   428
+   429              IF WS-STATE = 'A' AND WS-FLAG = 'N'CA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
 
 
-   430		      MOVE WS-TICKET-NUM TO IDO
-   431                MOVE 'TICKET NUMBER DOES NOT EXIST' TO ERRMSGO
-   432		    END-IF
-   433
-   434              IF WS-STATE = 'A' AND WS-FLAG = 'S'
-   435		      MOVE -1 TO IDL
-   436		      MOVE DFHBMUNP TO IDA
-   437		      MOVE WS-TICKET-NUM TO IDO
-   438                MOVE 'INVALID TICKET STATUS' TO ERRMSGO
-   439		    END-IF
-   440
-   441              IF WS-STATE = 'A' AND WS-FLAG = 'R'
-   442		      MOVE -1 TO IDL
-   443		      MOVE DFHBMUNP TO IDA
-   444		      MOVE WS-TICKET-NUM TO IDO
-   445                MOVE 'INVALID ACCESS TO THE TICKET' TO ERRMSGO
-   446		    END-IF
-   447
-   448              IF WS-STATE = 'A' AND WS-FLAG = 'Y'
-   449		      PERFORM 2110-STATEA-FLAGY
-   450                MOVE 'B' TO WS-STATE
-   451		      MOVE DFHBMPRO TO IDA
-   452		      MOVE -1 TO TICKETTL
-   453                MOVE 'ENTER UPDATES' TO ERRMSGO
-   454		    END-IF
-   455
-   456              IF WS-STATE = 'B' AND WS-FLAG = 'V'
-   457		      PERFORM 3000-READ-RECORD
-   458		      PERFORM 2120-STATEB
-   459                MOVE 'PRESS PF2 TO UPDATE TICKET' TO ERRMSGO
-   460		    END-IF
-   461
-   462              IF WS-STATE = 'B' AND WS-FLAG = 'N'
-   463		      EVALUATE TRUE
-   464			WHEN TICKETTI = SPACE
-   465			  MOVE -1 TO TICKETTL
-   466                    MOVE 'TICKET TITLE IS REQUIRED' TO ERRMSGO
-   467			WHEN TICKTD1I = SPACE
-   468			  MOVE -1 TO TICKTD1L
-   469                    MOVE 'DESCRIPTION IS REQUIRED' TO ERRMSGO
-   470                  WHEN STATSI  NOT = 'ONGOING' AND 'COMPLETED'
-   471			  MOVE -1 TO STATSL
-   472                    MOVE 'STATUS IS NOT VALID' TO ERRMSGO
-   473			WHEN UPR1I = SPACE
-   474			  MOVE -1 TO UPR1L
-   475                    MOVE 'UPDATE REMARKS IS REQUIRED' TO ERRMSGO
-   476			WHEN OTHER
-   477                    MOVE 'PRESS PF2 TO UPDATE TICKET' TO ERRMSGO
-   478                    MOVE 'V' TO WS-FLAG
-   479		      END-EVALUATE
-   480		      MOVE TICKETTI TO WS-E-TITLE
-   481		      MOVE TICKTD1I TO WS-E-DES(1:50)
-   482		      MOVE TICKTD2I TO WS-E-DES(51:50)
-   483		      MOVE STATSI TO WS-E-STATS
-   484		      MOVE UPR1I TO WS-E-UPDATE(1:25)
-   485		      MOVE UPR2I TO WS-E-UPDATE(26:25)
-   486		      PERFORM 3000-READ-RECORD
-   487		      PERFORM 2120-STATEBCA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
+   430		      MOVE -1 TO IDL
+   431		      MOVE DFHBMUNP TO IDA
+   432		      MOVE WS-TICKET-NUM TO IDO
+   433                MOVE 'TICKET NUMBER DOES NOT EXIST' TO ERRMSGO
+   434		    END-IF
+   435
+   436              IF WS-STATE = 'A' AND WS-FLAG = 'S'
+   437		      MOVE -1 TO IDL
+   438		      MOVE DFHBMUNP TO IDA
+   439		      MOVE WS-TICKET-NUM TO IDO
+   440                MOVE 'INVALID TICKET STATUS' TO ERRMSGO
+   441		    END-IF
+   442
+   443              IF WS-STATE = 'A' AND WS-FLAG = 'R'
+   444		      MOVE -1 TO IDL
+   445		      MOVE DFHBMUNP TO IDA
+   446		      MOVE WS-TICKET-NUM TO IDO
+   447                MOVE 'INVALID ACCESS TO THE TICKET' TO ERRMSGO
+   448		    END-IF
+   449
+   450              IF WS-STATE = 'A' AND WS-FLAG = 'Y'
+   451		      PERFORM 2110-STATEA-FLAGY
+   452                MOVE 'B' TO WS-STATE
+   453		      MOVE DFHBMPRO TO IDA
+   454		      MOVE -1 TO TICKETTL
+   455                MOVE 'ENTER UPDATES' TO ERRMSGO
+   456		    END-IF
+   457
+   458              IF WS-STATE = 'B' AND WS-FLAG = 'V'
+   459		      PERFORM 3000-READ-RECORD
+   460		      PERFORM 2120-STATEB
+   461                MOVE 'PRESS PF2 TO UPDATE TICKET' TO ERRMSGO
+   462		    END-IF
+   463
+   464              IF WS-STATE = 'B' AND WS-FLAG = 'N'
+   465		      EVALUATE TRUE
+   466			WHEN TICKETTI = SPACE
+   467			  MOVE -1 TO TICKETTL
+   468                    MOVE 'TICKET TITLE IS REQUIRED' TO ERRMSGO
+   469			WHEN TICKTD1I = SPACE
+   470			  MOVE -1 TO TICKTD1L
+   471                    MOVE 'DESCRIPTION IS REQUIRED' TO ERRMSGO
+   472                  WHEN STATSI  NOT = 'ONGOING' AND 'COMPLETED'
+   473			  MOVE -1 TO STATSL
+   474                    MOVE 'STATUS IS NOT VALID' TO ERRMSGO
+   475			WHEN UPR1I = SPACE
+   476			  MOVE -1 TO UPR1L
+   477                    MOVE 'UPDATE REMARKS IS REQUIRED' TO ERRMSGO
+   478			WHEN OTHER
+   479                    MOVE 'PRESS PF2 TO UPDATE TICKET' TO ERRMSGO
+   480                    MOVE 'V' TO WS-FLAG
+   481		      END-EVALUATE
+   482		      MOVE TICKETTI TO WS-E-TITLE
+   483		      MOVE TICKTD1I TO WS-E-DES(1:50)
+   484		      MOVE TICKTD2I TO WS-E-DES(51:50)
+   485		      MOVE STATSI TO WS-E-STATS
+   486		      MOVE UPR1I TO WS-E-UPDATE(1:25)
+   487		      MOVE UPR2I TO WS-E-UPDATE(26:25)CA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
 
 
-   488		    END-IF
-   489
-   490		  WHEN EIBAID = DFHCLEAR
-   491              IF WS-STATE = 'A'
-   492		      MOVE -1 TO IDL
-   493		      MOVE DFHBMUNP TO IDA
-   494		      MOVE WS-TICKET-NUM TO IDO
-   495		    END-IF
-   496
-   497              IF WS-STATE = 'B' AND WS-FLAG = 'N'
-   498		      PERFORM 3000-READ-RECORD
-   499		      PERFORM 2110-STATEA-FLAGY
-   500		      MOVE DFHBMPRO TO IDA
-   501		    END-IF
-   502
-   503              IF WS-STATE = 'B' AND WS-FLAG = 'Y'
-   504		      PERFORM 3000-READ-RECORD
-   505		      PERFORM 2110-STATEA-FLAGY
-   506		      MOVE DFHBMPRO TO IDA
-   507		    END-IF
-   508
-   509              IF WS-STATE = 'B' AND WS-FLAG = 'V'
-   510		      PERFORM 3000-READ-RECORD
-   511		      PERFORM 2120-STATEB
-   512		      MOVE WS-E-TITLE TO TICKETTO
-   513		      MOVE WS-E-DES(1:50) TO TICKTD1O
-   514		      MOVE WS-E-DES(51:50) TO TICKTD2O
-   515		      MOVE WS-E-STATS TO STATSO
-   516		      MOVE WS-E-UPDATE(1:25) TO UPR1O
-   517		      MOVE WS-E-UPDATE(26:25) TO UPR2O
-   518		    END-IF
-   519
-   520              MOVE 'INVALID PFKEY PRESSED' TO ERRMSGO
+   488		      PERFORM 3000-READ-RECORD
+   489		      PERFORM 2120-STATEB
+   490		    END-IF
+   491
+   492		  WHEN EIBAID = DFHCLEAR
+   493              IF WS-STATE = 'A'
+   494		      MOVE -1 TO IDL
+   495		      MOVE DFHBMUNP TO IDA
+   496		      MOVE WS-TICKET-NUM TO IDO
+   497		    END-IF
+   498
+   499              IF WS-STATE = 'B' AND WS-FLAG = 'N'
+   500		      PERFORM 3000-READ-RECORD
+   501		      PERFORM 2110-STATEA-FLAGY
+   502		      MOVE DFHBMPRO TO IDA
+   503		    END-IF
+   504
+   505              IF WS-STATE = 'B' AND WS-FLAG = 'Y'
+   506		      PERFORM 3000-READ-RECORD
+   507		      PERFORM 2110-STATEA-FLAGY
+   508		      MOVE DFHBMPRO TO IDA
+   509		    END-IF
+   510
+   511              IF WS-STATE = 'B' AND WS-FLAG = 'V'
+   512		      PERFORM 3000-READ-RECORD
+   513		      PERFORM 2120-STATEB
+   514		      MOVE WS-E-TITLE TO TICKETTO
+   515		      MOVE WS-E-DES(1:50) TO TICKTD1O
+   516		      MOVE WS-E-DES(51:50) TO TICKTD2O
+   517		      MOVE WS-E-STATS TO STATSO
+   518		      MOVE WS-E-UPDATE(1:25) TO UPR1O
+   519		      MOVE WS-E-UPDATE(26:25) TO UPR2O
+   520		    END-IF
    521
-   522		  WHEN EIBAID = DFHPF12
-   523                 MOVE 'SM005' TO WS-SM012-PGMID
-   524	    *	       MOVE LOW-VALUES TO WS-STATE
-   525		       MOVE LOW-VALUES TO WS-SM012-STATE
-   526		       EXEC CICS XCTL
-   527                      PROGRAM('SM012')
-   528			    COMMAREA(WS-COMMAREA)
-   529		       END-EXEC
-   530
-   531		  WHEN OTHER
-   532              IF WS-STATE = 'A'
-   533		      MOVE -1 TO IDL
-   534		      MOVE DFHBMUNP TO IDA
-   535		      MOVE WS-TICKET-NUM TO IDO
-   536		    END-IF
-   537
-   538              IF WS-STATE = 'B' AND WS-FLAG = 'N'
-   539		      PERFORM 3000-READ-RECORD
-   540		      PERFORM 2110-STATEA-FLAGY
-   541		      MOVE DFHBMPRO TO IDA
-   542		    END-IF
-   543
-   544              IF WS-STATE = 'B' AND WS-FLAG = 'Y'
-   545		      PERFORM 3000-READ-RECORDCA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
+   522              MOVE 'INVALID PFKEY PRESSED' TO ERRMSGO
+   523
+   524		  WHEN EIBAID = DFHPF12
+   525                 MOVE 'SM003' TO WS-SM012-PGMID
+   526		       MOVE LOW-VALUES TO WS-SM012-STATE
+   527		       EXEC CICS XCTL
+   528                      PROGRAM('SM012')
+   529			    COMMAREA(WS-COMMAREA)
+   530		       END-EXEC
+   531
+   532		  WHEN OTHER
+   533              IF WS-STATE = 'A'
+   534		      MOVE -1 TO IDL
+   535		      MOVE DFHBMUNP TO IDA
+   536		      MOVE WS-TICKET-NUM TO IDO
+   537		    END-IF
+   538
+   539              IF WS-STATE = 'B' AND WS-FLAG = 'N'
+   540		      PERFORM 3000-READ-RECORD
+   541		      PERFORM 2110-STATEA-FLAGY
+   542		      MOVE DFHBMPRO TO IDA
+   543		    END-IF
+   544
+   545              IF WS-STATE = 'B' AND WS-FLAG = 'Y'CA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
 
 
-   546		      PERFORM 2110-STATEA-FLAGY
-   547		      MOVE DFHBMPRO TO IDA
-   548		    END-IF
-   549
-   550              IF WS-STATE = 'B' AND WS-FLAG = 'V'
-   551		      PERFORM 3000-READ-RECORD
-   552		      PERFORM 2120-STATEB
-   553		      MOVE WS-E-TITLE TO TICKETTO
-   554		      MOVE WS-E-DES(1:50) TO TICKTD1O
-   555		      MOVE WS-E-DES(51:50) TO TICKTD2O
-   556		      MOVE WS-E-STATS TO STATSO
-   557		      MOVE WS-E-UPDATE(1:25) TO UPR1O
-   558		      MOVE WS-E-UPDATE(26:25) TO UPR2O
-   559		    END-IF
-   560
+   546		      PERFORM 3000-READ-RECORD
+   547		      PERFORM 2110-STATEA-FLAGY
+   548		      MOVE DFHBMPRO TO IDA
+   549		    END-IF
+   550
+   551              IF WS-STATE = 'B' AND WS-FLAG = 'V'
+   552		      PERFORM 3000-READ-RECORD
+   553		      PERFORM 2120-STATEB
+   554		      MOVE WS-E-TITLE TO TICKETTO
+   555		      MOVE WS-E-DES(1:50) TO TICKTD1O
+   556		      MOVE WS-E-DES(51:50) TO TICKTD2O
+   557		      MOVE WS-E-STATS TO STATSO
+   558		      MOVE WS-E-UPDATE(1:25) TO UPR1O
+   559		      MOVE WS-E-UPDATE(26:25) TO UPR2O
+   560		    END-IF
    561
-   562              MOVE 'INVALID PFKEY PRESSED' TO ERRMSGO
-   563
-   564		 END-EVALUATE.
-   565	     2100-EXIT. EXIT.
-   566
-   567	     2110-STATEA-FLAGY.
-   568		  MOVE NEW-TICKET-KEY TO IDO
-   569		  MOVE NEW-TICKET-Title TO TICKETTO
-   570		  MOVE NEW-TICKET-Description(1:50) TO TICKTD1O
-   571		  MOVE NEW-TICKET-Description(51:50) TO TICKTD2O
-   572		  MOVE NEW-TICKET-Requestor TO REQO
-   573		  MOVE NEW-TICKET-Status  TO STATSO
-   574		  MOVE NEW-TICKET-Last-Update-by TO UPBO
-   575		  MOVE NEW-TICKET-Update-Remarks(1:25) TO UPR1O
-   576		  MOVE NEW-TICKET-Update-Remarks(26:25) TO UPR2O
-   577		  MOVE NEW-TICKET-Last-Update(1:10) TO UPDATEO
-   578		  MOVE NEW-TICKET-Last-Update(12:09) TO  UPTIMEO.
-   579	     2110-EXIT. EXIT.
-   580
-   581	     2120-STATEB.
-   582		  MOVE NEW-TICKET-KEY TO IDO
-   583		  MOVE NEW-TICKET-Requestor TO REQO
-   584		  MOVE NEW-TICKET-Last-Update-by TO UPBO
-   585		  MOVE NEW-TICKET-Last-Update(1:10) TO UPDATEO
-   586		  MOVE NEW-TICKET-Last-Update(12:09) TO  UPTIMEO
-   587		  MOVE DFHBMPRO TO IDA.
-   588	     2120-EXIT. EXIT.
-   589
+   562
+   563              MOVE 'INVALID PFKEY PRESSED' TO ERRMSGO
+   564
+   565		 END-EVALUATE.
+   566	     2100-EXIT. EXIT.
+   567
+   568	     2110-STATEA-FLAGY.
+   569		  MOVE NEW-TICKET-KEY TO IDO
+   570		  MOVE NEW-TICKET-Title TO TICKETTO
+   571		  MOVE NEW-TICKET-Description(1:50) TO TICKTD1O
+   572		  MOVE NEW-TICKET-Description(51:50) TO TICKTD2O
+   573		  MOVE NEW-TICKET-Requestor TO REQO
+   574		  MOVE NEW-TICKET-Status  TO STATSO
+   575		  MOVE NEW-TICKET-Last-Update-by TO UPBO
+   576		  MOVE NEW-TICKET-Update-Remarks(1:25) TO UPR1O
+   577		  MOVE NEW-TICKET-Update-Remarks(26:25) TO UPR2O
+   578		  MOVE NEW-TICKET-Last-Update(1:10) TO UPDATEO
+   579		  MOVE NEW-TICKET-Last-Update(12:09) TO  UPTIMEO.
+   580	     2110-EXIT. EXIT.
+   581
+   582	     2120-STATEB.
+   583		  MOVE NEW-TICKET-KEY TO IDO
+   584		  MOVE NEW-TICKET-Requestor TO REQO
+   585		  MOVE NEW-TICKET-Last-Update-by TO UPBO
+   586		  MOVE NEW-TICKET-Last-Update(1:10) TO UPDATEO
+   587		  MOVE NEW-TICKET-Last-Update(12:09) TO  UPTIMEO
+   588		  MOVE DFHBMPRO TO IDA.
+   589	     2120-EXIT. EXIT.
    590
    591
-   592	     3000-READ-RECORD.
-   593		 EXEC CICS STARTBR
-   594                FILE('STF001C')
-   595		      RIDFLD (WS-TICKET-NUM)
-   596		      GTEQ
-   597		 END-EXEC
-   598		 IF EIBRESP = +0
-   599		  EXEC CICS
-   600                 READ FILE('STF001C')
-   601		       INTO (NEW-TICKET)
-   602		       RIDFLD (WS-TICKET-NUM)
-   603		       EQUALCA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
+   592
+   593	     3000-READ-RECORD.
+   594		 EXEC CICS STARTBR
+   595                FILE('STF001C')
+   596		      RIDFLD (WS-TICKET-NUM)
+   597		      GTEQ
+   598		 END-EXEC
+   599		 IF EIBRESP = +0
+   600		  EXEC CICS
+   601                 READ FILE('STF001C')
+   602		       INTO (NEW-TICKET)
+   603		       RIDFLD (WS-TICKET-NUM)CA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
 
 
-   604		       UPDATE
-   605		  END-EXEC
-   606            IF NEW-TICKET-Status = 'APPROVED' OR 'ONGOING'
-   607                IF WS-STATE = 'A'
-   608	    ****I FFIX PA YUN REQUESTOR GALING SA COMMAREA
-   609	    ***************REQUESTOR USER
-   610                  IF USR-REQUESTOR = 'Y'
-   611			  IF USERID = NEW-TICKET-Requestor
-   612                      MOVE 'Y' TO WS-FLAG
-   613			  ELSE
-   614                      MOVE 'R' TO WS-FLAG
-   615			  END-IF
-   616			END-IF
-   617	    ***************SERVICE PROVIDER USER
-   618                  IF USR-SERVICE = 'Y'
-   619                    MOVE 'Y' TO WS-FLAG
-   620			END-IF
-   621		      END-IF
-   622		  ELSE
-   623              MOVE 'S' TO WS-FLAG
-   624		  END-IF
-   625		 ELSE
-   626            MOVE 'N' TO WS-FLAG
-   627		 END-IF.
-   628	     3000-EXIT. EXIT.
-   629
-   630	     3100-UPDATE-FILE.
-   631		 MOVE WS-E-TITLE TO NEW-TICKET-Title
-   632		 MOVE WS-E-DES TO NEW-TICKET-Description
-   633		 MOVE WS-E-STATS TO NEW-TICKET-Status
-   634		 MOVE WS-E-UPDATE TO NEW-TICKET-Update-Remarks
-   635		 EXEC CICS ASKTIME
-   636		  ABSTIME    (WS-TIME)
-   637		 END-EXEC
-   638		 EXEC CICS FORMATTIME
-   639		   ABSTIME    (WS-TIME)
-   640             DATESEP    ('/')
-   641		   MMDDYYYY   (DATEO)
-   642		   TIME       (TIMEO)
-   643             TIMESEP    (':')
-   644		 END-EXEC
-   645		 MOVE DATEO    TO NEW-TICKET-Last-Update(1:10)
-   646		 MOVE TIMEO    TO NEW-TICKET-Last-Update(12:09)
-   647		 MOVE USERID   TO NEW-TICKET-Last-Update-by
-   648		 EXEC CICS
-   649             REWRITE FILE ('STF001C')
-   650		   FROM (NEW-TICKET)
-   651		   RESP(WS-RETNCODE)
-   652		 END-EXEC.
-   653
-   654	     3100-EXIT. EXIT.
-   655
-   656	     3200-READ-ONLY.
-   657		 EXEC CICS STARTBR
-   658              FILE('STF001C')
-   659		    RIDFLD (WS-TICKET-NUM)
-   660		    GTEQ
-   661		 END-EXECCA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
+   604		       EQUAL
+   605		       UPDATE
+   606		  END-EXEC
+   607            IF NEW-TICKET-Status = 'APPROVED' OR 'ONGOING'
+   608                IF WS-STATE = 'A'
+   609	    ****I FFIX PA YUN REQUESTOR GALING SA COMMAREA
+   610	    ***************REQUESTOR USER
+   611                  IF USR-REQUESTOR = 'Y'
+   612			  IF USERID = NEW-TICKET-Requestor
+   613                      MOVE 'Y' TO WS-FLAG
+   614			  ELSE
+   615                      MOVE 'R' TO WS-FLAG
+   616			  END-IF
+   617			END-IF
+   618	    ***************SERVICE PROVIDER USER
+   619                  IF USR-SERVICE = 'Y'
+   620                    MOVE 'Y' TO WS-FLAG
+   621			END-IF
+   622		      END-IF
+   623		  ELSE
+   624              MOVE 'S' TO WS-FLAG
+   625		  END-IF
+   626		 ELSE
+   627            MOVE 'N' TO WS-FLAG
+   628		 END-IF.
+   629	     3000-EXIT. EXIT.
+   630
+   631	     3100-UPDATE-FILE.
+   632		 MOVE WS-E-TITLE TO NEW-TICKET-Title
+   633		 MOVE WS-E-DES TO NEW-TICKET-Description
+   634		 MOVE WS-E-STATS TO NEW-TICKET-Status
+   635		 MOVE WS-E-UPDATE TO NEW-TICKET-Update-Remarks
+   636		 EXEC CICS ASKTIME
+   637		  ABSTIME    (WS-TIME)
+   638		 END-EXEC
+   639		 EXEC CICS FORMATTIME
+   640		   ABSTIME    (WS-TIME)
+   641             DATESEP    ('/')
+   642		   MMDDYYYY   (DATEO)
+   643		   TIME       (TIMEO)
+   644             TIMESEP    (':')
+   645		 END-EXEC
+   646		 MOVE DATEO    TO NEW-TICKET-Last-Update(1:10)
+   647		 MOVE TIMEO    TO NEW-TICKET-Last-Update(12:09)
+   648		 MOVE USERID   TO NEW-TICKET-Last-Update-by
+   649		 EXEC CICS
+   650             REWRITE FILE ('STF001C')
+   651		   FROM (NEW-TICKET)
+   652		   RESP(WS-RETNCODE)
+   653		 END-EXEC.
+   654
+   655	     3100-EXIT. EXIT.
+   656
+   657	     3200-READ-ONLY.
+   658		 EXEC CICS STARTBR
+   659              FILE('STF001C')
+   660		    RIDFLD (WS-TICKET-NUM)
+   661		    GTEQCA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
 
 
-   662		 IF EIBRESP = +0
-   663		  EXEC CICS
-   664              READ FILE('STF001C')
-   665		    INTO (NEW-TICKET)
-   666		    RIDFLD (WS-TICKET-NUM)
-   667		    EQUAL
-   668		    UPDATE
-   669		  END-EXEC.
-   670	     3200-EXIT. EXIT.
-   671
-   672	     3300-READ-LOG.
-   673
-   674		 EXEC CICS STARTBR
-   675              FILE('STF002E')
-   676		    RIDFLD (WS-KEYS)
-   677		    GTEQ
-   678		 END-EXEC
-   679
-   680		 MOVE WS-LOG TO WS-LOG-BACKUP
-   681
-   682		 PERFORM UNTIL WS-LOG-Ticket-ID NOT = WS-B-LOG-Ticket-ID
-   683		   EXEC CICS READ
-   684               FILE('STF002E')
-   685		     INTO(WS-LOG)
-   686		     RIDFLD(WS-KEYS)
-   687		     GTEQ
-   688		   END-EXEC
-   689		   IF WS-LOG-Ticket-ID	= WS-B-LOG-Ticket-ID
-   690		     MOVE WS-LOG TO WS-LOG-BACKUP
-   691		     ADD 1 TO WS-LOG-Seq-Number
-   692		   END-IF
-   693
-   694		 END-PERFORM
-   695
-   696		 EXEC CICS ENDBR
-   697             FILE('STF002E')
-   698		 END-EXEC.
-   699
-   700	     3300-EXIT. EXIT.
-   701
-   702	     3400-CREATE-LOG.
-   703		 PERFORM 3300-READ-LOG
-   704		 MOVE WS-LOG-BACKUP TO WS-LOG
-   705		 ADD 1 TO WS-LOG-Seq-Number
-   706	    **********ID GALING SA COMMAREA
-   707		 MOVE USERID TO WS-LOG-Last-Update-by
-   708		 MOVE NEW-TICKET-Last-Update-by  TO WS-LOG-Last-Update-by
-   709		 MOVE HOLDER TO WS-LOG-Update-Remarks
-   710		 EXEC CICS
-   711                WRITE FILE('STF002E')
-   712		      FROM (WS-LOG)
-   713		      RIDFLD (WS-KEYS)
-   714		      RESP(WS-RETNCODE)
-   715		 END-EXEC
-   716
-   717		 ADD 1 TO WS-LOG-Seq-Number
-   718
-   719		 PERFORM 3600-CHECK-NEWCA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
+   662		 END-EXEC
+   663		 IF EIBRESP = +0
+   664		  EXEC CICS
+   665              READ FILE('STF001C')
+   666		    INTO (NEW-TICKET)
+   667		    RIDFLD (WS-TICKET-NUM)
+   668		    EQUAL
+   669		    UPDATE
+   670		  END-EXEC.
+   671	     3200-EXIT. EXIT.
+   672
+   673	     3300-READ-LOG.
+   674
+   675		 EXEC CICS STARTBR
+   676              FILE('STF002E')
+   677		    RIDFLD (WS-KEYS)
+   678		    GTEQ
+   679		 END-EXEC
+   680
+   681		 MOVE WS-LOG TO WS-LOG-BACKUP
+   682
+   683		 PERFORM UNTIL WS-LOG-Ticket-ID NOT = WS-B-LOG-Ticket-ID
+   684		   EXEC CICS READ
+   685               FILE('STF002E')
+   686		     INTO(WS-LOG)
+   687		     RIDFLD(WS-KEYS)
+   688		     GTEQ
+   689		   END-EXEC
+   690		   IF WS-LOG-Ticket-ID	= WS-B-LOG-Ticket-ID
+   691		     MOVE WS-LOG TO WS-LOG-BACKUP
+   692		     ADD 1 TO WS-LOG-Seq-Number
+   693		   END-IF
+   694
+   695		 END-PERFORM
+   696
+   697		 EXEC CICS ENDBR
+   698             FILE('STF002E')
+   699		 END-EXEC.
+   700
+   701	     3300-EXIT. EXIT.
+   702
+   703	     3400-CREATE-LOG.
+   704		 PERFORM 3300-READ-LOG
+   705		 MOVE WS-LOG-BACKUP TO WS-LOG
+   706		 ADD 1 TO WS-LOG-Seq-Number
+   707	    **********ID GALING SA COMMAREA
+   708		 MOVE USERID TO WS-LOG-Last-Update-by
+   709		 MOVE NEW-TICKET-Last-Update-by  TO WS-LOG-Last-Update-by
+   710		 MOVE HOLDER TO WS-LOG-Update-Remarks
+   711		 EXEC CICS
+   712                WRITE FILE('STF002E')
+   713		      FROM (WS-LOG)
+   714		      RIDFLD (WS-KEYS)
+   715		      RESP(WS-RETNCODE)
+   716		 END-EXEC
+   717
+   718		 ADD 1 TO WS-LOG-Seq-Number
+   719CA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
 
 
-   720		 MOVE HOLDER TO WS-LOG-Update-Remarks
-   721
-   722		 EXEC CICS
-   723                WRITE FILE('STF002E')
-   724		      FROM (WS-LOG)
-   725		      RIDFLD (WS-KEYS)
-   726		      RESP(WS-RETNCODE)
-   727		 END-EXEC.
-   728
+   720		 PERFORM 3600-CHECK-NEW
+   721		 MOVE HOLDER TO WS-LOG-Update-Remarks
+   722
+   723		 EXEC CICS
+   724                WRITE FILE('STF002E')
+   725		      FROM (WS-LOG)
+   726		      RIDFLD (WS-KEYS)
+   727		      RESP(WS-RETNCODE)
+   728		 END-EXEC.
    729
-   730	     3400-EXIT. EXIT.
-   731
-   732	     3500-CHECK-EDIT.
-   733
-   734		 IF WS-E-TITLE NOT = NEW-TICKET-Title
-   735		   MOVE WS-E-TITLE TO WS-C-TITLE
-   736		 END-IF
-   737
-   738		 IF WS-E-DES NOT = NEW-TICKET-Description
-   739		     MOVE WS-E-DES TO WS-C-DES
-   740		 END-IF
-   741
-   742		 IF WS-E-UPDATE NOT = NEW-TICKET-Update-Remarks
-   743		       MOVE WS-E-UPDATE TO WS-C-UPDATE
-   744		 END-IF.
-   745
-   746           IF NEW-TICKET-Status = 'COMPLETED'
-   747		     EVALUATE TRUE
-   748		     WHEN WS-C-TITLE NOT = NULL AND
-   749			  WS-C-DES NOT = NULL AND
-   750			  WS-C-UPDATE NOT = NULL
-   751                    MOVE 'COMPLETED. TITLE/DESCRIPTION/REMARKS UPDATED'
-   752			    TO HOLDER
-   753
-   754		     WHEN WS-C-TITLE NOT = NULL AND
-   755			  WS-C-DES   NOT = NULL AND
-   756			  WS-C-UPDATE	 = NULL
-   757                    MOVE 'COMPLETED. TITLE/DESCRIPTION UPDATED'
-   758			    TO HOLDER
-   759
-   760		     WHEN WS-C-TITLE NOT = NULL AND
-   761			  WS-C-DES	 = NULL AND
-   762			  WS-C-UPDATE	 = NULL
-   763                    MOVE 'COMPLETED. TITLE UPDATED' TO HOLDER
-   764
-   765		     WHEN WS-C-TITLE	  = NULL AND
-   766			  WS-C-DES    NOT  = NULL AND
-   767			  WS-C-UPDATE NOT = NULL
-   768                    MOVE 'COMPLETED. DESCRIPTION/REMARKS UPDATED'
-   769			   TO HOLDER
-   770
-   771		    WHEN WS-C-TITLE	  = NULL AND
-   772			  WS-C-DES	  = NULL AND
-   773			  WS-C-UPDATE NOT = NULL
-   774                    MOVE 'COMPLETED. REMARKS UPDATED' TO HOLDER
-   775
-   776		    WHEN WS-C-TITLE	  = NULL AND
-   777			  WS-C-DES   NOT  = NULL ANDCA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
+   730
+   731	     3400-EXIT. EXIT.
+   732
+   733	     3500-CHECK-EDIT.
+   734
+   735		 IF WS-E-TITLE NOT = NEW-TICKET-Title
+   736		   MOVE WS-E-TITLE TO WS-C-TITLE
+   737		 END-IF
+   738
+   739		 IF WS-E-DES NOT = NEW-TICKET-Description
+   740		     MOVE WS-E-DES TO WS-C-DES
+   741		 END-IF
+   742
+   743		 IF WS-E-UPDATE NOT = NEW-TICKET-Update-Remarks
+   744		       MOVE WS-E-UPDATE TO WS-C-UPDATE
+   745		 END-IF.
+   746
+   747           IF NEW-TICKET-Status = 'COMPLETED'
+   748		     EVALUATE TRUE
+   749		     WHEN WS-C-TITLE NOT = NULL AND
+   750			  WS-C-DES NOT = NULL AND
+   751			  WS-C-UPDATE NOT = NULL
+   752                    MOVE 'COMPLETED. TITLE/DESCRIPTION/REMARKS UPDATED'
+   753			    TO HOLDER
+   754
+   755		     WHEN WS-C-TITLE NOT = NULL AND
+   756			  WS-C-DES   NOT = NULL AND
+   757			  WS-C-UPDATE	 = NULL
+   758                    MOVE 'COMPLETED. TITLE/DESCRIPTION UPDATED'
+   759			    TO HOLDER
+   760
+   761		     WHEN WS-C-TITLE NOT = NULL AND
+   762			  WS-C-DES	 = NULL AND
+   763			  WS-C-UPDATE	 = NULL
+   764                    MOVE 'COMPLETED. TITLE UPDATED' TO HOLDER
+   765
+   766		     WHEN WS-C-TITLE	  = NULL AND
+   767			  WS-C-DES    NOT  = NULL AND
+   768			  WS-C-UPDATE NOT = NULL
+   769                    MOVE 'COMPLETED. DESCRIPTION/REMARKS UPDATED'
+   770			   TO HOLDER
+   771
+   772		    WHEN WS-C-TITLE	  = NULL AND
+   773			  WS-C-DES	  = NULL AND
+   774			  WS-C-UPDATE NOT = NULL
+   775                    MOVE 'COMPLETED. REMARKS UPDATED' TO HOLDER
+   776
+   777		    WHEN WS-C-TITLE	  = NULL ANDCA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
 
 
-   778			  WS-C-UPDATE	  = NULL
-   779                    MOVE 'COMPLETED. DESCRIPTION UPDATED' TO HOLDER
-   780
-   781		     WHEN WS-C-TITLE NOT  = NULL AND
-   782			  WS-C-DES	  = NULL AND
-   783			  WS-C-UPDATE NOT = NULL
-   784                    MOVE 'COMPLETED. TITLE/REMARKS UPDATED' TO HOLDER
-   785		     END-EVALUATE
-   786		 ELSE
-   787		     EVALUATE TRUE
-   788		     WHEN WS-C-TITLE NOT = NULL AND
-   789			  WS-C-DES NOT = NULL AND
-   790			  WS-C-UPDATE NOT = NULL
-   791                    MOVE 'TITLE/DESCRIPTION/REMARKS UPDATED' TO HOLDER
-   792
-   793		     WHEN WS-C-TITLE NOT = NULL AND
-   794			  WS-C-DES   NOT = NULL AND
-   795			  WS-C-UPDATE	 = NULL
-   796                    MOVE 'TITLE/DESCRIPTION UPDATED' TO HOLDER
-   797
-   798		     WHEN WS-C-TITLE NOT = NULL AND
-   799			  WS-C-DES	 = NULL AND
-   800			  WS-C-UPDATE	 = NULL
-   801                    MOVE 'TITLE UPDATED' TO HOLDER
-   802
-   803		     WHEN WS-C-TITLE	  = NULL AND
-   804			  WS-C-DES    NOT  = NULL AND
-   805			  WS-C-UPDATE NOT = NULL
-   806                    MOVE 'DESCRIPTION/REMARKS UPDATED' TO HOLDER
-   807
-   808		    WHEN WS-C-TITLE	  = NULL AND
-   809			  WS-C-DES	  = NULL AND
-   810			  WS-C-UPDATE NOT = NULL
-   811                    MOVE 'REMARKS UPDATED' TO HOLDER
-   812
-   813		    WHEN WS-C-TITLE	  = NULL AND
-   814			  WS-C-DES   NOT  = NULL AND
-   815			  WS-C-UPDATE	  = NULL
-   816                    MOVE 'DESCRIPTION UPDATED' TO HOLDER
-   817
-   818		     WHEN WS-C-TITLE NOT  = NULL AND
-   819			  WS-C-DES	  = NULL AND
-   820			  WS-C-UPDATE NOT = NULL
-   821                    MOVE 'TITLE/REMARKS UPDATED' TO HOLDER
-   822
-   823		     END-EVALUATE
-   824		 END-IF.
-   825	     3500-EXIT. EXIT.
-   826
-   827	     3600-CHECK-NEW.
-   828		 EVALUATE TRUE
-   829		     WHEN WS-C-TITLE NOT = NULL AND
-   830			  WS-C-DES NOT = NULL AND
-   831			  WS-C-UPDATE NOT = NULL
-   832                 STRING WS-C-TITLE DELIMITED BY ' '
-   833                   ' ' DELIMITED BY SIZE
-   834                   WS-C-DES DELIMITED BY ' '
-   835                   ' ' DELIMITED BY SIZECA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
+   778			  WS-C-DES   NOT  = NULL AND
+   779			  WS-C-UPDATE	  = NULL
+   780                    MOVE 'COMPLETED. DESCRIPTION UPDATED' TO HOLDER
+   781
+   782		     WHEN WS-C-TITLE NOT  = NULL AND
+   783			  WS-C-DES	  = NULL AND
+   784			  WS-C-UPDATE NOT = NULL
+   785                    MOVE 'COMPLETED. TITLE/REMARKS UPDATED' TO HOLDER
+   786		     END-EVALUATE
+   787		 ELSE
+   788		     EVALUATE TRUE
+   789		     WHEN WS-C-TITLE NOT = NULL AND
+   790			  WS-C-DES NOT = NULL AND
+   791			  WS-C-UPDATE NOT = NULL
+   792                    MOVE 'TITLE/DESCRIPTION/REMARKS UPDATED' TO HOLDER
+   793
+   794		     WHEN WS-C-TITLE NOT = NULL AND
+   795			  WS-C-DES   NOT = NULL AND
+   796			  WS-C-UPDATE	 = NULL
+   797                    MOVE 'TITLE/DESCRIPTION UPDATED' TO HOLDER
+   798
+   799		     WHEN WS-C-TITLE NOT = NULL AND
+   800			  WS-C-DES	 = NULL AND
+   801			  WS-C-UPDATE	 = NULL
+   802                    MOVE 'TITLE UPDATED' TO HOLDER
+   803
+   804		     WHEN WS-C-TITLE	  = NULL AND
+   805			  WS-C-DES    NOT  = NULL AND
+   806			  WS-C-UPDATE NOT = NULL
+   807                    MOVE 'DESCRIPTION/REMARKS UPDATED' TO HOLDER
+   808
+   809		    WHEN WS-C-TITLE	  = NULL AND
+   810			  WS-C-DES	  = NULL AND
+   811			  WS-C-UPDATE NOT = NULL
+   812                    MOVE 'REMARKS UPDATED' TO HOLDER
+   813
+   814		    WHEN WS-C-TITLE	  = NULL AND
+   815			  WS-C-DES   NOT  = NULL AND
+   816			  WS-C-UPDATE	  = NULL
+   817                    MOVE 'DESCRIPTION UPDATED' TO HOLDER
+   818
+   819		     WHEN WS-C-TITLE NOT  = NULL AND
+   820			  WS-C-DES	  = NULL AND
+   821			  WS-C-UPDATE NOT = NULL
+   822                    MOVE 'TITLE/REMARKS UPDATED' TO HOLDER
+   823
+   824		     END-EVALUATE
+   825		 END-IF.
+   826	     3500-EXIT. EXIT.
+   827
+   828	     3600-CHECK-NEW.
+   829		 EVALUATE TRUE
+   830		     WHEN WS-C-TITLE NOT = NULL AND
+   831			  WS-C-DES NOT = NULL AND
+   832			  WS-C-UPDATE NOT = NULL
+   833                 STRING WS-C-TITLE DELIMITED BY ' '
+   834                   ' ' DELIMITED BY SIZE
+   835                   WS-C-DES DELIMITED BY ' 'CA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
 
 
-   836                   WS-C-UPDATE DELIMITED BY ' '
-   837			 INTO HOLDER
-   838		       END-STRING
-   839
-   840		     WHEN WS-C-TITLE NOT = NULL AND
-   841			  WS-C-DES   NOT = NULL AND
-   842			  WS-C-UPDATE	 = NULL
-   843                 STRING WS-C-TITLE DELIMITED BY ' '
-   844                   ' ' DELIMITED BY SIZE
-   845                   WS-C-DES DELIMITED BY ' '
-   846			 INTO HOLDER
-   847		       END-STRING
-   848
-   849		     WHEN WS-C-TITLE NOT = NULL AND
-   850			  WS-C-DES	 = NULL AND
-   851			  WS-C-UPDATE	 = NULL
-   852                 STRING WS-C-TITLE DELIMITED BY ' '
-   853			 INTO HOLDER
-   854		       END-STRING
-   855
-   856		     WHEN WS-C-TITLE	  = NULL AND
-   857			  WS-C-DES    NOT  = NULL AND
-   858			  WS-C-UPDATE NOT = NULL
-   859                 STRING WS-C-DES DELIMITED BY ' '
-   860                   ' ' DELIMITED BY SIZE
-   861                   WS-C-UPDATE DELIMITED BY ' '
-   862			 INTO HOLDER
-   863		       END-STRING
-   864
-   865		    WHEN WS-C-TITLE	  = NULL AND
-   866			  WS-C-DES	  = NULL AND
-   867			  WS-C-UPDATE NOT = NULL
-   868		       STRING
-   869                   WS-C-UPDATE DELIMITED BY ' '
-   870			 INTO HOLDER
-   871		       END-STRING
-   872
-   873		    WHEN WS-C-TITLE	  = NULL AND
-   874			  WS-C-DES   NOT  = NULL AND
-   875			  WS-C-UPDATE	  = NULL
-   876		      STRING
-   877                   WS-C-DES DELIMITED BY ' '
-   878			 INTO HOLDER
-   879		       END-STRING
-   880
-   881		     WHEN WS-C-TITLE NOT  = NULL AND
-   882			  WS-C-DES	  = NULL AND
-   883			  WS-C-UPDATE NOT = NULL
-   884                 STRING WS-C-TITLE DELIMITED BY ' '
-   885                   ' ' DELIMITED BY SIZE
-   886                   WS-C-UPDATE DELIMITED BY ' '
-   887			 INTO HOLDER
-   888		       END-STRING
-   889
-   890		     END-EVALUATE.
-   891
-   892	     3600-EXIT. EXIT.
-   893CA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
+   836                   ' ' DELIMITED BY SIZE
+   837                   WS-C-UPDATE DELIMITED BY ' '
+   838			 INTO HOLDER
+   839		       END-STRING
+   840
+   841		     WHEN WS-C-TITLE NOT = NULL AND
+   842			  WS-C-DES   NOT = NULL AND
+   843			  WS-C-UPDATE	 = NULL
+   844                 STRING WS-C-TITLE DELIMITED BY ' '
+   845                   ' ' DELIMITED BY SIZE
+   846                   WS-C-DES DELIMITED BY ' '
+   847			 INTO HOLDER
+   848		       END-STRING
+   849
+   850		     WHEN WS-C-TITLE NOT = NULL AND
+   851			  WS-C-DES	 = NULL AND
+   852			  WS-C-UPDATE	 = NULL
+   853                 STRING WS-C-TITLE DELIMITED BY ' '
+   854			 INTO HOLDER
+   855		       END-STRING
+   856
+   857		     WHEN WS-C-TITLE	  = NULL AND
+   858			  WS-C-DES    NOT  = NULL AND
+   859			  WS-C-UPDATE NOT = NULL
+   860                 STRING WS-C-DES DELIMITED BY ' '
+   861                   ' ' DELIMITED BY SIZE
+   862                   WS-C-UPDATE DELIMITED BY ' '
+   863			 INTO HOLDER
+   864		       END-STRING
+   865
+   866		    WHEN WS-C-TITLE	  = NULL AND
+   867			  WS-C-DES	  = NULL AND
+   868			  WS-C-UPDATE NOT = NULL
+   869		       STRING
+   870                   WS-C-UPDATE DELIMITED BY ' '
+   871			 INTO HOLDER
+   872		       END-STRING
+   873
+   874		    WHEN WS-C-TITLE	  = NULL AND
+   875			  WS-C-DES   NOT  = NULL AND
+   876			  WS-C-UPDATE	  = NULL
+   877		      STRING
+   878                   WS-C-DES DELIMITED BY ' '
+   879			 INTO HOLDER
+   880		       END-STRING
+   881
+   882		     WHEN WS-C-TITLE NOT  = NULL AND
+   883			  WS-C-DES	  = NULL AND
+   884			  WS-C-UPDATE NOT = NULL
+   885                 STRING WS-C-TITLE DELIMITED BY ' '
+   886                   ' ' DELIMITED BY SIZE
+   887                   WS-C-UPDATE DELIMITED BY ' '
+   888			 INTO HOLDER
+   889		       END-STRING
+   890
+   891		     END-EVALUATE.
+   892
+   893	     3600-EXIT. EXIT.CA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
 
 
-   894	     4000-RMAP.
-   895		 EXEC CICS
-   896                RECEIVE MAP('SM003M')
-   897                MAPSET('SM03S')
-   898		      INTO (SM003MI)
-   899		 END-EXEC.
-   900	     4000-EXIT. EXIT.
-   901
+   894
+   895	     4000-RMAP.
+   896		 EXEC CICS
+   897                RECEIVE MAP('SM003M')
+   898                MAPSET('SM03S')
+   899		      INTO (SM003MI)
+   900		 END-EXEC.
+   901	     4000-EXIT. EXIT.
+   902
 CA-Realia CACXPREP D:\work\CAWB30-HO\SM003.COB
 
 
@@ -1466,6 +1467,6 @@
 		      PPCODE
 		      DCHK
 
-		Source Lines Translated:    1404
+		Source Lines Translated:    1405
 		Translation Time:	     .01 sec
-		Translation Speed:	   40000 lines per min
+		Translation Speed:	   50000 lines per min

@@ -329,8 +329,12 @@
 
        21C-UPDATE-SM003.
             MOVE 'SM000' TO WS-PGMID
-           MOVE LOW-VALUES TO WS-STATE
-           MOVE TICKETI TO WS-TICKET-PASSED
+           IF TICKETI = LOW-VALUES
+              MOVE LOW-VALUES TO WS-STATE
+           ELSE 
+              MOVE 1 TO WS-STATE
+              MOVE TICKETI TO WS-TICKET-PASSED
+           END-IF 
            MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
            EXEC CICS XCTL
                 PROGRAM('SM003')
@@ -343,8 +347,12 @@
 
        21D-CLOSE-SM004.
            MOVE 'SM000' TO WS-PGMID
-           MOVE LOW-VALUES TO WS-STATE
-           MOVE TICKETI TO WS-TICKET-PASSED
+           IF TICKETI = LOW-VALUES
+              MOVE LOW-VALUES TO WS-STATE
+           ELSE 
+              MOVE 1 TO WS-STATE
+              MOVE TICKETI TO WS-TICKET-PASSED
+           END-IF 
            MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
            EXEC CICS XCTL
                 PROGRAM('SM004')
@@ -375,25 +383,18 @@
 
        21F-CANCEL-SM006.
            MOVE 'SM000' TO WS-PGMID
-           MOVE TICKETI TO WS-TICKET-PASSED
-           MOVE LOW-VALUES TO WS-STATE
-           IF TICKETI NOT = LOW-VALUES OR SPACES
-              PERFORM 500-CHECK-TICKET
-      *       MOVE WS-TICKET-REC TO COMM-TICKET-REC
-              MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-              EXEC CICS XCTL
-                   PROGRAM('SM006')
-                   COMMAREA(WS-COMMAREA)
-                   LENGTH(WS-LENGTH)
-              END-EXEC
-           ELSE
-              MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
-              EXEC CICS XCTL
-                   PROGRAM('SM006')
-                   COMMAREA(WS-COMMAREA)
-                   LENGTH(WS-LENGTH)
-              END-EXEC 
-           END-IF.   
+           IF TICKETI = LOW-VALUES
+              MOVE LOW-VALUES TO WS-STATE
+           ELSE 
+              MOVE 1 TO WS-STATE
+              MOVE TICKETI TO WS-TICKET-PASSED
+           END-IF   
+           MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+           EXEC CICS XCTL
+                PROGRAM('SM006')
+                COMMAREA(WS-COMMAREA)
+                LENGTH(WS-LENGTH)
+           END-EXEC.   
        21F-EXIT.
            EXIT.
            

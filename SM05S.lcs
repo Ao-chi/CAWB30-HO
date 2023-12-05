@@ -1,4 +1,4 @@
-CA-Realia CICS Ver:6.0.27  SM05S.bms                                                                     04DEV23 20:43:28 PAGE  1
+CA-Realia CICS Ver:6.0.27  SM05S.bms                                                                     05DEV23 21:50:33 PAGE  1
 
     1          PRINT NOGEN
     2 SM05S    DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      *
@@ -34,8 +34,8 @@
    32 UPDTBY   DFHMDF POS=(11,25),LENGTH=08
    33          DFHMDF POS=(12,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
    34                INITIAL='UPDATE REMARKS     :'
-   35 UPDREM1  DFHMDF POS=(12,25),LENGTH=25,ATTRB=(UNPROT,NORM)
-   36 UPDREM2  DFHMDF POS=(13,25),LENGTH=25,ATTRB=(UNPROT,NORM)
+   35 UPDREM1  DFHMDF POS=(12,25),LENGTH=25,ATTRB=(ASKIP,NORM)
+   36 UPDREM2  DFHMDF POS=(13,25),LENGTH=25,ATTRB=(ASKIP,NORM)
    37          DFHMDF POS=(14,03),LENGTH=20,ATTRB=(ASKIP,NORM),              *
    38                INITIAL='UPDATE DATE/TIME   :'
    39 UPDT     DFHMDF POS=(14,25),LENGTH=20
@@ -47,11 +47,11 @@
    45          DFHMDF POS=(22,33),LENGTH=11,ATTRB=(ASKIP,NORM),              *
    46                INITIAL='PF5 - ABORT'
    47          DFHMDF POS=(22,48),LENGTH=11,ATTRB=(ASKIP,NORM),              *
-   48                INITIAL='PF11 - LOGS'
+   48                INITIAL='PF12 - LOGS'
    49          DFHMSD TYPE=FINAL
       SM05S loaded with 1 MAPS, 28 FIELDS and 243 Bytes of Literals
 
-   50          ENDCA-Realia CICS Ver:6.0.27  SM05S.bms                                                                     04DEV23 20:43:28 PAGE  2
+   50          ENDCA-Realia CICS Ver:6.0.27  SM05S.bms                                                                     05DEV23 21:50:33 PAGE  2
 
       COBOL COPY file generated
 

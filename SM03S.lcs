@@ -1,4 +1,4 @@
-CA-Realia CICS Ver:6.0.27  SM03S.bms                                                                     04DEV23 20:43:28 PAGE  1
+CA-Realia CICS Ver:6.0.27  SM03S.bms                                                                     05DEV23 19:59:46 PAGE  1
 
     1 SM03S    DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      *
     2                CTRL=(FREEKB,FRSET),TIOAPFX=YES,EXTATT=NO,              *
@@ -45,11 +45,11 @@
    43          DFHMDF POS=(24,28),LENGTH=11,ATTRB=(ASKIP,NORM),              *
    44                INITIAL='PF5 - ABORT'
    45          DFHMDF POS=(24,50),LENGTH=11,ATTRB=(ASKIP,NORM),              *
-   46                INITIAL='PF11 - LOGS'
+   46                INITIAL='PF12 - LOGS'
    47          DFHMSD TYPE=FINAL
       SM03S loaded with 1 MAPS, 29 FIELDS and 235 Bytes of Literals
 
-   48          ENDCA-Realia CICS Ver:6.0.27  SM03S.bms                                                                     04DEV23 20:43:28 PAGE  2
+   48          ENDCA-Realia CICS Ver:6.0.27  SM03S.bms                                                                     05DEV23 19:59:46 PAGE  2
 
       COBOL COPY file generated
 
