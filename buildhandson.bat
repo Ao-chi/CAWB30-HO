@@ -94,15 +94,15 @@ call cicstran SM002 /hvw
 if exist SM003.dll erase SM003.dll
 if exist SM003.obj erase SM003.obj
 call cicstran SM003 /hvw
-@REM if exist SM004.dll erase SM004.dll
-@REM if exist SM004.obj erase SM004.obj
-@REM call cicstran SM004 /hvw
-@REM if exist SM005.dll erase SM005.dll
-@REM if exist SM005.obj erase SM005.obj
-@REM call cicstran SM005 /hvw
-@REM if exist SM006.dll erase SM006.dll
-@REM if exist SM006.obj erase SM006.obj
-@REM call cicstran SM006 /hvw
+if exist SM004.dll erase SM004.dll
+if exist SM004.obj erase SM004.obj
+call cicstran SM004 /hvw
+if exist SM005.dll erase SM005.dll
+if exist SM005.obj erase SM005.obj
+call cicstran SM005 /hvw
+if exist SM006.dll erase SM006.dll
+if exist SM006.obj erase SM006.obj
+call cicstran SM006 /hvw
 @REM if exist SM012.dll erase SM012.dll
 @REM if exist SM012.obj erase SM012.obj
 @REM call cicstran SM012 /hvw

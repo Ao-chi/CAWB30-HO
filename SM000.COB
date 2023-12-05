@@ -400,13 +400,13 @@
            
        21G-ADMIN-UA001.
            MOVE 'SM000' TO WS-PGMID
-           EXEC CICS LINK
+           MOVE LOW-VALUES TO WS-STATE
+           MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+           EXEC CICS XCTL
                 PROGRAM('UA001')
                 COMMAREA(WS-COMMAREA)
                 LENGTH(WS-LENGTH)
-                RESP(WS-RETNCODE)
-           END-EXEC
-           MOVE 'UA001' TO ERRMSGO.
+           END-EXEC.
        21G-EXIT.
            EXIT.
 

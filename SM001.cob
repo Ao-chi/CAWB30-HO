@@ -397,10 +397,16 @@
                 END-EXEC
            WHEN DFHPF5
                 PERFORM 600-MOVE-Q-TO-SCREEN
-           WHEN DFHPF7         
+           WHEN DFHPF7      
+                PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL WS-INDEX > 11
+                   MOVE LOW-VALUES TO DETL-SELECTI(WS-INDEX)
+                END-PERFORM   
                 PERFORM 510-PF7-PAGE-UP
 
            WHEN DFHPF8         
+                PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL WS-INDEX > 11
+                   MOVE LOW-VALUES TO DETL-SELECTI(WS-INDEX)
+                END-PERFORM
                 PERFORM 520-PF8-PAGE-DOWN
 
            WHEN DFHPF12         
@@ -570,29 +576,41 @@
                           IF USR-REQUESTOR = 'Y'  OR 
                              USR-SERVICE = 'Y'  
                              IF WS-STF01-REQ = USERID
+                                 MOVE 'SM001'   TO WS-PGMID
+                              MOVE 1         TO WS-STATE
+                              MOVE WS-STF01-ID TO WS-TICKET-PASSED
                                 MOVE LENGTH OF WS-COMMAREA TO 
                                   WS-LENGTH
-                                EXEC CICS LINK 
+                                EXEC CICS XCTL 
                                      PROGRAM ('SM003')
                                      COMMAREA (WS-COMMAREA)
                                      LENGTH (WS-LENGTH)
                                 END-EXEC
                                 MOVE 'SM003' TO ERRMSG1O
                              ELSE 
-                                MOVE WS-INVALID-TIX-ACC TO ERRMSG1O   
+                                MOVE WS-INVALID-TIX-ACC TO ERRMSG1O 
+                                MOVE DFHUNIMD TO 
+                                   DETL-SELECTA(WS-INDEX)
+                              MOVE -1 TO DETL-SELECTL(WS-INDEX)  
                              END-IF
                           ELSE
                               MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                              MOVE DFHUNIMD TO 
+                                   DETL-SELECTA(WS-INDEX)
+                              MOVE -1 TO DETL-SELECTL(WS-INDEX)
                           END-IF   
                        ELSE
                            MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                           MOVE DFHUNIMD TO 
+                                   DETL-SELECTA(WS-INDEX)
+                              MOVE -1 TO DETL-SELECTL(WS-INDEX)
                        END-IF
                    WHEN 'C'
                         IF WS-STF01-STATUS = 'COMPLETED'
                            IF WS-STF01-REQ = USERID
                               MOVE 'SM001'   TO WS-PGMID
                               MOVE 1         TO WS-STATE
-                              MOVE WS-TIX-ID TO WS-TICKET-PASSED
+                              MOVE WS-STF01-ID TO WS-TICKET-PASSED
                               MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                               EXEC CICS XCTL 
                                    PROGRAM ('SM004')
@@ -616,7 +634,7 @@
                            IF WS-STF01-REQ = USERID
                               MOVE 'SM001'   TO WS-PGMID
                               MOVE 1         TO WS-STATE
-                              MOVE WS-TIX-ID TO WS-TICKET-PASSED
+                              MOVE WS-STF01-ID TO WS-TICKET-PASSED
                               MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                               EXEC CICS XCTL 
                                    PROGRAM ('SM005')
@@ -638,7 +656,7 @@
                         IF WS-STF01-REQ = USERID
                            MOVE 'SM001'   TO WS-PGMID
                            MOVE 1         TO WS-STATE
-                           MOVE WS-TIX-ID TO WS-TICKET-PASSED
+                           MOVE WS-STF01-ID TO WS-TICKET-PASSED
                            MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
                            EXEC CICS XCTL 
                                 PROGRAM ('SM006')

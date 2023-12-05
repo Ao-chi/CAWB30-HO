@@ -1,6 +1,6 @@
        CBL XOPTS(COBOL2)
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. UA01.
+       PROGRAM-ID. UA001.
       
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
@@ -14,12 +14,19 @@
        01  WS-DATE                               PIC 9(7).
        01  WS-DATE-X REDEFINES WS-DATE           PIC X(7).
        01  WS-LENGTH                             PIC S9(4) COMP. 
+      *    minodify ko ng onti ung COMMAREA kasi cinonnect ko sa sm000
        01  WS-COMMAREA. 
-          05 WS-PGMID             PIC X(01).
-          05 WS-USERID.
+           05 WS-PGMID                           PIC X(06).
+           05 WS-STATE                           PIC X.
+           05 WS-USERID.
             10 WS-USERID1         PIC X(07).
             10 FILLER             PIC X(01).
-          05 WS-STATE             PIC X(01).
+           05 USR-TYPE.
+              15 USR-REQUESTOR                   PIC X.
+              15 USR-ADMIN                       PIC X.  
+              15 USR-APPROVER                    PIC X.
+              15 USR-SERVICE                     PIC X. 
+      *   05 WS-STATE             PIC X(01).
           05 WS-FLAG              PIC X(01).
           05 WS-CTL.
                10  WS-PAGE                PIC 9(02). 
@@ -134,34 +141,36 @@
 
        LINKAGE SECTION.
        01  DFHCOMMAREA.
-          05 DF-PGMID             PIC X(01).
-          05 DF-USERID.
-            10 DF-USERID1         PIC X(07).
-            10 FILLER             PIC X(01).
-          05 DF-USR-TYPE.
-            10 DF-USER-REQUESTOR  PIC X(01).
-            10 DF-USER-ADMIN      PIC X(01).
-            10 DF-USER-APPROVER   PIC X(01).
-            10 DF-USER-SERVICE    PIC X(01).
-          05 DF-STATE             PIC X(01).
-          05 DF-TICKET-NUM        PIC X(07).
-          05 DF-FLAG              PIC X(01).
-          05 DF-CTL.
-            10  DF-PAGE                PIC 9(02). 
-            10  DF-QNAME               PIC X(08).
-            10  DF-QITEM               PIC S9(4) COMP.
-            10  DF-QITEM-START         PIC S9(4) COMP.
-            10  DF-QITEM-END           PIC S9(4) COMP.
-            10  DF-QITEM-PAGE          PIC S9(4) COMP.
-            10  DF-CNT-UP              PIC 9(02).
-            10  DF-PAGE-X              PIC 9(02).
-            10  DF-LASTPAGE            PIC 9(02).
-          05 DF-BACKUP OCCURS 11.
-	        10  DF-B-UD                PIC X(01).
-	        10  DF-B-REQ               PIC X(01).
-	        10  DF-B-ADMN              PIC X(01).
-	        10  DF-B-APP               PIC X(01).
-	        10  DF-B-SP                PIC X(01).
+           05 DF-PGMID                           PIC X(06).
+           05 DF-STATE                           PIC X.
+           05 DF-TICKET-PASSED                   PIC X(07).
+           05 DF-USERID.
+              10  DF-USERID7                     PIC X(7).
+              10  FILLER                         PIC X(1).
+           05 DF-USR-TYPE.
+             10 DF-USER-REQUESTOR  PIC X(01).
+             10 DF-USER-ADMIN      PIC X(01).
+             10 DF-USER-APPROVER   PIC X(01).
+             10 DF-USER-SERVICE    PIC X(01).
+      *    05 DF-STATE             PIC X(01).
+           05 DF-TICKET-NUM        PIC X(07).
+           05 DF-FLAG              PIC X(01).
+           05 DF-CTL.
+             10  DF-PAGE                PIC 9(02). 
+             10  DF-QNAME               PIC X(08).
+             10  DF-QITEM               PIC S9(4) COMP.
+             10  DF-QITEM-START         PIC S9(4) COMP.
+             10  DF-QITEM-END           PIC S9(4) COMP.
+             10  DF-QITEM-PAGE          PIC S9(4) COMP.
+             10  DF-CNT-UP              PIC 9(02).
+             10  DF-PAGE-X              PIC 9(02).
+             10  DF-LASTPAGE            PIC 9(02).
+           05 DF-BACKUP OCCURS 11.
+	         10  DF-B-UD                PIC X(01).
+	         10  DF-B-REQ               PIC X(01).
+	         10  DF-B-ADMN              PIC X(01).
+	         10  DF-B-APP               PIC X(01).
+	         10  DF-B-SP                PIC X(01).
 
       
        PROCEDURE DIVISION.
@@ -172,7 +181,7 @@
            MOVE DFHCOMMAREA  TO WS-COMMAREA
            MOVE LENGTH OF UA001MI TO WS-LENGTH
            STRING EIBTRMID DELIMITED BY SIZE
-	              EIBTRNID DELIMITED BY SIZE
+	              'UA01' DELIMITED BY SIZE
                   INTO WS-QNAME
            END-STRING
 
@@ -183,10 +192,15 @@
            END-IF
 
            MOVE LENGTH OF UA001MI TO WS-LENGTH
+      *    ginamit ko ung values ng sa commarea
+           IF WS-PGMID = 'SM000' OR 'UA001' OR 'UA002' AND 
+              USR-ADMIN = 'Y'
+      *    IF EIBTRNID = 'SW00' OR 'SM00' OR 'UA01' AND WS-AADMIN = 'Y'
 
-           IF EIBTRNID = 'SW00' OR 'SM00' OR 'UA01' AND WS-AADMIN = 'Y'
-
-               IF EIBCALEN = +0 
+      *        IF EIBCALEN = +0 
+      *      ung state piinang check ko kasi un ung galing sa commarea
+      *    pag ung eibcalen kasi di sya pwede = +0 kasi may laman ung pinasang commarea.
+               IF WS-STATE = LOW-VALUES or SPACES
                    PERFORM 2000-READ-TRANSFER-FILE
                    MOVE 1 TO WS-PAGE
                    MOVE WS-PAGE TO PAGEO
@@ -275,13 +289,13 @@
        2000-READ-TRANSFER-FILE.
            MOVE LOW-VALUES TO WS-RID
            EXEC CICS
-               STARTBR FILE('UA001')
+               STARTBR FILE('UAF001')
                RIDFLD (WS-RID)
                GTEQ
            END-EXEC
 
            EXEC CICS
-               READNEXT FILE('UA001')
+               READNEXT FILE('UAF001')
                INTO (WS-REC)
                RIDFLD (WS-RID)
            END-EXEC
@@ -298,7 +312,7 @@
            PERFORM UNTIL EIBRESP NOT = DFHRESP (NORMAL)
                MOVE WS-QITEM TO WS-QITEM-END
                EXEC CICS
-                   READNEXT FILE('UA001')
+                   READNEXT FILE('UAF001')
                    INTO (WS-REC)
                    RIDFLD (WS-RID)
                END-EXEC
@@ -318,7 +332,7 @@
            END-PERFORM
 
            EXEC CICS
-               ENDBR FILE('UA001')
+               ENDBR FILE('UAF001')
            END-EXEC
            PERFORM 2001-SET-LASTPAGE
            MOVE WS-QITEM-START TO WS-QITEM-PAGE.

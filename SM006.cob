@@ -367,11 +367,13 @@
                     MOVE 'SM006' TO WS-PGMID
                     EXEC CICS XCTL
 			              PROGRAM('SM001')
+                           COMMAREA(WS-COMMAREA)  
                     END-EXEC  
                  WHEN 'SM012'  
                     MOVE 'SM006' TO WS-PGMID
                     EXEC CICS XCTL
 			              PROGRAM('SM012')
+                           COMMAREA(WS-COMMAREA)  
                     END-EXEC     
                 END-EVALUATE
 
