@@ -123,7 +123,8 @@
            IF WS-PGMID = 'SM000' OR WS-PGMID = 'SM001' OR
               WS-PGMID = 'SM002' OR WS-PGMID = 'SM003' OR 
               WS-PGMID = 'SM004' OR WS-PGMID = 'SM005' OR
-              WS-PGMID = 'SM006' OR EIBTRNID = 'SM00'
+              WS-PGMID = 'SM006' OR EIBTRNID = 'SM00'  OR
+              WS-PGMID = 'UA001'
                  MOVE WS-TYPE TO USR-TYPE
                  MOVE WS-USERID TO USERID
       *          IF EIBCALEN NOT = +0 

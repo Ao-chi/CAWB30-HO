@@ -90,6 +90,12 @@
            05 WS-PAGE-CHANGED                    PIC X VALUE 'N'.
            05 WS-PAGE-INVALID                    PIC X.
            05 WS-SEARCH-FLAG                     PIC X VALUE 'N'.
+           05 WS-VALID-FIELDS.
+              10 WS-VALID-STAT                   PIC X.
+              10 WS-VALID-TITLE                  PIC X.
+              10 WS-VALID-TODATE                 PIC X.
+              10 WS-VALID-FRODATE                PIC X.
+
        01  WS-SELECTED-VALUE                     PIC X.
        01  WS-COUNTERS.
            05 WS-INDEX                           PIC 9(02).   
@@ -244,20 +250,16 @@
                IF WS-STATE NOT = LOW-VALUES
                   PERFORM 200-REC-MAP
                   PERFORM 500-CHECK-EIBAID
-                  EVALUATE WS-STATE
-                    WHEN 1
-                         PERFORM 600-MOVE-Q-TO-SCREEN  
-                         PERFORM 111-CREATE-MAP
-                    WHEN 2
-                         PERFORM 111-CREATE-MAP
-                  END-EVALUATE  
+                  PERFORM 600-MOVE-Q-TO-SCREEN  
+                  PERFORM 111-CREATE-MAP
+                  
                ELSE
                    MOVE WS-SELECT-OPTION TO ERRMSG1O 
                    MOVE 1 TO WS-STATE
                    MOVE 1 TO WS-PAGE
                    MOVE WS-PAGE TO PAGEO
                    MOVE -1 TO TITLEL
-                   PERFORM 900-MOVE-FILES-TO-Q
+                   PERFORM 700-MOVE-FILES-TO-Q
                    PERFORM 600-MOVE-Q-TO-SCREEN
                    PERFORM 111-CREATE-MAP
                END-IF
@@ -365,6 +367,8 @@
            WHEN DFHCLEAR  
                 MOVE WS-INVALID-PFKEY TO ERRMSG1O
                 MOVE -1 TO TITLEL
+                MOVE WS-PAGE TO WS-PREV-PAGE
+                MOVE PREV-PAGE TO PAGEI
                 PERFORM 600-MOVE-Q-TO-SCREEN  
                 PERFORM 111-CREATE-MAP
                 
@@ -394,9 +398,10 @@
                 END-EXEC 
                 EXEC CICS XCTL 
                      PROGRAM('SM000')
+                     COMMAREA(WS-COMMAREA)
                 END-EXEC
            WHEN DFHPF5
-                PERFORM 600-MOVE-Q-TO-SCREEN
+                PERFORM 700-MOVE-FILES-TO-Q
            WHEN DFHPF7      
                 PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL WS-INDEX > 11
                    MOVE LOW-VALUES TO DETL-SELECTI(WS-INDEX)
@@ -413,6 +418,12 @@
                 PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL WS-INDEX > 11
                    MOVE LOW-VALUES TO DETL-SELECTI(WS-INDEX)
                 END-PERFORM
+                MOVE LOW-VALUES TO STATUSI
+                MOVE LOW-VALUES TO TITLEI
+                MOVE 1 TO WS-PAGE
+                MOVE WS-PAGE TO PAGEO
+                MOVE -1 TO TITLEL
+                PERFORM 700-MOVE-FILES-TO-Q
                 PERFORM 600-MOVE-Q-TO-SCREEN
                 PERFORM 111-CREATE-MAP
            WHEN DFHENTER 
@@ -440,6 +451,7 @@
              SUBTRACT 1 FROM WS-PAGE 
              MOVE WS-PAGE TO PAGEO
            END-IF
+            MOVE -1 TO TITLEL
            MOVE WS-PAGE TO PAGEO
            PERFORM 600-MOVE-Q-TO-SCREEN   
            PERFORM 111-CREATE-MAP.
@@ -458,6 +470,7 @@
               MOVE WS-PAGE TO PAGEO
               PERFORM 600-MOVE-Q-TO-SCREEN
            END-IF.   
+            MOVE -1 TO TITLEL
            PERFORM 111-CREATE-MAP.
        520-EXIT.
            EXIT.
@@ -562,13 +575,16 @@
                     MOVE DETL-DETAILI(WS-INDEX) TO WS-STF01-REC
                     MOVE WS-STF-REQ2(WS-INDEX)  TO WS-STF01-REQ
                  ELSE 
-                    MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
-                    MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                    PERFORM 56A-HIGHLIGHT-ERR-FIELD
                     MOVE WS-INVALID-VALUE TO ERRMSG1O 
                     PERFORM 600-MOVE-Q-TO-SCREEN  
                     PERFORM 111-CREATE-MAP       
                  END-IF
-               IF WS-SELECT-COUNT = 1 OR 0
+               
+              END-IF  
+              ADD 1 TO WS-INDEX  
+           END-PERFORM
+           IF WS-SELECT-COUNT = 1 OR 0
                   EVALUATE WS-SELECTED-VALUE
                    WHEN 'U'
                        IF WS-STF01-STATUS = 'APPROVED' OR 
@@ -594,16 +610,12 @@
                               MOVE -1 TO DETL-SELECTL(WS-INDEX)  
                              END-IF
                           ELSE
-                              MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
-                              MOVE DFHUNIMD TO 
-                                   DETL-SELECTA(WS-INDEX)
-                              MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                            MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
+                            PERFORM 56A-HIGHLIGHT-ERR-FIELD
                           END-IF   
                        ELSE
                            MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
-                           MOVE DFHUNIMD TO 
-                                   DETL-SELECTA(WS-INDEX)
-                              MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                           PERFORM 56A-HIGHLIGHT-ERR-FIELD
                        END-IF
                    WHEN 'C'
                         IF WS-STF01-STATUS = 'COMPLETED'
@@ -620,14 +632,11 @@
                               MOVE 'SM004' TO ERRMSG1O  
                            ELSE 
                               MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
-                              MOVE DFHUNIMD TO 
-                                   DETL-SELECTA(WS-INDEX)
-                              MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                              PERFORM 56A-HIGHLIGHT-ERR-FIELD
                            END-IF   
                         ELSE
                            MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
-                           MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
-                           MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                           PERFORM 56A-HIGHLIGHT-ERR-FIELD
                         END-IF   
                    WHEN 'A'
                         IF WS-STF01-STATUS = 'CREATED' 
@@ -643,14 +652,11 @@
                               END-EXEC
                            ELSE
                               MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
-                              MOVE DFHUNIMD TO 
-                                   DETL-SELECTA(WS-INDEX)
-                              MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                              PERFORM 56A-HIGHLIGHT-ERR-FIELD
                            END-IF   
                          ELSE
                            MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
-                           MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
-                           MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                           PERFORM 56A-HIGHLIGHT-ERR-FIELD
                          END-IF    
                    WHEN 'X'
                         IF WS-STF01-REQ = USERID
@@ -665,140 +671,92 @@
                            END-EXEC 
                         ELSE
                            MOVE WS-INVALID-TIX-ACC TO ERRMSG1O
-                           MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
-                           MOVE -1       TO DETL-SELECTL(WS-INDEX)
+                           PERFORM 56A-HIGHLIGHT-ERR-FIELD
                         END-IF   
                    WHEN 0 
-                        MOVE DFHUNIMD     TO DETL-SELECTA(WS-INDEX)
-                        MOVE -1           TO DETL-SELECTL(WS-INDEX)
+                        PERFORM 56A-HIGHLIGHT-ERR-FIELD
                         MOVE WS-FIELD-REQ TO ERRMSG1O 
                         PERFORM 600-MOVE-Q-TO-SCREEN  
                         PERFORM 111-CREATE-MAP        
                    WHEN OTHER
-                        MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
-                        MOVE -1       TO DETL-SELECTL(WS-INDEX)
+                        PERFORM 56A-HIGHLIGHT-ERR-FIELD
                         MOVE WS-INVALID-VALUE TO ERRMSG1O 
                         PERFORM 600-MOVE-Q-TO-SCREEN  
                         PERFORM 111-CREATE-MAP            
                   END-EVALUATE  
                ELSE 
-                 MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
-                 MOVE -1       TO DETL-SELECTL(WS-INDEX)
+                 PERFORM 56A-HIGHLIGHT-ERR-FIELD
                  MOVE WS-MULTIPLE-SELECT TO ERRMSG1O
                  PERFORM 600-MOVE-Q-TO-SCREEN
                  PERFORM 111-CREATE-MAP    
                  IF WS-SELECT-COUNT < 1
-                    MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
-                    MOVE -1 TO DETL-SELECTL(WS-INDEX)
+                    PERFORM 56A-HIGHLIGHT-ERR-FIELD
                     MOVE WS-FIELD-REQ TO ERRMSG1O
                     PERFORM 600-MOVE-Q-TO-SCREEN
                     PERFORM 111-CREATE-MAP    
                  END-IF   
-               END-IF
-              END-IF  
-              ADD 1 TO WS-INDEX  
-           END-PERFORM.
+               END-IF.
        560-EXIT.
            EXIT.
 
+       56A-HIGHLIGHT-ERR-FIELD.
+           PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL 
+             WS-INDEX > 11
+               IF DETL-SELECTI(WS-INDEX) NOT = '-' AND 
+                 DETL-SELECTI(WS-INDEX) NOT = SPACES AND
+                 DETL-SELECTI(WS-INDEX) NOT = LOW-VALUES
+                 MOVE DFHUNIMD TO DETL-SELECTA(WS-INDEX)
+                 MOVE -1       TO DETL-SELECTL(WS-INDEX)
+               END-IF  
+           END-PERFORM.
+       56A-EXIT.
+           EXIT.    
+
        600-MOVE-Q-TO-SCREEN.
-           EVALUATE TRUE
-             WHEN STATUSO NOT = LOW-VALUES
-                  MOVE PAGEO TO WS-PREV-PAGE
-                  MOVE 2 TO WS-STATE
-                  MOVE WS-QITEM-PAGE TO WS-QITEM
-                  MOVE STATUSI TO WS-SEARCH-STATUS
-                  MOVE 1 TO WS-INDEX
-                     EXEC CICS READQ TS
-                         QUEUE(WS-QNAME)
-                         INTO (WS-STF-REC)
-                         LENGTH(WS-REC-LENGTH)
-                         ITEM (WS-QITEM)
-                     END-EXEC 
-                  PERFORM UNTIL WS-INDEX > 11
-                     IF WS-SEARCH-STATUS = WS-TICKET-STAT AND
-                        WS-QITEM <= WS-QITEM-END  
-                        MOVE WS-TICKET-ID TO
-                             DETAILS-TIX-ID(WS-INDEX)
-                        MOVE WS-TICKET-REQ TO WS-STF-REQ2(WS-INDEX)
-                        MOVE WS-TICKET-STAT TO
-                             DETAILS-TIX-STAT(WS-INDEX)
-                        MOVE WS-TICKET-TITLE TO
-                             DETAILS-TIX-TITLE(WS-INDEX)
-                        MOVE WS-UPD-BY TO DETAILS-UPD-BY(WS-INDEX)
-                        MOVE WS-LAST-UPD TO
-                             DETAILS-LAST-UPD(WS-INDEX)
-                        ADD 1 TO WS-INDEX
-                        ADD 1 TO WS-QITEM
-                         EXEC CICS READQ TS
-                                   QUEUE(WS-QNAME)
-                                   INTO (WS-STF-REC)
-                                   LENGTH(WS-REC-LENGTH)
-                                   ITEM (WS-QITEM)
-                         END-EXEC 
-                     ELSE
-                        CONTINUE 
-                        ADD 1 TO WS-QITEM
-                        EXEC CICS READQ TS
-                                   QUEUE(WS-QNAME)
-                                   INTO (WS-STF-REC)
-                                   LENGTH(WS-REC-LENGTH)
-                                   ITEM (WS-QITEM)
-                         END-EXEC 
-                         IF WS-QITEM >= WS-QITEM-END
-                             ADD 1 TO WS-INDEX
-                             MOVE SPACES TO DETL-DETAILI(WS-INDEX)
-                             MOVE DFHBMPRO TO DETL-DETAILA(WS-INDEX)
-                             MOVE WS-LAST-PAGE  TO ERRMSG1O
-                         END-IF
-                     END-IF
-                   END-PERFORM   
-             WHEN OTHER
-                  MOVE PAGEO TO WS-PREV-PAGE
-                  MOVE WS-QITEM-PAGE TO WS-QITEM
+           MOVE PAGEO TO WS-PREV-PAGE
+           MOVE WS-QITEM-PAGE TO WS-QITEM
+           EXEC CICS READQ TS
+                     QUEUE(WS-QNAME)
+                     INTO (WS-STF-REC)
+                     LENGTH(WS-REC-LENGTH)
+                     ITEM (WS-QITEM)
+            END-EXEC  
+           MOVE 1 TO WS-INDEX
+           PERFORM UNTIL WS-INDEX > 11
+               IF EIBRESP = DFHRESP(NORMAL) AND 
+                  WS-QITEM <= WS-QITEM-END  
+                  MOVE WS-TICKET-ID TO DETAILS-TIX-ID(WS-INDEX)
+                  MOVE WS-TICKET-REQ TO WS-STF-REQ2(WS-INDEX)
+                  MOVE WS-TICKET-STAT TO
+                       DETAILS-TIX-STAT(WS-INDEX)
+                  MOVE WS-TICKET-TITLE TO 
+                       DETAILS-TIX-TITLE(WS-INDEX)
+                  MOVE WS-UPD-BY TO DETAILS-UPD-BY(WS-INDEX)
+                  MOVE WS-LAST-UPD TO DETAILS-LAST-UPD(WS-INDEX)
+                  ADD 1 TO WS-INDEX
+                  ADD 1 TO WS-QITEM
                   EXEC CICS READQ TS
-                            QUEUE(WS-QNAME)
-                            INTO (WS-STF-REC)
-                            LENGTH(WS-REC-LENGTH)
-                            ITEM (WS-QITEM)
-                   END-EXEC  
-                  MOVE 1 TO WS-INDEX
-                  PERFORM UNTIL WS-INDEX > 11
-                      IF EIBRESP = DFHRESP(NORMAL) AND 
-                         WS-QITEM <= WS-QITEM-END  
-                         MOVE WS-TICKET-ID TO DETAILS-TIX-ID(WS-INDEX)
-                         MOVE WS-TICKET-REQ TO WS-STF-REQ2(WS-INDEX)
-                         MOVE WS-TICKET-STAT TO
-                              DETAILS-TIX-STAT(WS-INDEX)
-                         MOVE WS-TICKET-TITLE TO 
-                              DETAILS-TIX-TITLE(WS-INDEX)
-                         MOVE WS-UPD-BY TO DETAILS-UPD-BY(WS-INDEX)
-                         MOVE WS-LAST-UPD TO DETAILS-LAST-UPD(WS-INDEX)
-                         ADD 1 TO WS-INDEX
-                         ADD 1 TO WS-QITEM
-                         EXEC CICS READQ TS
-                              QUEUE(WS-QNAME)
-                              INTO (WS-STF-REC)
-                              ITEM (WS-QITEM)
-                        END-EXEC  
-                     ELSE
-                        MOVE SPACES TO DETL-DETAILI(WS-INDEX)
-                        MOVE SPACES TO DETL-SELECTI(WS-INDEX)
-                         MOVE DFHBMASK TO DETL-DETAILA(WS-INDEX)
-                         MOVE DFHBMASK TO DETL-SELECTA(WS-INDEX)
-                        MOVE WS-LAST-PAGE  TO ERRMSG1O
-                        MOVE '1' TO WS-LASTPAGE 
-                        ADD 1 TO WS-INDEX
-                     END-IF
-                  END-PERFORM
-                  MOVE DETAILS-TIX-ID(1) TO WS-FUSER
-           END-EVALUATE.
+                       QUEUE(WS-QNAME)
+                       INTO (WS-STF-REC)
+                       ITEM (WS-QITEM)
+                 END-EXEC  
+              ELSE
+                 MOVE SPACES TO DETL-DETAILI(WS-INDEX)
+                 MOVE SPACES TO DETL-SELECTI(WS-INDEX)
+                  MOVE DFHBMASK TO DETL-DETAILA(WS-INDEX)
+                  MOVE DFHBMASK TO DETL-SELECTA(WS-INDEX)
+      *          MOVE WS-LAST-PAGE  TO ERRMSG1O
+                 MOVE '1' TO WS-LASTPAGE 
+                 ADD 1 TO WS-INDEX
+              END-IF
+           END-PERFORM
+           MOVE DETAILS-TIX-ID(1) TO WS-FUSER.
 
        600-EXIT.
            EXIT.
-   
-       900-MOVE-FILES-TO-Q.
-           MOVE LOW-VALUES TO WS-KEYB. 
+       
+       710-READ-STF001.
+            MOVE LOW-VALUES TO WS-KEYB. 
            MOVE LENGTH OF WS-STF-REC TO WS-REC-LENGTH
             EXEC CICS 
                STARTBR FILE('STF001C')
@@ -810,14 +768,53 @@
                 READNEXT FILE('STF001C')
                 INTO (WS-STF-REC)
                 RIDFLD (WS-KEYB)
-            END-EXEC
-
-           EXEC CICS WRITEQ TS
+            END-EXEC.
+       710-EXIT.
+           EXIT.
+       
+       700-MOVE-FILES-TO-Q.
+           EXEC CICS DELETEQ TS
                      QUEUE(WS-QNAME)
-                     FROM (WS-STF-REC)
-                     LENGTH (WS-REC-LENGTH)
-                     ITEM (WS-QITEM)
-           END-EXEC
+           END-EXEC 
+           PERFORM  710-READ-STF001
+      *    modified filter
+           EVALUATE TRUE
+             WHEN TITLEI NOT = LOW-VALUES AND STATUSI NOT = LOW-VALUES
+                   IF TITLEI = WS-TICKET-TITLE AND 
+                      STATUSI = WS-TICKET-STAT 
+                      EXEC CICS WRITEQ TS
+                           QUEUE(WS-QNAME)
+                           FROM (WS-STF-REC)
+                           LENGTH (WS-REC-LENGTH)
+                           ITEM (WS-QITEM)
+                      END-EXEC
+                  END-IF   
+             WHEN TITLEI NOT = LOW-VALUES
+                  IF TITLEI = WS-TICKET-TITLE  
+                     EXEC CICS WRITEQ TS
+                          QUEUE(WS-QNAME)
+                          FROM (WS-STF-REC)
+                          LENGTH (WS-REC-LENGTH)
+                          ITEM (WS-QITEM)
+                     END-EXEC  
+                  END-IF     
+             WHEN STATUSI NOT = LOW-VALUES
+                  IF STATUSI = WS-TICKET-STAT  
+                     EXEC CICS WRITEQ TS
+                          QUEUE(WS-QNAME)
+                          FROM (WS-STF-REC)
+                          LENGTH (WS-REC-LENGTH)
+                          ITEM (WS-QITEM)
+                     END-EXEC  
+                  END-IF
+             WHEN OTHER     
+                   EXEC CICS WRITEQ TS
+                             QUEUE(WS-QNAME)
+                             FROM (WS-STF-REC)
+                             LENGTH (WS-REC-LENGTH)
+                             ITEM (WS-QITEM)
+                   END-EXEC
+           END-EVALUATE        
            MOVE WS-QITEM TO WS-QITEM-START
            MOVE 1 TO WS-TOTAL-QITEM
            PERFORM UNTIL EIBRESP NOT = DFHRESP(NORMAL)
@@ -828,15 +825,54 @@
                     RIDFLD (WS-KEYB)
                END-EXEC
                IF EIBRESP = DFHRESP(NORMAL)
-                  EXEC CICS WRITEQ TS
-                       QUEUE(WS-QNAME)
-                       FROM (WS-STF-REC)
-                       LENGTH (WS-REC-LENGTH)
-                       ITEM (WS-QITEM)
-                  END-EXEC
-                 MOVE WS-T-ID TO WS-KEYB6
+                   EVALUATE TRUE
+                     WHEN TITLEI NOT = LOW-VALUES AND 
+                          STATUSI NOT = LOW-VALUES
+                          IF TITLEI = WS-TICKET-TITLE AND 
+                             STATUSI = WS-TICKET-STAT 
+                              
+                             EXEC CICS WRITEQ TS
+                                  QUEUE(WS-QNAME)
+                                  FROM (WS-STF-REC)
+                                  LENGTH (WS-REC-LENGTH)
+                                  ITEM (WS-QITEM)
+                             END-EXEC
+                             ADD 1 TO WS-TOTAL-QITEM
+                          END-IF   
+                     WHEN TITLEI NOT = LOW-VALUES
+                          IF TITLEI = WS-TICKET-TITLE 
+                            
+                             EXEC CICS WRITEQ TS
+                                  QUEUE(WS-QNAME)
+                                  FROM (WS-STF-REC)
+                                  LENGTH (WS-REC-LENGTH)
+                                  ITEM (WS-QITEM)
+                             END-EXEC  
+                             ADD 1 TO WS-TOTAL-QITEM 
+                          END-IF      
+                     WHEN STATUSI NOT = LOW-VALUES
+                          IF STATUSI = WS-TICKET-STAT 
+                            
+                             EXEC CICS WRITEQ TS
+                                  QUEUE(WS-QNAME)
+                                  FROM (WS-STF-REC)
+                                  LENGTH (WS-REC-LENGTH)
+                                  ITEM (WS-QITEM)
+                             END-EXEC
+                              ADD 1 TO WS-TOTAL-QITEM  
+                          END-IF
+                     WHEN OTHER     
+                           EXEC CICS WRITEQ TS
+                                     QUEUE(WS-QNAME)
+                                     FROM (WS-STF-REC)
+                                     LENGTH (WS-REC-LENGTH)
+                                     ITEM (WS-QITEM)
+                           END-EXEC
+                            ADD 1 TO WS-TOTAL-QITEM
+                   END-EVALUATE     
+                  MOVE WS-T-ID TO WS-KEYB6
                   MOVE HIGH-VALUES TO WS-KEYB1
-                  ADD 1 TO WS-TOTAL-QITEM
+                 
                END-IF
            END-PERFORM
                DIVIDE WS-TOTAL-QITEM BY 11 GIVING WS-MAX-PAGE
@@ -846,5 +882,7 @@
            END-EXEC
            MOVE WS-QITEM-START TO WS-QITEM-PAGE.
 
-       900-EXIT.
-           EXIT.    
+       700-EXIT.
+           EXIT.  
+
+    

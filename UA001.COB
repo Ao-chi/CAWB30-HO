@@ -14,43 +14,14 @@
        01  WS-DATE                               PIC 9(7).
        01  WS-DATE-X REDEFINES WS-DATE           PIC X(7).
        01  WS-LENGTH                             PIC S9(4) COMP. 
-      *    minodify ko ng onti ung COMMAREA kasi cinonnect ko sa sm000
-       01  WS-COMMAREA. 
-           05 WS-PGMID                           PIC X(06).
-           05 WS-STATE                           PIC X.
-           05 WS-USERID.
-            10 WS-USERID1         PIC X(07).
-            10 FILLER             PIC X(01).
-           05 USR-TYPE.
-              15 USR-REQUESTOR                   PIC X.
-              15 USR-ADMIN                       PIC X.  
-              15 USR-APPROVER                    PIC X.
-              15 USR-SERVICE                     PIC X. 
-      *   05 WS-STATE             PIC X(01).
-          05 WS-FLAG              PIC X(01).
-          05 WS-CTL.
-               10  WS-PAGE                PIC 9(02). 
-               10  WS-QNAME               PIC X(08).
-               10  WS-QITEM               PIC S9(4) COMP.
-               10  WS-QITEM-START         PIC S9(4) COMP.
-               10  WS-QITEM-END           PIC S9(4) COMP.
-               10  WS-QITEM-PAGE          PIC S9(4) COMP.
-               10  WS-CNT-UP              PIC 9(02) VALUE 0.
-               10  WS-PAGE-X              PIC 9(02).
-               10  WS-LASTPAGE            PIC 9(02).
-          05	WS-BACKUP OCCURS 11.
-	           10  WS-B-UD                PIC X(01).
-	           10  WS-B-REQ               PIC X(01).
-	           10  WS-B-ADMN              PIC X(01).
-	           10  WS-B-APP               PIC X(01).
-	           10  WS-B-SP                PIC X(01).
 
-
+       
        01  WS-END                 PIC X(15) VALUE 'INVALID ACCESS'.
-       77 WS-RETNCODE             PIC S9(8) COMP.
+       01  WS-INVALID-USER         pic x(5) value 'block'.
+       77  WS-RETNCODE             PIC S9(8) COMP.
 
       *NEW STORAGE
-  
+       01  WS-IDD                 PIC X(08).
        01  WS-RECB-LENGTH         PIC S9(4) COMP VALUE +20.
        01  WS-INDX                PIC 9(02). 
        01  WS-RID.
@@ -63,12 +34,10 @@
        01  WS-REMAINDER           PIC 9(01).
        01  WS-FIRSTPAGE           PIC X(01).    
        01  WS-PAGEDIFF            PIC 9(02).
-       01  FLAG-SEARCH            PIC X(01).
        01  WS-TEST                PIC X(07).
        01  WS-SUB-HOLDER          PIC 9(02).
        01  WS-PAGE-I              PIC 9(02).
-
-
+       01  WS-PAGEI REDEFINES WS-PAGE-I PIC X(02).
 
        01  WS-REC.
           05  WS-UID.
@@ -85,7 +54,7 @@
           05  WS-UPBY             PIC X(08).
 
       *GALING SA COMMAREA
-       01  WS-ID              PIC X(07) VALUE 'ISCB124'.
+      *01  W-ID              PIC X(07) VALUE 'ISCB124'.
 
        01  WS-AADMIN          PIC X(01) VALUE 'Y'.
 
@@ -138,40 +107,79 @@
        COPY DFHAID.
       
        COPY DFHBMSCA.
-
+       
+       01  WS-COMMAREA.
+           05 WS-PGMID                           PIC X(06).
+           05 WS-STATE                           PIC X.
+           05 WS-TICKET-PASSED                   PIC X(07).
+           05 USERID.
+              10  USERID7                        PIC X(7).
+              10  FILLER                         PIC X(1).
+           05 USR-TYPE.
+             15 USR-REQUESTOR                    PIC X.
+             15 USR-ADMIN                        PIC X.  
+             15 USR-APPROVER                     PIC X.
+             15 USR-SERVICE                      PIC X.
+           05 WS-SM012-STATE                     PIC X.  
+           05 WS-SM012-PGMID                     PIC X(06).   
+           05 WS-FLAG                            PIC X(01).
+           05 WS-CTL.
+              10  WS-PAGE                        PIC 9(02). 
+              10  WS-QNAME                       PIC X(08).
+              10  WS-QITEM                       PIC S9(4) COMP.
+              10  WS-QITEM-START                 PIC S9(4) COMP.
+              10  WS-QITEM-END                   PIC S9(4) COMP.
+              10  WS-QITEM-PAGE                  PIC S9(4) COMP.
+              10  WS-CNT-UP                      PIC 9(02) VALUE 0.
+              10  WS-PAGE-X                      PIC 9(02).
+              10  WS-LASTPAGE                    PIC 9(02).
+              10  WS-COUNT-DISPLAY               PIC 9(02).
+              10  FLAG-SEARCH                    PIC X(01).
+              10  WS-FLAG-VALID                  PIC X(01).
+           05 WS-BACKUP OCCURS 11.
+	          10  WS-B-UD                        PIC X(01).
+	          10  WS-B-REQ                       PIC X(01).
+	          10  WS-B-ADMN                      PIC X(01).
+	          10  WS-B-APP                       PIC X(01).
+	          10  WS-B-SP                        PIC X(01).
+      *----------------------------------------------------------------*
+      *                          LINKAGE SECTION                       *
+      *----------------------------------------------------------------*
        LINKAGE SECTION.
        01  DFHCOMMAREA.
            05 DF-PGMID                           PIC X(06).
-           05 DF-STATE                           PIC X.
+           05 DF-STATE                           PIC X. 
            05 DF-TICKET-PASSED                   PIC X(07).
            05 DF-USERID.
               10  DF-USERID7                     PIC X(7).
               10  FILLER                         PIC X(1).
            05 DF-USR-TYPE.
-             10 DF-USER-REQUESTOR  PIC X(01).
-             10 DF-USER-ADMIN      PIC X(01).
-             10 DF-USER-APPROVER   PIC X(01).
-             10 DF-USER-SERVICE    PIC X(01).
-      *    05 DF-STATE             PIC X(01).
-           05 DF-TICKET-NUM        PIC X(07).
-           05 DF-FLAG              PIC X(01).
+             15 DF-USR-REQUESTOR                 PIC X.
+             15 DF-USR-ADMIN                     PIC X.  
+             15 DF-USR-APPROVER                  PIC X.
+             15 DF-USR-SERVICE                   PIC X.
+           05 DF-SM012-STATE                     PIC X.   
+           05 DF-SM012-PGMID                     PIC X(06).
+           05 DF-FLAG                            PIC X(01).
            05 DF-CTL.
-             10  DF-PAGE                PIC 9(02). 
-             10  DF-QNAME               PIC X(08).
-             10  DF-QITEM               PIC S9(4) COMP.
-             10  DF-QITEM-START         PIC S9(4) COMP.
-             10  DF-QITEM-END           PIC S9(4) COMP.
-             10  DF-QITEM-PAGE          PIC S9(4) COMP.
-             10  DF-CNT-UP              PIC 9(02).
-             10  DF-PAGE-X              PIC 9(02).
-             10  DF-LASTPAGE            PIC 9(02).
+              10  DF-PAGE                        PIC 9(02). 
+              10  DF-QNAME                       PIC X(08).
+              10  DF-QITEM                       PIC S9(4) COMP.
+              10  DF-QITEM-START                 PIC S9(4) COMP.
+              10  DF-QITEM-END                   PIC S9(4) COMP.
+              10  DF-QITEM-PAGE                  PIC S9(4) COMP.
+              10  DF-CNT-UP                      PIC 9(02).
+              10  DF-PAGE-X                      PIC 9(02).
+              10  DF-LASTPAGE                    PIC 9(02).
+              10  DF-COUNT-DISPLAY               PIC 9(02).
+              10  DF-FLAG-SEARCH                 PIC X(01).
+              10  DF-FLAG-VALID                  PIC X(01).
            05 DF-BACKUP OCCURS 11.
-	         10  DF-B-UD                PIC X(01).
-	         10  DF-B-REQ               PIC X(01).
-	         10  DF-B-ADMN              PIC X(01).
-	         10  DF-B-APP               PIC X(01).
-	         10  DF-B-SP                PIC X(01).
-
+	          10  DF-B-UD                        PIC X(01).
+	          10  DF-B-REQ                       PIC X(01).
+	          10  DF-B-ADMN                      PIC X(01).
+	          10  DF-B-APP                       PIC X(01).
+	          10  DF-B-SP                        PIC X(01).
       
        PROCEDURE DIVISION.
        100-PROCESS SECTION.
@@ -192,44 +200,45 @@
            END-IF
 
            MOVE LENGTH OF UA001MI TO WS-LENGTH
-      *    ginamit ko ung values ng sa commarea
-           IF WS-PGMID = 'SM000' OR 'UA001' OR 'UA002' AND 
-              USR-ADMIN = 'Y'
-      *    IF EIBTRNID = 'SW00' OR 'SM00' OR 'UA01' AND WS-AADMIN = 'Y'
 
-      *        IF EIBCALEN = +0 
-      *      ung state piinang check ko kasi un ung galing sa commarea
-      *    pag ung eibcalen kasi di sya pwede = +0 kasi may laman ung pinasang commarea.
-               IF WS-STATE = LOW-VALUES or SPACES
-                   PERFORM 2000-READ-TRANSFER-FILE
-                   MOVE 1 TO WS-PAGE
-                   MOVE WS-PAGE TO PAGEO
+           IF WS-PGMID = 'SM000' OR WS-PGMID = 'UA001' OR 
+              WS-PGMID = 'UA002'
+              IF USR-ADMIN = 'Y'
+                 IF WS-STATE = LOW-VALUES OR SPACE 
+                     MOVE 'N' TO FLAG-SEARCH
+                     MOVE 1 TO WS-PAGE
+                     MOVE WS-PAGE TO PAGEO
+                     MOVE 'N' TO WS-FLAG-VALID
+                 END-IF
 
-               END-IF
-
-               PERFORM 1100-RMAP
-               PERFORM 3000-CHECK-AID
-           
-
-                   EVALUATE TRUE
-                       WHEN WS-STATE = SPACE
-                          PERFORM 2100-TSQ-DISPLAY
-                       
-                       WHEN WS-STATE = 'A'
-                           CONTINUE
-                       
-                       WHEN WS-STATE = 'B'
-                           CONTINUE
-                       
-                       WHEN WS-STATE = 'C'
-                           CONTINUE
-
-
-                   END-EVALUATE
+                 PERFORM 1100-RMAP
+                 PERFORM 3000-CHECK-AID
+                 EVALUATE TRUE
+                     WHEN WS-STATE = SPACE
+                        PERFORM 2000-READ-TRANSFER-FILE
+                        PERFORM 2100-TSQ-DISPLAY
+                     
+                     WHEN WS-STATE = 'A'
+                         CONTINUE
+                     
+                     WHEN WS-STATE = 'B'
+                         CONTINUE
+                     
+                     WHEN WS-STATE = 'C'
+                         CONTINUE
+                 END-EVALUATE
        
-               PERFORM 3100-MSG-AID
-               MOVE WS-PAGE TO WS-PAGE-X
-               PERFORM 1000-NEW-MAP
+                 PERFORM 3100-MSG-AID
+                 MOVE WS-PAGE TO WS-PAGE-X
+                 PERFORM 1000-NEW-MAP
+              ELSE
+                  EXEC CICS SEND TEXT
+                     FROM (WS-INVALID-USER)
+                     LENGTH (+5)
+                     ERASE
+                  END-EXEC  
+                  EXEC CICS RETURN
+                  END-EXEC  
            ELSE
                PERFORM 110-INVALID
            END-IF.
@@ -248,7 +257,7 @@
           
        1000-NEW-MAP.
            EXEC CICS ASSIGN
-               USERID(WS-USERID)
+               USERID(USERID)
            END-EXEC
 
            EXEC CICS ASKTIME
@@ -345,16 +354,14 @@
            DIVIDE WS-SUB-HOLDER   BY 11 GIVING WS-LASTPAGE 
                    REMAINDER WS-REMAINDER 
 
-           IF WS-REMAINDER NOT = 0 
-           
-               ADD 1 TO WS-LASTPAGE
-
-           END-IF.
+      *    IF WS-REMAINDER NOT = 0 
+               ADD 1 TO WS-LASTPAGE.
+      *    END-IF.
 
        2001-EXIT. EXIT.
 
        2100-TSQ-DISPLAY. 
-
+           MOVE 0 TO WS-COUNT-DISPLAY
            MOVE WS-QITEM-PAGE TO WS-QITEM
            EXEC CICS READQ TS
                QUEUE(WS-QNAME)
@@ -369,13 +376,13 @@
                IF EIBRESP = DFHRESP (NORMAL) AND
                   WS-QITEM <= WS-QITEM-END
                    
-      *             MOVE '_'    TO UDI(WS-INDX)
                    MOVE WS-UID TO UIDI(WS-INDX)
                    MOVE WS-REQ TO REQI(WS-INDX)
                    MOVE WS-ADMN TO ADMNI(WS-INDX)
                    MOVE WS-APP TO APPI(WS-INDX)
                    MOVE WS-SP TO SPI(WS-INDX)
-
+                   
+                   ADD 1 TO WS-COUNT-DISPLAY
                    ADD 1 TO WS-QITEM
 
                    EXEC CICS READQ TS
@@ -420,9 +427,9 @@
                    IF WS-STATE =  'A' AND WS-FLAG = 'N'
                    IF PAGEO IS NUMERIC
                        IF PAGEO =  WS-PAGE-X
-                           CONTINUE
+                           MOVE 'K' TO WS-FLAG
                        ELSE
-                           MOVE PAGEI TO WS-PAGE-I
+                           MOVE PAGEI TO WS-PAGEI
                            IF WS-PAGE-I > WS-LASTPAGE
                                MOVE 'X' TO WS-FLAG
                            END-IF
@@ -442,26 +449,78 @@
                                END-IF 
                                
                                MOVE 'O' TO WS-FLAG                   
-                         END-IF
+                           END-IF
+                       END-IF
+             
+                       ELSE
+                           MOVE '1' TO WS-FLAG
+                       END-IF
                    END-IF
-                       MOVE 'Y' TO WS-FLAG
 
-                   ELSE
-                       MOVE '1' TO WS-FLAG
-                   END-IF
+                   IF WS-STATE = 'B' AND WS-FLAG = 'N'
+                       MOVE SPACE TO WS-STATE
+                       MOVE 'N' TO WS-FLAG-VALID 
+                       MOVE 'N' TO FLAG-SEARCH
+                       PERFORM 7400-RESET
                    END-IF
 
+                   IF WS-STATE = 'A' AND WS-FLAG = 'Y' AND
+                       FLAG-SEARCH = 'Y'
+                       PERFORM 7200-CHECK-EDIT
+                       IF WS-FLAG-VALID = 'Y'
+                           MOVE 'B' TO WS-STATE
+                           MOVE 'N' TO WS-FLAG
+                       ELSE
+                           MOVE 'D' TO WS-FLAG
+                       END-IF
+                   END-IF
+
+                   IF WS-STATE = 'A' AND WS-FLAG = 'Y' AND
+                       FLAG-SEARCH = 'N'
+                       MOVE 1 TO WS-INDX
+                       MOVE 'Y' TO WS-FLAG-VALID
+      ****insert validation
+                       IF WS-FLAG-VALID = 'Y'
+                           MOVE 'B' TO WS-STATE
+                           MOVE 'N' TO WS-FLAG
+                       ELSE
+                           MOVE 'D' TO WS-FLAG
+                       END-IF
+                   END-IF
+                   
 
                    IF WS-STATE = SPACE AND WS-FLAG = NULL
                        MOVE 'N' TO WS-FLAG
                    END-IF
 
                WHEN EIBAID = DFHPF2
-                   MOVE 'GO TO UA002'  TO MSGO
-
+                    MOVE 'UA001' TO WS-PGMID
+                    MOVE LOW-VALUES TO WS-STATE
+                    MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+                    EXEC CICS XCTL 
+                         PROGRAM('UA002')
+                         COMMAREA(WS-COMMAREA)
+                    END-EXEC
 
                WHEN EIBAID = DFHPF3
-                   MOVE 'GO TO SM00'  TO MSGO
+                     IF WS-PGMID = 'UA001'
+                        MOVE 'UA001' TO WS-PGMID
+                        MOVE LOW-VALUES TO WS-STATE
+                        MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+                        EXEC CICS 
+                            SEND CONTROL 
+                            ERASE
+                        END-EXEC
+                        EXEC CICS DELETEQ TS
+                             QUEUE(WS-QNAME)
+                        END-EXEC 
+                        EXEC CICS XCTL 
+                             PROGRAM('SM000')
+                             COMMAREA(WS-COMMAREA)
+                        END-EXEC
+                     END-IF
+                     MOVE 'UA001' TO WS-PGMID
+
 
                WHEN EIBAID = DFHPF5
                    MOVE 'N' TO WS-FLAG 
@@ -471,11 +530,8 @@
                WHEN EIBAID = DFHPF7
                    CONTINUE
 
-
                WHEN EIBAID = DFHPF8
                    CONTINUE
-
-
 
 
                WHEN EIBAID = DFHPF12
@@ -501,20 +557,23 @@
                WHEN EIBAID = DFHENTER
                    IF WS-STATE = 'A' AND WS-FLAG = '1'
                        PERFORM 2100-TSQ-DISPLAY
-
                        MOVE 'PAGE NUMBER ERROR. NUMERIC ONLY ' TO MSGO
                        MOVE 'N' TO WS-FLAG
                    END-IF
 
-                   IF WS-STATE = SPACE AND WS-FLAG = 'N'
+                   IF WS-STATE = 'A' AND WS-FLAG = 'K' AND
+                     FLAG-SEARCH = 'N'
+                       PERFORM 4000-CHECK-UPDATE
+                   END-IF 
+
+                   IF WS-STATE = SPACE AND WS-FLAG = 'N' 
                        MOVE 'A' TO WS-STATE
+                       PERFORM 2100-TSQ-DISPLAY
                    END-IF
 
-                   IF WS-STATE = 'A' AND WS-FLAG = 'N'
-                       PERFORM 2100-TSQ-DISPLAY
-                    END-IF 
 
-                   IF WS-STATE = 'A' AND WS-FLAG = 'X'
+
+                   IF WS-STATE = 'A' AND WS-FLAG = 'X' 
                        PERFORM 2100-TSQ-DISPLAY
                        MOVE 'PAGE NUMBER INPUT ERROR. THE LASTPAGE IS ' 
                           TO MSGO(01:41)
@@ -522,13 +581,83 @@
                        MOVE 'N' TO WS-FLAG
                    END-IF
 
-                    IF WS-STATE = 'A' AND WS-FLAG = 'O'
+                    IF WS-STATE = 'A' AND WS-FLAG = 'O' 
                     
                        PERFORM 2100-TSQ-DISPLAY
                        MOVE WS-PAGE-I TO WS-PAGE
                        MOVE 'N' TO WS-FLAG
                     END-IF 
 
+      *             IF WS-STATE = 'A' AND WS-FLAG = 'Q' 
+      *                 MOVE 'HIGHLIGHTED IS REQUIRED/HAS INVALID VALUE'
+      *                  TO MSGO
+      *                 MOVE 'N' TO WS-FLAG
+      *             END-IF
+
+                   IF WS-STATE = 'A' AND WS-FLAG = 'D'
+                       MOVE 'ERROR NO CHANGES'
+                        TO MSGO
+                       MOVE 'N' TO WS-FLAG
+                   END-IF
+
+                   IF WS-STATE = 'A' AND WS-FLAG = 'K' AND
+                        FLAG-SEARCH = 'Y'
+                       PERFORM 7100-SINGLE-CONFIRM
+                   END-IF
+
+                   IF WS-STATE = 'A' AND WS-FLAG = 'Y' AND
+                       FLAG-SEARCH = 'N'
+                       PERFORM 7500-PROTECT-FIELD    
+                       MOVE 'PRESS ENTER AGAIN TO CONFIRM UPDATE'
+                        TO MSGO
+                   END-IF
+
+
+                   IF WS-STATE = 'A' AND WS-FLAG = 'Y' AND
+                       FLAG-SEARCH = 'Y'
+                       
+                       MOVE 1 TO WS-INDX
+                       MOVE DFHBMPRF TO UDA(WS-INDX)
+                       MOVE DFHBMPRF TO UDA(WS-INDX)
+                       MOVE DFHBMPRF TO UIDA(WS-INDX)
+                       MOVE DFHBMPRF TO REQA(WS-INDX)
+                       MOVE DFHBMPRF TO ADMNA(WS-INDX)
+                       MOVE DFHBMPRF TO APPA(WS-INDX)
+                       MOVE DFHBMPRF TO SPA(WS-INDX)
+                       
+                       MOVE 'PRESS ENTER AGAIN TO CONFIRM UPDATE'
+                        TO MSGO
+                   END-IF
+
+                   IF WS-STATE = 'A' AND WS-FLAG = 'Q' 
+                       MOVE 'HIGHLIGHTED IS REQUIRED/HAS INVALID VALUE'
+                        TO MSGO
+                       MOVE 'N' TO WS-FLAG
+                   END-IF
+
+                     IF WS-STATE = 'B' AND WS-FLAG = 'N' AND
+                           FLAG-SEARCH = 'Y'
+                       PERFORM 7300-UPDATE
+                       MOVE 'UPDATES POSTED, PRESS ENTER'
+                        TO MSGO
+                       MOVE 1 TO WS-INDX
+                       MOVE DFHBMPRF TO UDA(WS-INDX)
+                       MOVE DFHBMPRF TO UDA(WS-INDX)
+                       MOVE DFHBMPRF TO UIDA(WS-INDX)
+                       MOVE DFHBMPRF TO REQA(WS-INDX)
+                       MOVE DFHBMPRF TO ADMNA(WS-INDX)
+                       MOVE DFHBMPRF TO APPA(WS-INDX)
+                       MOVE DFHBMPRF TO SPA(WS-INDX)
+                     END-IF
+
+                     IF WS-STATE = 'B' AND WS-FLAG = 'N' AND
+                           FLAG-SEARCH = 'N'
+                       MOVE 1 TO WS-INDX
+                       PERFORM 7310-UPDATE-MULTIPLE UNTIL 
+                           WS-INDX > WS-CNT-UP
+                       MOVE 'UPDATES POSTED, PRESS ENTER'
+                        TO MSGO
+                     END-IF
               
 
                WHEN EIBAID = DFHPF5
@@ -541,11 +670,6 @@
                END-IF
             
 
-               WHEN EIBAID = DFHENTER
-                   IF WS-STATE = 'A' AND WS-FLAG = 'N'
-                     PERFORM 4000-CHECK-UPDATE
-                   END-IF
-
                WHEN EIBAID = DFHPF7
                    SUBTRACT 11 FROM WS-QITEM-PAGE
                    IF WS-QITEM-START = WS-QITEM-PAGE OR
@@ -557,7 +681,6 @@
                        SUBTRACT 1 FROM WS-PAGE
                    END-IF
                    MOVE WS-PAGE TO PAGEO
-
                    PERFORM 2100-TSQ-DISPLAY
 
 
@@ -568,10 +691,9 @@
                        MOVE 'THIS IS THE LAST PAGE' TO MSGO
                    ELSE
                        ADD 1 TO WS-PAGE
-                   END-IF
-
-                   MOVE WS-PAGE TO PAGEO
                    PERFORM 2100-TSQ-DISPLAY
+                   END-IF
+                   MOVE WS-PAGE TO PAGEO
            
 
                WHEN EIBAID = DFHCLEAR
@@ -594,7 +716,7 @@
            MOVE 0 TO WS-CNT-UP
            MOVE 'Y' TO WS-FLAG
 
-           PERFORM UNTIL WS-INDX > 11
+           PERFORM UNTIL WS-INDX > WS-COUNT-DISPLAY
 
                MOVE UDI(WS-INDX)   TO WS-B-UD(WS-INDX)
                MOVE REQI(WS-INDX)  TO WS-B-REQ(WS-INDX)
@@ -611,7 +733,7 @@
                    WHEN 'D'
                        CONTINUE
                    WHEN '_'
-                       PERFORM 4200-CHECK-ROLE
+                       CONTINUE
                    WHEN OTHER
                        MOVE 'Q' TO WS-FLAG
                        PERFORM 4200-CHECK-ROLE
@@ -638,7 +760,6 @@
        4100-EXIT. EXIT.
 
        4200-CHECK-ROLE.
-      *************************************************
            IF REQI(WS-INDX) = 'Y' OR 'N'
                CONTINUE
            ELSE
@@ -700,7 +821,7 @@
 
                    MOVE 1 TO WS-INDX
                
-                   MOVE '_'    TO UDI(WS-INDX)
+      *             MOVE '_'    TO UDI(WS-INDX)
                    MOVE WS-UID TO UIDI(WS-INDX)
                    MOVE WS-REQ TO REQI(WS-INDX)
                    MOVE WS-ADMN TO ADMNI(WS-INDX)
@@ -725,7 +846,7 @@
                        MOVE SPACE TO APPI(WS-INDX)
                        MOVE SPACE TO SPI(WS-INDX) 
 
-                       MOVE DFHBMPRO TO UDA(WS-INDX)
+               
                        MOVE DFHBMPRO TO UDA(WS-INDX)
                        MOVE DFHBMPRO TO UIDA(WS-INDX)
                        MOVE DFHBMPRO TO REQA(WS-INDX)
@@ -738,3 +859,213 @@
                END-IF.
 
        7000-EXIT. EXIT.
+
+       7100-SINGLE-CONFIRM.
+           
+           MOVE 'Y' TO WS-FLAG
+           MOVE 1 TO WS-INDX
+
+           EVALUATE UDI(WS-INDX)
+                   WHEN 'U' 
+                       PERFORM 4200-CHECK-ROLE
+                   WHEN 'D'
+                       CONTINUE
+                   WHEN '_'
+                       MOVE 'Q' TO WS-FLAG
+                       MOVE  DFHUNIMD TO UDA(WS-INDX)
+                   WHEN OTHER
+                       MOVE 'Q' TO WS-FLAG
+                       MOVE  DFHUNIMD TO UDA(WS-INDX)
+           END-EVALUATE.
+
+
+       7100-EXIT. EXIT.
+      
+       7200-CHECK-EDIT.
+
+           MOVE 1 TO WS-INDX
+           MOVE 'N' TO WS-FLAG-VALID
+
+           IF REQI(WS-INDX) = WS-B-REQ(WS-INDX)
+               CONTINUE
+           ELSE
+               MOVE 'Y' TO WS-FLAG-VALID
+           END-IF
+
+           IF ADMNI(WS-INDX) = WS-B-ADMN(WS-INDX)
+               CONTINUE
+           ELSE
+               MOVE 'Y' TO WS-FLAG-VALID
+           END-IF
+           
+           IF APPI(WS-INDX) = WS-B-APP(WS-INDX)
+               CONTINUE
+           ELSE
+               MOVE 'Y' TO WS-FLAG-VALID
+           END-IF
+
+           IF SPI(WS-INDX) = WS-B-SP(WS-INDX)
+               CONTINUE
+           ELSE
+              MOVE 'Y' TO WS-FLAG-VALID
+           END-IF
+           
+           MOVE UIDI(WS-INDX) TO WS-IDD.
+
+       7200-EXIT. EXIT.
+
+       7210-CHECK-EDIT.
+
+           IF REQI(WS-INDX) = WS-B-REQ(WS-INDX)
+               CONTINUE
+           ELSE
+               MOVE 'Y' TO WS-FLAG-VALID
+           END-IF
+
+           IF ADMNI(WS-INDX) = WS-B-ADMN(WS-INDX)
+               CONTINUE
+           ELSE
+               MOVE 'Y' TO WS-FLAG-VALID
+           END-IF
+           
+           IF APPI(WS-INDX) = WS-B-APP(WS-INDX)
+               CONTINUE
+           ELSE
+               MOVE 'Y' TO WS-FLAG-VALID
+           END-IF
+
+           IF SPI(WS-INDX) = WS-B-SP(WS-INDX)
+               CONTINUE
+           ELSE
+              MOVE 'Y' TO WS-FLAG-VALID
+           END-IF
+           
+           MOVE UIDI(WS-INDX) TO WS-IDD.
+
+           ADD 1 TO WS-INDX.
+       7210-EXIT. EXIT.
+
+
+
+       7300-UPDATE.
+
+           EVALUATE UDI(WS-INDX)
+                   WHEN 'U' 
+                       EXEC CICS
+                           READ FILE('UAF001')
+                           INTO (WS-REC)
+                           RIDFLD (WS-IDD)
+                           EQUAL
+                           UPDATE
+                           RESP(WS-RETNCODE)
+                       END-EXEC
+           
+                       MOVE REQI(WS-INDX) TO WS-REQ
+		               MOVE ADMNI(WS-INDX) TO WS-ADMN
+		               MOVE APPI(WS-INDX) TO WS-APP
+		               MOVE SPI(WS-INDX) TO WS-SP
+                       MOVE USERID TO WS-UPBY
+
+                       EXEC CICS
+		                   REWRITE FILE ('UA001')
+		                   FROM (WS-REC)
+                           RESP(WS-RETNCODE)
+		               END-EXEC
+
+
+                   WHEN 'D'
+                       EXEC CICS 
+                           READ FILE('UA002')
+                           INTO (WS-REC)
+                           RIDFLD (WS-IDD)
+				           EQUAL
+                           UPDATE
+                       END-EXEC
+                       EXEC CICS 
+		               DELETE FILE('UA002')
+                       END-EXEC
+
+           END-EVALUATE.
+
+
+       7300-EXIT. EXIT.
+
+       7310-UPDATE-MULTIPLE.
+           
+           MOVE UIDI(WS-INDX)  TO WS-IDD
+           EVALUATE UDI(WS-INDX)
+                   WHEN 'U' 
+                       EXEC CICS
+                           READ FILE('UAF001')
+                           INTO (WS-REC)
+                           RIDFLD (WS-IDD)
+                           EQUAL
+                           UPDATE
+                           RESP(WS-RETNCODE)
+                       END-EXEC
+           
+                       MOVE REQI(WS-INDX) TO WS-REQ
+		               MOVE ADMNI(WS-INDX) TO WS-ADMN
+		               MOVE APPI(WS-INDX) TO WS-APP
+		               MOVE SPI(WS-INDX) TO WS-SP
+                       MOVE USERID TO WS-UPBY
+
+                       EXEC CICS
+		                   REWRITE FILE ('UA001')
+		                   FROM (WS-REC)
+                           RESP(WS-RETNCODE)
+		               END-EXEC
+
+
+                   WHEN 'D'
+                       EXEC CICS 
+                           READ FILE('UA002')
+                           INTO (WS-REC)
+                           RIDFLD (WS-IDD)
+				           EQUAL
+                           UPDATE
+                       END-EXEC
+                       EXEC CICS 
+		               DELETE FILE('UA002')
+                       END-EXEC
+
+           END-EVALUATE
+               MOVE DFHBMPRF TO UDA(WS-INDX)
+               MOVE DFHBMPRF TO UDA(WS-INDX)
+               MOVE DFHBMPRF TO UIDA(WS-INDX)
+               MOVE DFHBMPRF TO REQA(WS-INDX)
+               MOVE DFHBMPRF TO ADMNA(WS-INDX)
+               MOVE DFHBMPRF TO APPA(WS-INDX)
+               MOVE DFHBMPRF TO SPA(WS-INDX)
+
+               ADD 1 TO WS-INDX.
+       7310-EXIT. EXIT.
+
+       7400-RESET.
+           MOVE 1 TO WS-INDX
+             MOVE SPACE TO  USERIDI 
+           PERFORM UNTIL WS-INDX > 11
+             MOVE '_' TO UDI(WS-INDX)
+		     MOVE NULL TO UDA(WS-INDX)
+			 MOVE NULL TO REQA(WS-INDX)
+	         MOVE NULL TO ADMNA(WS-INDX)
+		     MOVE NULL TO APPA(WS-INDX)
+			 MOVE NULL TO SPA(WS-INDX)
+		     ADD 1 TO WS-INDX
+           END-PERFORM.
+       7400-EXIT. EXIT.
+
+       7500-PROTECT-FIELD.
+
+           MOVE 1 TO WS-INDX
+           PERFORM UNTIL WS-INDX > WS-CNT-UP
+               MOVE DFHBMPRF TO UDA(WS-INDX)
+               MOVE DFHBMPRF TO UDA(WS-INDX)
+               MOVE DFHBMPRF TO UIDA(WS-INDX)
+               MOVE DFHBMPRF TO REQA(WS-INDX)
+               MOVE DFHBMPRF TO ADMNA(WS-INDX)
+               MOVE DFHBMPRF TO APPA(WS-INDX)
+               MOVE DFHBMPRF TO SPA(WS-INDX)
+               ADD 1 TO WS-INDX
+           END-PERFORM.
+       7500-EXIT. EXIT.

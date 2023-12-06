@@ -90,6 +90,8 @@ CBL XOPTS(COBOL2)
              15 USR-ADMIN                        PIC X.  
              15 USR-APPROVER                     PIC X.
              15 USR-SERVICE                      PIC X.
+           05 WS-SM012-STATE                     PIC X.  
+           05 WS-SM012-PGMID                     PIC X(06).
            05 WS-STF01-REC.
               10 WS-STF01-ID                     PIC X(07).
               10 FILL1                           PIC X(03).
@@ -120,7 +122,7 @@ CBL XOPTS(COBOL2)
       *                         LINKAGE SECTION                        *
       *----------------------------------------------------------------*
        LINKAGE SECTION.
-        01  DFHCOMMAREA.
+       01  DFHCOMMAREA.
            05 DF-PGMID                           PIC X(06).
            05 DF-STATE                           PIC X. 
            05 DF-TICKET-PASSED                   PIC X(07).
@@ -132,6 +134,8 @@ CBL XOPTS(COBOL2)
              15 DF-USR-ADMIN                     PIC X.  
              15 DF-USR-APPROVER                  PIC X.
              15 DF-USR-SERVICE                   PIC X.
+           05 DF-SM012-STATE                     PIC X.   
+           05 DF-SM012-PGMID                     PIC X(06). 
            05 DF-STF01-REC.
               10 DF-STF01-ID                     PIC X(07).
               10 DF-FILLER                       PIC X(03).
@@ -167,7 +171,8 @@ CBL XOPTS(COBOL2)
            END-EXEC
            
            MOVE DFHCOMMAREA TO WS-COMMAREA
-           IF WS-PGMID = 'SM000' OR 'UA001' OR 'UA002' OR LOW-VALUES
+           IF WS-PGMID = 'SM000' OR WS-PGMID = 'UA001' OR
+              WS-PGMID = 'UA002'
               EVALUATE TRUE 
                 WHEN WS-STATE = LOW-VALUES
                    MOVE 1 TO WS-STATE
@@ -338,12 +343,12 @@ CBL XOPTS(COBOL2)
                         CONTINUE
                  END-EVALUATE        
             WHEN DFHPF3
-                 EXEC CICS SEND TEXT
-                      FROM (WS-END)
-                      LENGTH (+15)
-                      ERASE
-                 END-EXEC
-                 EXEC CICS RETURN
+                 MOVE 'UA002' TO WS-PGMID
+                 MOVE LOW-VALUES TO WS-STATE
+                 MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+                 EXEC CICS XCTL 
+                      PROGRAM('UA001')
+                      COMMAREA(WS-COMMAREA)
                  END-EXEC   
             WHEN DFHPF5
                  EVALUATE TRUE

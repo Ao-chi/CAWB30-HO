@@ -17,86 +17,55 @@
     14	     01  WS-DATE			       PIC 9(7).
     15	     01  WS-DATE-X REDEFINES WS-DATE	       PIC X(7).
     16	     01  WS-LENGTH			       PIC S9(4) COMP.
-    17	    *	 minodify ko ng onti ung COMMAREA kasi cinonnect ko sa sm000
-    18	     01  WS-COMMAREA.
-    19		 05 WS-PGMID			       PIC X(06).
-    20		 05 WS-STATE			       PIC X.
-    21		 05 WS-USERID.
-    22		  10 WS-USERID1 	PIC X(07).
-    23		  10 FILLER		PIC X(01).
-    24		 05 USR-TYPE.
-    25		    15 USR-REQUESTOR		       PIC X.
-    26		    15 USR-ADMIN		       PIC X.
-    27		    15 USR-APPROVER		       PIC X.
-    28		    15 USR-SERVICE		       PIC X.
-    29	    *	05 WS-STATE		PIC X(01).
-    30		05 WS-FLAG		PIC X(01).
-    31		05 WS-CTL.
-    32		     10  WS-PAGE		PIC 9(02).
-    33		     10  WS-QNAME		PIC X(08).
-    34		     10  WS-QITEM		PIC S9(4) COMP.
-    35		     10  WS-QITEM-START 	PIC S9(4) COMP.
-    36		     10  WS-QITEM-END		PIC S9(4) COMP.
-    37		     10  WS-QITEM-PAGE		PIC S9(4) COMP.
-    38		     10  WS-CNT-UP		PIC 9(02) VALUE 0.
-    39		     10  WS-PAGE-X		PIC 9(02).
-    40		     10  WS-LASTPAGE		PIC 9(02).
-    41		05    WS-BACKUP OCCURS 11.
-    42			 10  WS-B-UD		    PIC X(01).
-    43			 10  WS-B-REQ		    PIC X(01).
-    44			 10  WS-B-ADMN		    PIC X(01).
-    45			 10  WS-B-APP		    PIC X(01).
-    46			 10  WS-B-SP		    PIC X(01).
-    47
-    48
-    49       01  WS-END                 PIC X(15) VALUE 'INVALID ACCESS'.
-    50	     77 WS-RETNCODE		PIC S9(8) COMP.
-    51
-    52	    *NEW STORAGE
-    53
-    54	     01  WS-RECB-LENGTH 	PIC S9(4) COMP VALUE +20.
-    55	     01  WS-INDX		PIC 9(02).
-    56	     01  WS-RID.
-    57		 05 WS-RID7		 PIC X(07) VALUE LOW-VALUES.
-    58		 05 FILLER REDEFINES WS-RID7.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+    17
+    18
+    19       01  WS-END                 PIC X(15) VALUE 'INVALID ACCESS'.
+    20       01  WS-INVALID-USER         pic x(5) value 'block'.
+    21	     77  WS-RETNCODE		 PIC S9(8) COMP.
+    22
+    23	    *NEW STORAGE
+    24	     01  WS-IDD 		PIC X(08).
+    25	     01  WS-RECB-LENGTH 	PIC S9(4) COMP VALUE +20.
+    26	     01  WS-INDX		PIC 9(02).
+    27	     01  WS-RID.
+    28		 05 WS-RID7		 PIC X(07) VALUE LOW-VALUES.
+    29		 05 FILLER REDEFINES WS-RID7.
+    30		    10 FILLER		       PIC X(04).
+    31		    10 WS-RID3		       PIC 9(03).
+    32		 05 WS-RID1		       PIC X(01) VALUE HIGH-VALUES.
+    33
+    34	     01  WS-REMAINDER		PIC 9(01).
+    35	     01  WS-FIRSTPAGE		PIC X(01).
+    36	     01  WS-PAGEDIFF		PIC 9(02).
+    37	     01  WS-TEST		PIC X(07).
+    38	     01  WS-SUB-HOLDER		PIC 9(02).
+    39	     01  WS-PAGE-I		PIC 9(02).
+    40	     01  WS-PAGEI REDEFINES WS-PAGE-I PIC X(02).
+    41
+    42	     01  WS-REC.
+    43		05  WS-UID.
+    44		     10 FILLER		     PIC X(04).
+    45		     10 WS-UID2 	     PIC 9(03).
+    46		     10 FILLER		     PIC X.
+    47		05  WS-UID-REDEF REDEFINES WS-UID.
+    48		     10  WS-USERID7	 PIC X(7).
+    49		     10  FILLER 	 PIC X(1).
+    50		05  WS-REQ		PIC X(01).
+    51		05  WS-ADMN		PIC X(01).
+    52		05  WS-APP		PIC X(01).
+    53		05  WS-SP		PIC X(01).
+    54		05  WS-UPBY		PIC X(08).
+    55
+    56	    *GALING SA COMMAREA
+    57      *01  W-ID              PIC X(07) VALUE 'ISCB124'.
+    58CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
 
 
-    59		    10 FILLER		       PIC X(04).
-    60		    10 WS-RID3		       PIC 9(03).
-    61		 05 WS-RID1		       PIC X(01) VALUE HIGH-VALUES.
-    62
-    63	     01  WS-REMAINDER		PIC 9(01).
-    64	     01  WS-FIRSTPAGE		PIC X(01).
-    65	     01  WS-PAGEDIFF		PIC 9(02).
-    66	     01  FLAG-SEARCH		PIC X(01).
-    67	     01  WS-TEST		PIC X(07).
-    68	     01  WS-SUB-HOLDER		PIC 9(02).
-    69	     01  WS-PAGE-I		PIC 9(02).
-    70
-    71
-    72
-    73	     01  WS-REC.
-    74		05  WS-UID.
-    75		     10 FILLER		     PIC X(04).
-    76		     10 WS-UID2 	     PIC 9(03).
-    77		     10 FILLER		     PIC X.
-    78		05  WS-UID-REDEF REDEFINES WS-UID.
-    79		     10  WS-USERID7	 PIC X(7).
-    80		     10  FILLER 	 PIC X(1).
-    81		05  WS-REQ		PIC X(01).
-    82		05  WS-ADMN		PIC X(01).
-    83		05  WS-APP		PIC X(01).
-    84		05  WS-SP		PIC X(01).
-    85		05  WS-UPBY		PIC X(08).
-    86
-    87	    *GALING SA COMMAREA
-    88       01  WS-ID              PIC X(07) VALUE 'ISCB124'.
-    89
-    90       01  WS-AADMIN          PIC X(01) VALUE 'Y'.
-    91
-    92
-    93	    PCOPY UA001S.
-    93	    *$PP-START-COPY D:\work\CAWB30-HO\UA001S.COB
+    59       01  WS-AADMIN          PIC X(01) VALUE 'Y'.
+    60
+    61
+    62	    PCOPY UA001S.
+    62	    *$PP-START-COPY D:\work\CAWB30-HO\UA001S.COB
      1	    * SYMBOLIC MAP of UA001S Created by CACXBMS Version 6.0.27
      2	     01  UA001MI.
      3		 02  FILLER				    PIC X(12).
@@ -118,9 +87,7 @@
     19		 02  USERIDL				    PIC S9(4) COMP.
     20		 02  USERIDF				    PIC X.
     21		 02  FILLER REDEFINES USERIDF.
-    22		     03  USERIDA			    PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+    22		     03  USERIDA			    PIC X.
     23		 02  USERIDI				    PIC X(008).
     24		 02  UD1L				    PIC S9(4) COMP.
     25		 02  UD1F				    PIC X.
@@ -151,7 +118,9 @@
     50		 02  UD6F				    PIC X.
     51		 02  FILLER REDEFINES UD6F.
     52		     03  UD6A				    PIC X.
-    53		 02  UD6I				    PIC X(001).
+    53		 02  UD6I				    PIC X(001).CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
     54		 02  UD7L				    PIC S9(4) COMP.
     55		 02  UD7F				    PIC X.
     56		 02  FILLER REDEFINES UD7F.
@@ -178,9 +147,7 @@
     77		     03  UD11A				    PIC X.
     78		 02  UD11I				    PIC X(001).
     79		 02  UID1L				    PIC S9(4) COMP.
-    80		 02  UID1F				    PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+    80		 02  UID1F				    PIC X.
     81		 02  FILLER REDEFINES UID1F.
     82		     03  UID1A				    PIC X.
     83		 02  UID1I				    PIC X(008).
@@ -211,7 +178,9 @@
    108		 02  UID6I				    PIC X(008).
    109		 02  UID7L				    PIC S9(4) COMP.
    110		 02  UID7F				    PIC X.
-   111		 02  FILLER REDEFINES UID7F.
+   111		 02  FILLER REDEFINES UID7F.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
    112		     03  UID7A				    PIC X.
    113		 02  UID7I				    PIC X(008).
    114		 02  UID8L				    PIC S9(4) COMP.
@@ -238,9 +207,7 @@
    135		 02  REQ1F				    PIC X.
    136		 02  FILLER REDEFINES REQ1F.
    137		     03  REQ1A				    PIC X.
-   138		 02  REQ1I				    PIC X(001).CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+   138		 02  REQ1I				    PIC X(001).
    139		 02  REQ2L				    PIC S9(4) COMP.
    140		 02  REQ2F				    PIC X.
    141		 02  FILLER REDEFINES REQ2F.
@@ -271,7 +238,9 @@
    166		 02  FILLER REDEFINES REQ7F.
    167		     03  REQ7A				    PIC X.
    168		 02  REQ7I				    PIC X(001).
-   169		 02  REQ8L				    PIC S9(4) COMP.
+   169		 02  REQ8L				    PIC S9(4) COMP.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
    170		 02  REQ8F				    PIC X.
    171		 02  FILLER REDEFINES REQ8F.
    172		     03  REQ8A				    PIC X.
@@ -298,9 +267,7 @@
    193		 02  ADMN1I				    PIC X(001).
    194		 02  ADMN2L				    PIC S9(4) COMP.
    195		 02  ADMN2F				    PIC X.
-   196		 02  FILLER REDEFINES ADMN2F.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+   196		 02  FILLER REDEFINES ADMN2F.
    197		     03  ADMN2A 			    PIC X.
    198		 02  ADMN2I				    PIC X(001).
    199		 02  ADMN3L				    PIC S9(4) COMP.
@@ -331,7 +298,9 @@
    224		 02  ADMN8L				    PIC S9(4) COMP.
    225		 02  ADMN8F				    PIC X.
    226		 02  FILLER REDEFINES ADMN8F.
-   227		     03  ADMN8A 			    PIC X.
+   227		     03  ADMN8A 			    PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
    228		 02  ADMN8I				    PIC X(001).
    229		 02  ADMN9L				    PIC S9(4) COMP.
    230		 02  ADMN9F				    PIC X.
@@ -358,9 +327,7 @@
    251		 02  FILLER REDEFINES APP2F.
    252		     03  APP2A				    PIC X.
    253		 02  APP2I				    PIC X(001).
-   254		 02  APP3L				    PIC S9(4) COMP.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+   254		 02  APP3L				    PIC S9(4) COMP.
    255		 02  APP3F				    PIC X.
    256		 02  FILLER REDEFINES APP3F.
    257		     03  APP3A				    PIC X.
@@ -391,7 +358,9 @@
    282		     03  APP8A				    PIC X.
    283		 02  APP8I				    PIC X(001).
    284		 02  APP9L				    PIC S9(4) COMP.
-   285		 02  APP9F				    PIC X.
+   285		 02  APP9F				    PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
    286		 02  FILLER REDEFINES APP9F.
    287		     03  APP9A				    PIC X.
    288		 02  APP9I				    PIC X(001).
@@ -418,9 +387,7 @@
    309		 02  SP3L				    PIC S9(4) COMP.
    310		 02  SP3F				    PIC X.
    311		 02  FILLER REDEFINES SP3F.
-   312		     03  SP3A				    PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+   312		     03  SP3A				    PIC X.
    313		 02  SP3I				    PIC X(001).
    314		 02  SP4L				    PIC S9(4) COMP.
    315		 02  SP4F				    PIC X.
@@ -451,7 +418,9 @@
    340		 02  SP9F				    PIC X.
    341		 02  FILLER REDEFINES SP9F.
    342		     03  SP9A				    PIC X.
-   343		 02  SP9I				    PIC X(001).
+   343		 02  SP9I				    PIC X(001).CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
    344		 02  SP10L				    PIC S9(4) COMP.
    345		 02  SP10F				    PIC X.
    346		 02  FILLER REDEFINES SP10F.
@@ -478,9 +447,7 @@
    367		     03  EXITA				    PIC X.
    368		 02  EXITI				    PIC X(010).
    369		 02  FINDL				    PIC S9(4) COMP.
-   370		 02  FINDF				    PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+   370		 02  FINDF				    PIC X.
    371		 02  FILLER REDEFINES FINDF.
    372		     03  FINDA				    PIC X.
    373		 02  FINDI				    PIC X(010).
@@ -511,7 +478,9 @@
    398		 02  FILLER				    PIC X.
    399		 02  TIMEO				    PIC X(008).
    400		 02  FILLER				    PIC XX.
-   401		 02  FILLER				    PIC X.
+   401		 02  FILLER				    PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
    402		 02  USERIDO				    PIC X(008).
    403		 02  FILLER				    PIC XX.
    404		 02  FILLER				    PIC X.
@@ -538,9 +507,7 @@
    425		 02  FILLER				    PIC X.
    426		 02  UD8O				    PIC X(001).
    427		 02  FILLER				    PIC XX.
-   428		 02  FILLER				    PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+   428		 02  FILLER				    PIC X.
    429		 02  UD9O				    PIC X(001).
    430		 02  FILLER				    PIC XX.
    431		 02  FILLER				    PIC X.
@@ -571,7 +538,9 @@
    456		 02  UID7O				    PIC X(008).
    457		 02  FILLER				    PIC XX.
    458		 02  FILLER				    PIC X.
-   459		 02  UID8O				    PIC X(008).
+   459		 02  UID8O				    PIC X(008).CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
    460		 02  FILLER				    PIC XX.
    461		 02  FILLER				    PIC X.
    462		 02  UID9O				    PIC X(008).
@@ -598,9 +567,7 @@
    483		 02  REQ5O				    PIC X(001).
    484		 02  FILLER				    PIC XX.
    485		 02  FILLER				    PIC X.
-   486		 02  REQ6O				    PIC X(001).CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+   486		 02  REQ6O				    PIC X(001).
    487		 02  FILLER				    PIC XX.
    488		 02  FILLER				    PIC X.
    489		 02  REQ7O				    PIC X(001).
@@ -631,7 +598,9 @@
    514		 02  FILLER				    PIC XX.
    515		 02  FILLER				    PIC X.
    516		 02  ADMN5O				    PIC X(001).
-   517		 02  FILLER				    PIC XX.
+   517		 02  FILLER				    PIC XX.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
    518		 02  FILLER				    PIC X.
    519		 02  ADMN6O				    PIC X(001).
    520		 02  FILLER				    PIC XX.
@@ -658,9 +627,7 @@
    541		 02  FILLER				    PIC XX.
    542		 02  FILLER				    PIC X.
    543		 02  APP3O				    PIC X(001).
-   544		 02  FILLER				    PIC XX.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+   544		 02  FILLER				    PIC XX.
    545		 02  FILLER				    PIC X.
    546		 02  APP4O				    PIC X(001).
    547		 02  FILLER				    PIC XX.
@@ -691,7 +658,9 @@
    572		 02  FILLER				    PIC X.
    573		 02  SP2O				    PIC X(001).
    574		 02  FILLER				    PIC XX.
-   575		 02  FILLER				    PIC X.
+   575		 02  FILLER				    PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
    576		 02  SP3O				    PIC X(001).
    577		 02  FILLER				    PIC XX.
    578		 02  FILLER				    PIC X.
@@ -718,9 +687,7 @@
    599		 02  FILLER				    PIC X.
    600		 02  SP11O				    PIC X(001).
    601		 02  FILLER				    PIC XX.
-   602		 02  FILLER				    PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+   602		 02  FILLER				    PIC X.
    603		 02  MSGO				    PIC X(060).
    604		 02  FILLER				    PIC XX.
    605		 02  FILLER				    PIC X.
@@ -740,55 +707,55 @@
    619		 02  FILLER				    PIC XX.
    620		 02  FILLER				    PIC X.
    621		 02  RESETO				    PIC X(012).
-    93	    *$PP-END-COPY
-    94
-    95	      01  WS-UA001 REDEFINES UA001MI.
-    96		 05  FILLER		     PIC X(52).
-    97		 05  UD  OCCURS 11.
-    98		     10  UDL		     PIC S9(4) COMP.
-    99		     10  UDF		     PIC X.
-   100		     10  FILLER REDEFINES UDF.
-   101			 15  UDA	     PIC X.
-   102		     10  UDI		     PIC X(001).
-   103		 05  UID     OCCURS 11.
-   104		     10  UIDL		     PIC S9(4) COMP.
-   105		     10  UIDF		     PIC X.
-   106		     10  FILLER REDEFINES UIDF.
-   107			 15  UIDA	     PIC X.
-   108		     10  UIDI.
-   109			 15 FILLER	     PIC X(04).
-   110			 15 WS-USERNUM	     PIC 9(03).
-   111			 15 FILLER	     PIC X.
-   112		 05  REQ     OCCURS 11.
-   113		     10  REQL		     PIC S9(4) COMP.
-   114		     10  REQF		     PIC X.
-   115		     10  FILLER REDEFINES REQF.
-   116			 15 REQA	     PIC X.
-   117		     10  REQI		     PIC X(001).
-   118		 05  ADMN      OCCURS 11.
-   119		     10  ADMNL		     PIC S9(4) COMP.
-   120		     10  ADMNF		     PIC X.
-   121		     10  FILLER REDEFINES ADMNF.
-   122			 15  ADMNA	     PIC X.
-   123		     10  ADMNI		     PIC X(001).
-   124		 05  APP     OCCURS 11.
-   125		     10  APPL		     PIC S9(4) COMP.
-   126		     10  APPF		     PIC X.
-   127		     10  FILLER REDEFINES APPF.
-   128			 15  APPA	     PIC X.
-   129		     10  APPI		     PIC X(001).
-   130		 05  SP 	 OCCURS 11.
-   131		     10  SPL		     PIC S9(4) COMP.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+    62	    *$PP-END-COPY
+    63
+    64	      01  WS-UA001 REDEFINES UA001MI.
+    65		 05  FILLER		     PIC X(52).
+    66		 05  UD  OCCURS 11.
+    67		     10  UDL		     PIC S9(4) COMP.
+    68		     10  UDF		     PIC X.
+    69		     10  FILLER REDEFINES UDF.
+    70			 15  UDA	     PIC X.
+    71		     10  UDI		     PIC X(001).
+    72		 05  UID     OCCURS 11.
+    73		     10  UIDL		     PIC S9(4) COMP.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
 
 
-   132		     10  SPF		     PIC X.
-   133		     10  FILLER REDEFINES SPF.
-   134			 15  SPA	     PIC X.
-   135		     10  SPI		     PIC X(001).
-   136
-   137
-   138	    PCOPY DFHAID.
-   138	    *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHAID.COB
+    74		     10  UIDF		     PIC X.
+    75		     10  FILLER REDEFINES UIDF.
+    76			 15  UIDA	     PIC X.
+    77		     10  UIDI.
+    78			 15 FILLER	     PIC X(04).
+    79			 15 WS-USERNUM	     PIC 9(03).
+    80			 15 FILLER	     PIC X.
+    81		 05  REQ     OCCURS 11.
+    82		     10  REQL		     PIC S9(4) COMP.
+    83		     10  REQF		     PIC X.
+    84		     10  FILLER REDEFINES REQF.
+    85			 15 REQA	     PIC X.
+    86		     10  REQI		     PIC X(001).
+    87		 05  ADMN      OCCURS 11.
+    88		     10  ADMNL		     PIC S9(4) COMP.
+    89		     10  ADMNF		     PIC X.
+    90		     10  FILLER REDEFINES ADMNF.
+    91			 15  ADMNA	     PIC X.
+    92		     10  ADMNI		     PIC X(001).
+    93		 05  APP     OCCURS 11.
+    94		     10  APPL		     PIC S9(4) COMP.
+    95		     10  APPF		     PIC X.
+    96		     10  FILLER REDEFINES APPF.
+    97			 15  APPA	     PIC X.
+    98		     10  APPI		     PIC X(001).
+    99		 05  SP 	 OCCURS 11.
+   100		     10  SPL		     PIC S9(4) COMP.
+   101		     10  SPF		     PIC X.
+   102		     10  FILLER REDEFINES SPF.
+   103			 15  SPA	     PIC X.
+   104		     10  SPI		     PIC X(001).
+   105
+   106
+   107	    PCOPY DFHAID.
+   107	    *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHAID.COB
      1	     01  DFHAID.
      2	    *
      3	    * CA-Realia CICS 6.0 Computer Associates International, Inc.
@@ -811,7 +778,9 @@
     20           05  DFHPF3                    PIC X VALUE '3'.
     21           05  DFHPF4                    PIC X VALUE '4'.
     22           05  DFHPF5                    PIC X VALUE '5'.
-    23           05  DFHPF6                    PIC X VALUE '6'.
+    23           05  DFHPF6                    PIC X VALUE '6'.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
     24           05  DFHPF7                    PIC X VALUE '7'.
     25           05  DFHPF8                    PIC X VALUE '8'.
     26           05  DFHPF9                    PIC X VALUE '9'.
@@ -838,19 +807,17 @@
     47      *                                        value QUOTE  "
     48           05  DFHPEN                    PIC X VALUE '='.
     49           05  DFHCLRP                   PIC X VALUE 'Ý'.
-    50      *                                  EBCDIC x'6A'CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+    50      *                                  EBCDIC x'6A'
     51      *                                  ASCII  x'DD'
     52           05  DFHSTRF                   PIC X VALUE 'h'.
     53	    *	 DFHQUIT is a CA-Realia CICS Extension
     54	    *	 It is set by using <Ctrl>+C or <Ctrl>+<Break> Keys
     55           05  DFHQUIT                   PIC X VALUE '!'.
     56		 05  DFHNULL		       PIC X VALUE LOW-VALUE.
-   138	    *$PP-END-COPY
-   139
-   140	    PCOPY DFHBMSCA.
-   140	    *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHBMSCA.COB
+   107	    *$PP-END-COPY
+   108
+   109	    PCOPY DFHBMSCA.
+   109	    *$PP-START-COPY D:\WORK\CAWB30-HO\CICSCOPY\DFHBMSCA.COB
      1	     01  DFHBMSCA.
      2	    *
      3	    * CA-Realia CICS 6.0 Computer Associates International, Inc.
@@ -871,7 +838,9 @@
     18	    *	    characters in ASCII
     19	    *
     20	    *	    They have their values set up to default to the EBCDIC
-    21	    *	    values.
+    21	    *	    values.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
     22	    *
     23	    *	    3270 orders are only needed for EXEC CICS SEND and RECEIVE
     24	    *	    and SEND TEXT with imbedded format orders.
@@ -898,9 +867,7 @@
     45           05  DFHBMASB                          PIC X VALUE '8'.
     46           05  DFHBMASF                          PIC X VALUE '1'.
     47           05  DFHBMASK                          PIC X VALUE '0'.
-    48           05  DFHBMBRY                          PIC X VALUE 'H'.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+    48           05  DFHBMBRY                          PIC X VALUE 'H'.
     49           05  DFHBMDAR                          PIC X VALUE '<'.
     50           05  DFHBMFSE                          PIC X VALUE 'A'.
     51           05  DFHBMPRF                          PIC X VALUE '/'.
@@ -931,7 +898,9 @@
     76           05  DFHBMS-NUM-DAR-FSET               PIC X VALUE ')'.
     77	    *
     78	    *	 Field Flag values
-    79		 05  DFHBMEOF-VAL VALUE 128	       PIC S9(4) COMP-4.
+    79		 05  DFHBMEOF-VAL VALUE 128	       PIC S9(4) COMP-4.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
     80		 05  FILLER REDEFINES DFHBMEOF-VAL.
     81		     10  FILLER 		       PIC X.
     82		     10  DFHBMEOF		       PIC X.
@@ -958,9 +927,7 @@
    103
    104		 05  DFHBMDUP-VAL VALUE 028	       PIC S9(4) COMP-4.
    105		 05  FILLER REDEFINES DFHBMDUP-VAL.
-   106		     10  FILLER 		       PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+   106		     10  FILLER 		       PIC X.
    107		     10  DFHBMDUP		       PIC X.
    108      *                                              x'1C'
    109	    *
@@ -991,7 +958,9 @@
    134		 05  DFHSBA-VAL VALUE 017		PIC S9(4) COMP-4.
    135		 05  FILLER REDEFINES DFHSBA-VAL.
    136		     10  FILLER 		       PIC X.
-   137		     10  DFHSBA 		       PIC X.
+   137		     10  DFHSBA 		       PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
    138      *                                              x'11'
    139		 05  DFHEUA-VAL VALUE 018	       PIC S9(4) COMP-4.
    140		 05  FILLER REDEFINES DFHEUA-VAL.
@@ -1018,9 +987,7 @@
    161      *                                              ASCII  X'09'.
    162		 05  DFHRA-VAL VALUE 060	       PIC S9(4) COMP-4.
    163		     88 DFHRA-VAL-EBCDIC	       VALUE 60.
-   164		     88 DFHRA-VAL-ASCII 	       VALUE 20.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+   164		     88 DFHRA-VAL-ASCII 	       VALUE 20.
    165		 05  FILLER REDEFINES DFHRA-VAL.
    166		     10  FILLER 		       PIC X.
    167		     10  DFHRA			       PIC X.
@@ -1051,7 +1018,9 @@
    192		     88 DFHSA-VAL-ASCII 	       VALUE 21.
    193		 05  FILLER REDEFINES DFHSA-VAL.
    194		     10  FILLER 		       PIC X.
-   195		     10  DFHSA			       PIC X.
+   195		     10  DFHSA			       PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
    196      *                                              EBCDIC x'28'
    197      *                                              ASCII  x'15'
    198		 05  DFHGE-VAL VALUE 008	       PIC S9(4) COMP-4.
@@ -1078,9 +1047,7 @@
    219		     88 DFHBMPNL-VAL-ASCII	       VALUE 10.
    220		 05  FILLER REDEFINES DFHBMPNL-VAL.
    221		     10  FILLER 		       PIC X.
-   222		     10  DFHBMPNL		       PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+   222		     10  DFHBMPNL		       PIC X.
    223      *                                              EBCDIC X'15'.
    224      *                                              ASCII  X'0A'.
    225	    *
@@ -1111,7 +1078,9 @@
    250		 05  DFHBMDET			       PIC X VALUE LOW-VALUES.
    251		 05  DFHBMPSOSI-VAL VALUE 3599	       PIC S9(4) COMP-4.
    252		 05  FILLER REDEFINES DFHBMPSOSI-VAL.
-   253		     10  DFHBMPSO		       PIC X.
+   253		     10  DFHBMPSO		       PIC X.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
    254      *                                              X'0E'.
    255		     10  DFHBMPSI		       PIC X.
    256      *                                              X'0F'.
@@ -1138,9 +1107,7 @@
    277		 05  FILLER REDEFINES DFHSUB-VAL.
    278		     10  FILLER 		       PIC X.
    279		     10  DFHSUB 		       PIC X.
-   280      *                                              EBCDIC X'3F'.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
-
-
+   280      *                                              EBCDIC X'3F'.
    281      *                                              ASCII  X'1A'.
    282	    *
    283		 05  DFHFM-VAL	  VALUE 030	       PIC S9(4) COMP-4.
@@ -1149,627 +1116,1003 @@
    286		     10  DFHFM			       PIC X.
    287      *                                              EBCDIC X'1E'.
    288		 05  DFHEO VALUE HIGH-VALUE	       PIC X.
-   140	    *$PP-END-COPY
-   141
-   142	     LINKAGE SECTION.
-   143	     01  DFHCOMMAREA.
-   144		 05 DF-PGMID			       PIC X(06).
-   145		 05 DF-STATE			       PIC X.
-   146		 05 DF-TICKET-PASSED		       PIC X(07).
-   147		 05 DF-USERID.
-   148		    10	DF-USERID7		       PIC X(7).
-   149		    10	FILLER			       PIC X(1).
-   150		 05 DF-USR-TYPE.
-   151		   10 DF-USER-REQUESTOR  PIC X(01).
-   152		   10 DF-USER-ADMIN	 PIC X(01).
-   153		   10 DF-USER-APPROVER	 PIC X(01).
-   154		   10 DF-USER-SERVICE	 PIC X(01).
-   155	    *	 05 DF-STATE		 PIC X(01).
-   156		 05 DF-TICKET-NUM	 PIC X(07).
-   157		 05 DF-FLAG		 PIC X(01).
-   158		 05 DF-CTL.
-   159		   10  DF-PAGE		      PIC 9(02).
-   160		   10  DF-QNAME 	      PIC X(08).
-   161		   10  DF-QITEM 	      PIC S9(4) COMP.
-   162		   10  DF-QITEM-START	      PIC S9(4) COMP.
-   163		   10  DF-QITEM-END	      PIC S9(4) COMP.
-   164		   10  DF-QITEM-PAGE	      PIC S9(4) COMP.
-   165		   10  DF-CNT-UP	      PIC 9(02).
-   166		   10  DF-PAGE-X	      PIC 9(02).
-   167		   10  DF-LASTPAGE	      PIC 9(02).
-   168		 05 DF-BACKUP OCCURS 11.
-   169		       10  DF-B-UD		  PIC X(01).
-   170		       10  DF-B-REQ		  PIC X(01).
-   171		       10  DF-B-ADMN		  PIC X(01).
-   172		       10  DF-B-APP		  PIC X(01).
-   173		       10  DF-B-SP		  PIC X(01).
-   174
-   175
-   176	     PROCEDURE DIVISION 					      REALCICS
-   177	     100-PROCESS SECTION.
-   178		 EXEC CICS IGNORE CONDITION
-   179			   ERROR
-   180		 END-EXEC
-   181		 MOVE DFHCOMMAREA  TO WS-COMMAREA
-   182		 MOVE LENGTH OF UA001MI TO WS-LENGTH
-   183		 STRING EIBTRMID DELIMITED BY SIZE
-   184                      'UA01' DELIMITED BY SIZE
-   185			INTO WS-QNAME
-   186		 END-STRING
-   187
-   188           IF WS-STATE  = 'A' OR 'B' OR 'C' OR  SPACE
-   189		    CONTINUECA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+   109	    *$PP-END-COPY
+   110
+   111	     01  WS-COMMAREA.
+   112		 05 WS-PGMID			       PIC X(06).
+   113		 05 WS-STATE			       PIC X.
+   114		 05 WS-TICKET-PASSED		       PIC X(07).
+   115		 05 USERID.
+   116		    10	USERID7 		       PIC X(7).
+   117		    10	FILLER			       PIC X(1).
+   118		 05 USR-TYPE.
+   119		   15 USR-REQUESTOR		       PIC X.
+   120		   15 USR-ADMIN 		       PIC X.
+   121		   15 USR-APPROVER		       PIC X.
+   122		   15 USR-SERVICE		       PIC X.
+   123		 05 WS-SM012-STATE		       PIC X.
+   124		 05 WS-SM012-PGMID		       PIC X(06).
+   125		 05 WS-FLAG			       PIC X(01).
+   126		 05 WS-CTL.
+   127		    10	WS-PAGE 		       PIC 9(02).
+   128		    10	WS-QNAME		       PIC X(08).
+   129		    10	WS-QITEM		       PIC S9(4) COMP.
+   130		    10	WS-QITEM-START		       PIC S9(4) COMP.
+   131		    10	WS-QITEM-END		       PIC S9(4) COMP.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
 
 
-   190		 ELSE
-   191		    MOVE SPACE TO WS-STATE
-   192		 END-IF
-   193
-   194		 MOVE LENGTH OF UA001MI TO WS-LENGTH
-   195	    *	 ginamit ko ung values ng sa commarea
-   196           IF WS-PGMID = 'SM000' OR 'UA001' OR 'UA002' AND
-   197              USR-ADMIN = 'Y'
-   198      *    IF EIBTRNID = 'SW00' OR 'SM00' OR 'UA01' AND WS-AADMIN = 'Y'
-   199
-   200	    *	     IF EIBCALEN = +0
-   201	    *	   ung state piinang check ko kasi un ung galing sa commarea
-   202	    *	 pag ung eibcalen kasi di sya pwede = +0 kasi may laman ung pinasang c
-   203		     IF WS-STATE = LOW-VALUES or SPACES
-   204			 PERFORM 2000-READ-TRANSFER-FILE
-   205			 MOVE 1 TO WS-PAGE
-   206			 MOVE WS-PAGE TO PAGEO
-   207
-   208		     END-IF
-   209
-   210		     PERFORM 1100-RMAP
-   211		     PERFORM 3000-CHECK-AID
-   212
+   132		    10	WS-QITEM-PAGE		       PIC S9(4) COMP.
+   133		    10	WS-CNT-UP		       PIC 9(02) VALUE 0.
+   134		    10	WS-PAGE-X		       PIC 9(02).
+   135		    10	WS-LASTPAGE		       PIC 9(02).
+   136		    10	WS-COUNT-DISPLAY	       PIC 9(02).
+   137		    10	FLAG-SEARCH		       PIC X(01).
+   138		    10	WS-FLAG-VALID		       PIC X(01).
+   139		 05 WS-BACKUP OCCURS 11.
+   140			10  WS-B-UD			   PIC X(01).
+   141			10  WS-B-REQ			   PIC X(01).
+   142			10  WS-B-ADMN			   PIC X(01).
+   143			10  WS-B-APP			   PIC X(01).
+   144			10  WS-B-SP			   PIC X(01).
+   145	    *----------------------------------------------------------------*
+   146	    *			       LINKAGE SECTION			     *
+   147	    *----------------------------------------------------------------*
+   148	     LINKAGE SECTION.
+   149	     01  DFHCOMMAREA.
+   150		 05 DF-PGMID			       PIC X(06).
+   151		 05 DF-STATE			       PIC X.
+   152		 05 DF-TICKET-PASSED		       PIC X(07).
+   153		 05 DF-USERID.
+   154		    10	DF-USERID7		       PIC X(7).
+   155		    10	FILLER			       PIC X(1).
+   156		 05 DF-USR-TYPE.
+   157		   15 DF-USR-REQUESTOR		       PIC X.
+   158		   15 DF-USR-ADMIN		       PIC X.
+   159		   15 DF-USR-APPROVER		       PIC X.
+   160		   15 DF-USR-SERVICE		       PIC X.
+   161		 05 DF-SM012-STATE		       PIC X.
+   162		 05 DF-SM012-PGMID		       PIC X(06).
+   163		 05 DF-FLAG			       PIC X(01).
+   164		 05 DF-CTL.
+   165		    10	DF-PAGE 		       PIC 9(02).
+   166		    10	DF-QNAME		       PIC X(08).
+   167		    10	DF-QITEM		       PIC S9(4) COMP.
+   168		    10	DF-QITEM-START		       PIC S9(4) COMP.
+   169		    10	DF-QITEM-END		       PIC S9(4) COMP.
+   170		    10	DF-QITEM-PAGE		       PIC S9(4) COMP.
+   171		    10	DF-CNT-UP		       PIC 9(02).
+   172		    10	DF-PAGE-X		       PIC 9(02).
+   173		    10	DF-LASTPAGE		       PIC 9(02).
+   174		    10	DF-COUNT-DISPLAY	       PIC 9(02).
+   175		    10	DF-FLAG-SEARCH		       PIC X(01).
+   176		    10	DF-FLAG-VALID		       PIC X(01).
+   177		 05 DF-BACKUP OCCURS 11.
+   178			10  DF-B-UD			   PIC X(01).
+   179			10  DF-B-REQ			   PIC X(01).
+   180			10  DF-B-ADMN			   PIC X(01).
+   181			10  DF-B-APP			   PIC X(01).
+   182			10  DF-B-SP			   PIC X(01).
+   183
+   184	     PROCEDURE DIVISION 					      REALCICS
+   185	     100-PROCESS SECTION.
+   186		 EXEC CICS IGNORE CONDITION
+   187			   ERROR
+   188		 END-EXEC
+   189		 MOVE DFHCOMMAREA  TO WS-COMMAREACA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
+   190		 MOVE LENGTH OF UA001MI TO WS-LENGTH
+   191		 STRING EIBTRMID DELIMITED BY SIZE
+   192                      'UA01' DELIMITED BY SIZE
+   193			INTO WS-QNAME
+   194		 END-STRING
+   195
+   196           IF WS-STATE  = 'A' OR 'B' OR 'C' OR  SPACE
+   197		    CONTINUE
+   198		 ELSE
+   199		    MOVE SPACE TO WS-STATE
+   200		 END-IF
+   201
+   202		 MOVE LENGTH OF UA001MI TO WS-LENGTH
+   203
+   204           IF WS-PGMID = 'SM000' OR WS-PGMID = 'UA001' OR
+   205              WS-PGMID = 'UA002'
+   206              IF USR-ADMIN = 'Y'
+   207		       IF WS-STATE = LOW-VALUES OR SPACE
+   208                     MOVE 'N' TO FLAG-SEARCH
+   209			   MOVE 1 TO WS-PAGE
+   210			   MOVE WS-PAGE TO PAGEO
+   211                     MOVE 'N' TO WS-FLAG-VALID
+   212		       END-IF
    213
-   214			 EVALUATE TRUE
-   215			     WHEN WS-STATE = SPACE
-   216				PERFORM 2100-TSQ-DISPLAY
-   217
-   218                       WHEN WS-STATE = 'A'
-   219				 CONTINUE
+   214		       PERFORM 1100-RMAP
+   215		       PERFORM 3000-CHECK-AID
+   216		       EVALUATE TRUE
+   217			   WHEN WS-STATE = SPACE
+   218			      PERFORM 2000-READ-TRANSFER-FILE
+   219			      PERFORM 2100-TSQ-DISPLAY
    220
-   221                       WHEN WS-STATE = 'B'
-   222				 CONTINUE
+   221                     WHEN WS-STATE = 'A'
+   222			       CONTINUE
    223
-   224                       WHEN WS-STATE = 'C'
-   225				 CONTINUE
+   224                     WHEN WS-STATE = 'B'
+   225			       CONTINUE
    226
-   227
-   228			 END-EVALUATE
-   229
-   230		     PERFORM 3100-MSG-AID
-   231		     MOVE WS-PAGE TO WS-PAGE-X
-   232		     PERFORM 1000-NEW-MAP
-   233		 ELSE
-   234		     PERFORM 110-INVALID
-   235		 END-IF.
-   236	     100-EXIT. EXIT.
-   237
-   238	     110-INVALID.
-   239		 EXEC CICS SEND TEXT
-   240		    FROM (WS-END)
-   241		    LENGTH (+15)
-   242		    ERASE
-   243		 END-EXEC
-   244		 EXEC CICS RETURN
-   245		 END-EXEC.
-   246	     110-EXIT. EXIT.
-   247CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+   227                     WHEN WS-STATE = 'C'
+   228			       CONTINUE
+   229		       END-EVALUATE
+   230
+   231		       PERFORM 3100-MSG-AID
+   232		       MOVE WS-PAGE TO WS-PAGE-X
+   233		       PERFORM 1000-NEW-MAP
+   234		    ELSE
+   235			EXEC CICS SEND TEXT
+   236			   FROM (WS-INVALID-USER)
+   237			   LENGTH (+5)
+   238			   ERASE
+   239			END-EXEC
+   240			EXEC CICS RETURN
+   241			END-EXEC
+   242		 ELSE
+   243		     PERFORM 110-INVALID
+   244		 END-IF.
+   245	     100-EXIT. EXIT.
+   246
+   247	     110-INVALID.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
 
 
-   248
-   249	     1000-NEW-MAP.
-   250		 EXEC CICS ASSIGN
-   251		     USERID(WS-USERID)
+   248		 EXEC CICS SEND TEXT
+   249		    FROM (WS-END)
+   250		    LENGTH (+15)
+   251		    ERASE
    252		 END-EXEC
-   253
-   254		 EXEC CICS ASKTIME
-   255		     ABSTIME  (WS-TIME)
-   256		 END-EXEC
+   253		 EXEC CICS RETURN
+   254		 END-EXEC.
+   255	     110-EXIT. EXIT.
+   256
    257
-   258		 EXEC CICS FORMATTIME
-   259		     ABSTIME  (WS-TIME)
-   260               DATESEP  ('/')
-   261		     DDMMYYYY	(DATEO)
-   262               TIMESEP    (':')
-   263		     TIME	(TIMEO)
-   264		 END-EXEC
-   265
-   266		 EXEC CICS
-   267               SEND MAP ('UA001M')
-   268               MAPSET ('UA001S')
-   269		     FROM (UA001MO)
-   270		     LENGTH(WS-LENGTH)
-   271		     ERASE
-   272		 END-EXEC
-   273
-   274		 EXEC CICS RETURN
-   275               TRANSID('UA01')
-   276		     COMMAREA(WS-COMMAREA)
-   277		 END-EXEC.
-   278
-   279	     1000-EXIT. EXIT.
-   280
-   281	     1100-RMAP.
-   282		 EXEC CICS
-   283             RECEIVE MAP('UA001M')
-   284             MAPSET('UA001S')
-   285		   INTO (UA001MI)
+   258	     1000-NEW-MAP.
+   259		 EXEC CICS ASSIGN
+   260		     USERID(USERID)
+   261		 END-EXEC
+   262
+   263		 EXEC CICS ASKTIME
+   264		     ABSTIME  (WS-TIME)
+   265		 END-EXEC
+   266
+   267		 EXEC CICS FORMATTIME
+   268		     ABSTIME  (WS-TIME)
+   269               DATESEP  ('/')
+   270		     DDMMYYYY	(DATEO)
+   271               TIMESEP    (':')
+   272		     TIME	(TIMEO)
+   273		 END-EXEC
+   274
+   275		 EXEC CICS
+   276               SEND MAP ('UA001M')
+   277               MAPSET ('UA001S')
+   278		     FROM (UA001MO)
+   279		     LENGTH(WS-LENGTH)
+   280		     ERASE
+   281		 END-EXEC
+   282
+   283		 EXEC CICS RETURN
+   284               TRANSID('UA01')
+   285		     COMMAREA(WS-COMMAREA)
    286		 END-EXEC.
-   287	     1100-EXIT. EXIT.
-   288
-   289	     2000-READ-TRANSFER-FILE.
-   290		 MOVE LOW-VALUES TO WS-RID
+   287
+   288	     1000-EXIT. EXIT.
+   289
+   290	     1100-RMAP.
    291		 EXEC CICS
-   292               STARTBR FILE('UAF001')
-   293		     RIDFLD (WS-RID)
-   294		     GTEQ
-   295		 END-EXEC
-   296
-   297		 EXEC CICS
-   298               READNEXT FILE('UAF001')
-   299		     INTO (WS-REC)
-   300		     RIDFLD (WS-RID)
-   301		 END-EXEC
-   302
-   303		 EXEC CICS WRITEQ TS
-   304		     QUEUE (WS-QNAME)
-   305		     FROM (WS-REC)CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+   292             RECEIVE MAP('UA001M')
+   293             MAPSET('UA001S')
+   294		   INTO (UA001MI)
+   295		 END-EXEC.
+   296	     1100-EXIT. EXIT.
+   297
+   298	     2000-READ-TRANSFER-FILE.
+   299		 MOVE LOW-VALUES TO WS-RID
+   300		 EXEC CICS
+   301               STARTBR FILE('UAF001')
+   302		     RIDFLD (WS-RID)
+   303		     GTEQ
+   304		 END-EXEC
+   305CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
 
 
-   306		     LENGTH (WS-RECB-LENGTH)
-   307		     ITEM (WS-QITEM)
-   308		 END-EXEC
-   309
-   310		 MOVE	 WS-QITEM TO WS-QITEM-START
+   306		 EXEC CICS
+   307               READNEXT FILE('UAF001')
+   308		     INTO (WS-REC)
+   309		     RIDFLD (WS-RID)
+   310		 END-EXEC
    311
-   312		 PERFORM UNTIL EIBRESP NOT = DFHRESP (NORMAL)
-   313		     MOVE WS-QITEM TO WS-QITEM-END
-   314		     EXEC CICS
-   315                   READNEXT FILE('UAF001')
-   316			 INTO (WS-REC)
-   317			 RIDFLD (WS-RID)
-   318		     END-EXEC
-   319
-   320		     IF EIBRESP = DFHRESP (NORMAL)
-   321			 EXEC CICS WRITEQ TS
-   322			     QUEUE (WS-QNAME)
-   323			     FROM (WS-REC)
-   324			     LENGTH (WS-RECB-LENGTH)
-   325			     ITEM (WS-QITEM)
-   326			 END-EXEC
-   327			 MOVE WS-USERID7 TO WS-RID7
-   328			 MOVE HIGH-VALUES TO WS-RID1
-   329
-   330
-   331		     END-IF
-   332		 END-PERFORM
-   333
-   334		 EXEC CICS
-   335               ENDBR FILE('UAF001')
-   336		 END-EXEC
-   337		 PERFORM 2001-SET-LASTPAGE
-   338		 MOVE WS-QITEM-START TO WS-QITEM-PAGE.
-   339	     2000-EXIT. EXIT.
-   340
-   341	     2001-SET-LASTPAGE.
-   342		 SUBTRACT WS-QITEM-START FROM WS-QITEM-END GIVING
-   343			  WS-SUB-HOLDER
-   344
-   345		 DIVIDE WS-SUB-HOLDER	BY 11 GIVING WS-LASTPAGE
-   346			 REMAINDER WS-REMAINDER
-   347
-   348		 IF WS-REMAINDER NOT = 0
+   312		 EXEC CICS WRITEQ TS
+   313		     QUEUE (WS-QNAME)
+   314		     FROM (WS-REC)
+   315		     LENGTH (WS-RECB-LENGTH)
+   316		     ITEM (WS-QITEM)
+   317		 END-EXEC
+   318
+   319		 MOVE	 WS-QITEM TO WS-QITEM-START
+   320
+   321		 PERFORM UNTIL EIBRESP NOT = DFHRESP (NORMAL)
+   322		     MOVE WS-QITEM TO WS-QITEM-END
+   323		     EXEC CICS
+   324                   READNEXT FILE('UAF001')
+   325			 INTO (WS-REC)
+   326			 RIDFLD (WS-RID)
+   327		     END-EXEC
+   328
+   329		     IF EIBRESP = DFHRESP (NORMAL)
+   330			 EXEC CICS WRITEQ TS
+   331			     QUEUE (WS-QNAME)
+   332			     FROM (WS-REC)
+   333			     LENGTH (WS-RECB-LENGTH)
+   334			     ITEM (WS-QITEM)
+   335			 END-EXEC
+   336			 MOVE WS-USERID7 TO WS-RID7
+   337			 MOVE HIGH-VALUES TO WS-RID1
+   338
+   339
+   340		     END-IF
+   341		 END-PERFORM
+   342
+   343		 EXEC CICS
+   344               ENDBR FILE('UAF001')
+   345		 END-EXEC
+   346		 PERFORM 2001-SET-LASTPAGE
+   347		 MOVE WS-QITEM-START TO WS-QITEM-PAGE.
+   348	     2000-EXIT. EXIT.
    349
-   350		     ADD 1 TO WS-LASTPAGE
-   351
-   352		 END-IF.
+   350	     2001-SET-LASTPAGE.
+   351		 SUBTRACT WS-QITEM-START FROM WS-QITEM-END GIVING
+   352			  WS-SUB-HOLDER
    353
-   354	     2001-EXIT. EXIT.
-   355
-   356	     2100-TSQ-DISPLAY.
-   357
-   358		 MOVE WS-QITEM-PAGE TO WS-QITEM
-   359		 EXEC CICS READQ TS
-   360		     QUEUE(WS-QNAME)
-   361		     INTO (WS-REC)
-   362		     LENGTH(WS-RECB-LENGTH)
-   363		     ITEM (WS-QITEM)CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+   354		 DIVIDE WS-SUB-HOLDER	BY 11 GIVING WS-LASTPAGE
+   355			 REMAINDER WS-REMAINDER
+   356
+   357	    *	 IF WS-REMAINDER NOT = 0
+   358		     ADD 1 TO WS-LASTPAGE.
+   359	    *	 END-IF.
+   360
+   361	     2001-EXIT. EXIT.
+   362
+   363	     2100-TSQ-DISPLAY.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
 
 
-   364		 END-EXEC
-   365
-   366		 MOVE 1 TO WS-INDX
-   367
-   368		 PERFORM UNTIL WS-INDX > 11
-   369		     IF EIBRESP = DFHRESP (NORMAL) AND
-   370			WS-QITEM <= WS-QITEM-END
-   371
-   372      *             MOVE '_'    TO UDI(WS-INDX)
-   373			 MOVE WS-UID TO UIDI(WS-INDX)
-   374			 MOVE WS-REQ TO REQI(WS-INDX)
-   375			 MOVE WS-ADMN TO ADMNI(WS-INDX)
-   376			 MOVE WS-APP TO APPI(WS-INDX)
-   377			 MOVE WS-SP TO SPI(WS-INDX)
+   364		 MOVE 0 TO WS-COUNT-DISPLAY
+   365		 MOVE WS-QITEM-PAGE TO WS-QITEM
+   366		 EXEC CICS READQ TS
+   367		     QUEUE(WS-QNAME)
+   368		     INTO (WS-REC)
+   369		     LENGTH(WS-RECB-LENGTH)
+   370		     ITEM (WS-QITEM)
+   371		 END-EXEC
+   372
+   373		 MOVE 1 TO WS-INDX
+   374
+   375		 PERFORM UNTIL WS-INDX > 11
+   376		     IF EIBRESP = DFHRESP (NORMAL) AND
+   377			WS-QITEM <= WS-QITEM-END
    378
-   379			 ADD 1 TO WS-QITEM
-   380
-   381			 EXEC CICS READQ TS
-   382			     QUEUE(WS-QNAME)
-   383			     INTO (WS-REC)
-   384			     LENGTH(WS-RECB-LENGTH)
-   385			     ITEM (WS-QITEM)
-   386			 END-EXEC
-   387		     ELSE
-   388
-   389
-   390			MOVE SPACES TO UDI(WS-INDX)
-   391			MOVE SPACES TO UIDI(WS-INDX)
-   392			MOVE SPACES TO REQI(WS-INDX)
-   393			MOVE SPACES TO ADMNI(WS-INDX)
-   394			MOVE SPACES TO APPI(WS-INDX)
-   395			MOVE SPACES TO SPI(WS-INDX)
-   396                  MOVE 'THIS IS THE LAST PAGE'  TO MSGO
-   397
-   398			MOVE DFHBMPRO TO UDA(WS-INDX)
-   399			MOVE DFHBMPRO TO UDA(WS-INDX)
-   400			MOVE DFHBMPRO TO UIDA(WS-INDX)
-   401			MOVE DFHBMPRO TO REQA(WS-INDX)
-   402			MOVE DFHBMPRO TO ADMNA(WS-INDX)
-   403			MOVE DFHBMPRO TO APPA(WS-INDX)
-   404			MOVE DFHBMPRO TO SPA(WS-INDX)
-   405		     END-IF
-   406		     ADD 1 TO WS-INDX
-   407		 END-PERFORM.
-   408
-   409	     2100-EXIT. EXIT.
-   410
-   411
-   412
-   413
-   414	     3000-CHECK-AID.
+   379			 MOVE WS-UID TO UIDI(WS-INDX)
+   380			 MOVE WS-REQ TO REQI(WS-INDX)
+   381			 MOVE WS-ADMN TO ADMNI(WS-INDX)
+   382			 MOVE WS-APP TO APPI(WS-INDX)
+   383			 MOVE WS-SP TO SPI(WS-INDX)
+   384
+   385			 ADD 1 TO WS-COUNT-DISPLAY
+   386			 ADD 1 TO WS-QITEM
+   387
+   388			 EXEC CICS READQ TS
+   389			     QUEUE(WS-QNAME)
+   390			     INTO (WS-REC)
+   391			     LENGTH(WS-RECB-LENGTH)
+   392			     ITEM (WS-QITEM)
+   393			 END-EXEC
+   394		     ELSE
+   395
+   396
+   397			MOVE SPACES TO UDI(WS-INDX)
+   398			MOVE SPACES TO UIDI(WS-INDX)
+   399			MOVE SPACES TO REQI(WS-INDX)
+   400			MOVE SPACES TO ADMNI(WS-INDX)
+   401			MOVE SPACES TO APPI(WS-INDX)
+   402			MOVE SPACES TO SPI(WS-INDX)
+   403                  MOVE 'THIS IS THE LAST PAGE'  TO MSGO
+   404
+   405			MOVE DFHBMPRO TO UDA(WS-INDX)
+   406			MOVE DFHBMPRO TO UDA(WS-INDX)
+   407			MOVE DFHBMPRO TO UIDA(WS-INDX)
+   408			MOVE DFHBMPRO TO REQA(WS-INDX)
+   409			MOVE DFHBMPRO TO ADMNA(WS-INDX)
+   410			MOVE DFHBMPRO TO APPA(WS-INDX)
+   411			MOVE DFHBMPRO TO SPA(WS-INDX)
+   412		     END-IF
+   413		     ADD 1 TO WS-INDX
+   414		 END-PERFORM.
    415
-   416
-   417		 EVALUATE TRUE
+   416	     2100-EXIT. EXIT.
+   417
    418
-   419		     WHEN EIBAID = DFHENTER
-   420                   IF WS-STATE =  'A' AND WS-FLAG = 'N'
-   421			 IF PAGEO IS NUMERICCA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+   419
+   420
+   421	     3000-CHECK-AID.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
 
 
-   422			     IF PAGEO =  WS-PAGE-X
-   423				 CONTINUE
-   424			     ELSE
-   425				 MOVE PAGEI TO WS-PAGE-I
-   426				 IF WS-PAGE-I > WS-LASTPAGE
-   427                               MOVE 'X' TO WS-FLAG
-   428				 END-IF
-   429
-   430                           IF WS-PAGE-I >= 1 AND WS-FLAG  = 'N'
-   431
-   432				     SUBTRACT 1 FROM WS-PAGE-I
-   433					 GIVING WS-SUB-HOLDER
-   434
-   435				     IF WS-SUB-HOLDER = 0
-   436					 MOVE WS-QITEM-START TO WS-QITEM-PAGE
-   437				     END-IF
+   422
+   423
+   424		 EVALUATE TRUE
+   425
+   426		     WHEN EIBAID = DFHENTER
+   427                   IF WS-STATE =  'A' AND WS-FLAG = 'N'
+   428			 IF PAGEO IS NUMERIC
+   429			     IF PAGEO =  WS-PAGE-X
+   430                           MOVE 'K' TO WS-FLAG
+   431			     ELSE
+   432				 MOVE PAGEI TO WS-PAGEI
+   433				 IF WS-PAGE-I > WS-LASTPAGE
+   434                               MOVE 'X' TO WS-FLAG
+   435				 END-IF
+   436
+   437                           IF WS-PAGE-I >= 1 AND WS-FLAG  = 'N'
    438
-   439				     IF WS-SUB-HOLDER  >= 1
-   440					 COMPUTE WS-QITEM-PAGE =
-   441					 WS-QITEM-PAGE + (WS-SUB-HOLDER * 11)
-   442				     END-IF
-   443
-   444                               MOVE 'O' TO WS-FLAG
-   445			       END-IF
-   446			 END-IF
-   447                       MOVE 'Y' TO WS-FLAG
-   448
-   449			 ELSE
-   450                       MOVE '1' TO WS-FLAG
-   451			 END-IF
-   452			 END-IF
-   453
+   439				     SUBTRACT 1 FROM WS-PAGE-I
+   440					 GIVING WS-SUB-HOLDER
+   441
+   442				     IF WS-SUB-HOLDER = 0
+   443					 MOVE WS-QITEM-START TO WS-QITEM-PAGE
+   444				     END-IF
+   445
+   446				     IF WS-SUB-HOLDER  >= 1
+   447					 COMPUTE WS-QITEM-PAGE =
+   448					 WS-QITEM-PAGE + (WS-SUB-HOLDER * 11)
+   449				     END-IF
+   450
+   451                               MOVE 'O' TO WS-FLAG
+   452				 END-IF
+   453			     END-IF
    454
-   455			 IF WS-STATE = SPACE AND WS-FLAG = NULL
-   456                       MOVE 'N' TO WS-FLAG
-   457			 END-IF
-   458
-   459		     WHEN EIBAID = DFHPF2
-   460                   MOVE 'GO TO UA002'  TO MSGO
-   461
-   462
-   463		     WHEN EIBAID = DFHPF3
-   464                   MOVE 'GO TO SM00'  TO MSGO
-   465
-   466		     WHEN EIBAID = DFHPF5
-   467                   MOVE 'N' TO WS-FLAG
-   468                   MOVE 'A' TO WS-STATE
-   469			 PERFORM 7000-FIND-SEARCH
-   470
-   471		     WHEN EIBAID = DFHPF7
-   472			 CONTINUE
-   473
-   474
-   475		     WHEN EIBAID = DFHPF8
-   476			 CONTINUE
+   455			     ELSE
+   456                           MOVE '1' TO WS-FLAG
+   457			     END-IF
+   458			 END-IF
+   459
+   460                   IF WS-STATE = 'B' AND WS-FLAG = 'N'
+   461			     MOVE SPACE TO WS-STATE
+   462                       MOVE 'N' TO WS-FLAG-VALID
+   463                       MOVE 'N' TO FLAG-SEARCH
+   464			     PERFORM 7400-RESET
+   465			 END-IF
+   466
+   467                   IF WS-STATE = 'A' AND WS-FLAG = 'Y' AND
+   468                       FLAG-SEARCH = 'Y'
+   469			     PERFORM 7200-CHECK-EDIT
+   470                       IF WS-FLAG-VALID = 'Y'
+   471                           MOVE 'B' TO WS-STATE
+   472                           MOVE 'N' TO WS-FLAG
+   473			     ELSE
+   474                           MOVE 'D' TO WS-FLAG
+   475			     END-IF
+   476			 END-IF
    477
-   478
-   479CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+   478                   IF WS-STATE = 'A' AND WS-FLAG = 'Y' AND
+   479                       FLAG-SEARCH = 'N'CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
 
 
-   480
-   481		     WHEN EIBAID = DFHPF12
-   482			 EXEC CICS DELETEQ TS
-   483			  QUEUE(WS-QNAME)
-   484			 END-EXEC
-   485
-   486		     WHEN EIBAID = DFHCLEAR
-   487			 CONTINUE
-   488
-   489		     WHEN OTHER
-   490			 CONTINUE
-   491		 END-EVALUATE.
-   492
-   493
-   494	     3000-EXIT. EXIT.
+   480			     MOVE 1 TO WS-INDX
+   481                       MOVE 'Y' TO WS-FLAG-VALID
+   482	    ****insert validation
+   483                       IF WS-FLAG-VALID = 'Y'
+   484                           MOVE 'B' TO WS-STATE
+   485                           MOVE 'N' TO WS-FLAG
+   486			     ELSE
+   487                           MOVE 'D' TO WS-FLAG
+   488			     END-IF
+   489			 END-IF
+   490
+   491
+   492			 IF WS-STATE = SPACE AND WS-FLAG = NULL
+   493                       MOVE 'N' TO WS-FLAG
+   494			 END-IF
    495
-   496
-   497	     3100-MSG-AID.
-   498
-   499		 EVALUATE TRUE
-   500
-   501		     WHEN EIBAID = DFHENTER
-   502                   IF WS-STATE = 'A' AND WS-FLAG = '1'
-   503			     PERFORM 2100-TSQ-DISPLAY
+   496		     WHEN EIBAID = DFHPF2
+   497                    MOVE 'UA001' TO WS-PGMID
+   498			  MOVE LOW-VALUES TO WS-STATE
+   499			  MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+   500			  EXEC CICS XCTL
+   501                         PROGRAM('UA002')
+   502			       COMMAREA(WS-COMMAREA)
+   503			  END-EXEC
    504
-   505                       MOVE 'PAGE NUMBER ERROR. NUMERIC ONLY ' TO MSGO
-   506                       MOVE 'N' TO WS-FLAG
-   507			 END-IF
-   508
-   509                   IF WS-STATE = SPACE AND WS-FLAG = 'N'
-   510                       MOVE 'A' TO WS-STATE
-   511			 END-IF
-   512
-   513                   IF WS-STATE = 'A' AND WS-FLAG = 'N'
-   514			     PERFORM 2100-TSQ-DISPLAY
-   515			  END-IF
-   516
-   517                   IF WS-STATE = 'A' AND WS-FLAG = 'X'
-   518			     PERFORM 2100-TSQ-DISPLAY
-   519                       MOVE 'PAGE NUMBER INPUT ERROR. THE LASTPAGE IS '
-   520				TO MSGO(01:41)
-   521			     MOVE WS-LASTPAGE TO MSGO(42:02)
-   522                       MOVE 'N' TO WS-FLAG
-   523			 END-IF
+   505		     WHEN EIBAID = DFHPF3
+   506                     IF WS-PGMID = 'UA001'
+   507                        MOVE 'UA001' TO WS-PGMID
+   508			      MOVE LOW-VALUES TO WS-STATE
+   509			      MOVE LENGTH OF WS-COMMAREA TO WS-LENGTH
+   510			      EXEC CICS
+   511				  SEND CONTROL
+   512				  ERASE
+   513			      END-EXEC
+   514			      EXEC CICS DELETEQ TS
+   515				   QUEUE(WS-QNAME)
+   516			      END-EXEC
+   517			      EXEC CICS XCTL
+   518                             PROGRAM('SM000')
+   519				   COMMAREA(WS-COMMAREA)
+   520			      END-EXEC
+   521			   END-IF
+   522                     MOVE 'UA001' TO WS-PGMID
+   523
    524
-   525                    IF WS-STATE = 'A' AND WS-FLAG = 'O'
-   526
-   527			     PERFORM 2100-TSQ-DISPLAY
-   528			     MOVE WS-PAGE-I TO WS-PAGE
-   529                       MOVE 'N' TO WS-FLAG
-   530			  END-IF
-   531
+   525		     WHEN EIBAID = DFHPF5
+   526                   MOVE 'N' TO WS-FLAG
+   527                   MOVE 'A' TO WS-STATE
+   528			 PERFORM 7000-FIND-SEARCH
+   529
+   530		     WHEN EIBAID = DFHPF7
+   531			 CONTINUE
    532
-   533
-   534		     WHEN EIBAID = DFHPF5
-   535               IF WS-STATE = 'A' AND WS-FLAG = 'N' AND FLAG-SEARCH = 'Y'
-   536                   MOVE 'RECORD FOUND' TO MSGO
-   537		     END-IFCA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+   533		     WHEN EIBAID = DFHPF8
+   534			 CONTINUE
+   535
+   536
+   537		     WHEN EIBAID = DFHPF12CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
 
 
-   538
-   539               IF WS-STATE = 'A' AND WS-FLAG = 'N' AND FLAG-SEARCH = 'N'
-   540                   MOVE 'RECORD NOT FOUND' TO MSGO
-   541		     END-IF
-   542
-   543
-   544		     WHEN EIBAID = DFHENTER
-   545                   IF WS-STATE = 'A' AND WS-FLAG = 'N'
-   546			   PERFORM 4000-CHECK-UPDATE
-   547			 END-IF
+   538			 EXEC CICS DELETEQ TS
+   539			  QUEUE(WS-QNAME)
+   540			 END-EXEC
+   541
+   542		     WHEN EIBAID = DFHCLEAR
+   543			 CONTINUE
+   544
+   545		     WHEN OTHER
+   546			 CONTINUE
+   547		 END-EVALUATE.
    548
-   549		     WHEN EIBAID = DFHPF7
-   550			 SUBTRACT 11 FROM WS-QITEM-PAGE
-   551			 IF WS-QITEM-START = WS-QITEM-PAGE OR
-   552			    WS-QITEM-START > WS-QITEM-PAGE
-   553                       MOVE 'THIS IS THE FIRST PAGE' TO MSGO
-   554			     MOVE WS-QITEM-START TO WS-QITEM-PAGE
-   555			     MOVE 1 TO WS-PAGE
-   556			 ELSE
-   557			     SUBTRACT 1 FROM WS-PAGE
-   558			 END-IF
-   559			 MOVE WS-PAGE TO PAGEO
-   560
-   561			 PERFORM 2100-TSQ-DISPLAY
-   562
+   549
+   550	     3000-EXIT. EXIT.
+   551
+   552
+   553	     3100-MSG-AID.
+   554
+   555		 EVALUATE TRUE
+   556
+   557		     WHEN EIBAID = DFHENTER
+   558                   IF WS-STATE = 'A' AND WS-FLAG = '1'
+   559			     PERFORM 2100-TSQ-DISPLAY
+   560                       MOVE 'PAGE NUMBER ERROR. NUMERIC ONLY ' TO MSGO
+   561                       MOVE 'N' TO WS-FLAG
+   562			 END-IF
    563
-   564		     WHEN EIBAID = DFHPF8
-   565			 ADD 11 TO WS-QITEM-PAGE
-   566			 IF WS-QITEM-PAGE  > WS-QITEM-END
-   567			     SUBTRACT 11 FROM WS-QITEM-PAGE
-   568                       MOVE 'THIS IS THE LAST PAGE' TO MSGO
-   569			 ELSE
-   570			     ADD 1 TO WS-PAGE
-   571			 END-IF
-   572
-   573			 MOVE WS-PAGE TO PAGEO
-   574			 PERFORM 2100-TSQ-DISPLAY
+   564                   IF WS-STATE = 'A' AND WS-FLAG = 'K' AND
+   565                     FLAG-SEARCH = 'N'
+   566			     PERFORM 4000-CHECK-UPDATE
+   567			 END-IF
+   568
+   569                   IF WS-STATE = SPACE AND WS-FLAG = 'N'
+   570                       MOVE 'A' TO WS-STATE
+   571			     PERFORM 2100-TSQ-DISPLAY
+   572			 END-IF
+   573
+   574
    575
-   576
-   577		     WHEN EIBAID = DFHCLEAR
-   578			 MOVE WS-PAGE TO PAGEO
-   579                   IF WS-STATE = 'A' AND WS-FLAG = 'N'
-   580			     PERFORM 2100-TSQ-DISPLAY
-   581                       MOVE 'INVALID PFKEY PRESSED' TO MSGO
+   576                   IF WS-STATE = 'A' AND WS-FLAG = 'X'
+   577			     PERFORM 2100-TSQ-DISPLAY
+   578                       MOVE 'PAGE NUMBER INPUT ERROR. THE LASTPAGE IS '
+   579				TO MSGO(01:41)
+   580			     MOVE WS-LASTPAGE TO MSGO(42:02)
+   581                       MOVE 'N' TO WS-FLAG
    582			 END-IF
    583
-   584		     WHEN OTHER
-   585                   MOVE 'INVALID PFKEY PRESSED' TO MSGO
-   586		 END-EVALUATE.
-   587
-   588
-   589	     3100-EXIT. EXIT.
+   584                    IF WS-STATE = 'A' AND WS-FLAG = 'O'
+   585
+   586			     PERFORM 2100-TSQ-DISPLAY
+   587			     MOVE WS-PAGE-I TO WS-PAGE
+   588                       MOVE 'N' TO WS-FLAG
+   589			  END-IF
    590
-   591	     4000-CHECK-UPDATE.
-   592
-   593		 MOVE 1 TO WS-INDX
-   594		 MOVE 0 TO WS-CNT-UP
-   595           MOVE 'Y' TO WS-FLAGCA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+   591      *             IF WS-STATE = 'A' AND WS-FLAG = 'Q'
+   592      *                 MOVE 'HIGHLIGHTED IS REQUIRED/HAS INVALID VALUE'
+   593	    *		       TO MSGO
+   594      *                 MOVE 'N' TO WS-FLAG
+   595	    *		  END-IFCA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
 
 
    596
-   597		 PERFORM UNTIL WS-INDX > 11
-   598
-   599		     MOVE UDI(WS-INDX)	 TO WS-B-UD(WS-INDX)
-   600		     MOVE REQI(WS-INDX)  TO WS-B-REQ(WS-INDX)
-   601		     MOVE ADMNI(WS-INDX) TO WS-B-ADMN(WS-INDX)
-   602		     MOVE APPI(WS-INDX)  TO WS-B-APP(WS-INDX)
-   603		     MOVE SPI(WS-INDX)	 TO WS-B-SP(WS-INDX)
-   604
-   605
-   606			 ADD 1 TO WS-CNT-UP
+   597                   IF WS-STATE = 'A' AND WS-FLAG = 'D'
+   598                       MOVE 'ERROR NO CHANGES'
+   599			      TO MSGO
+   600                       MOVE 'N' TO WS-FLAG
+   601			 END-IF
+   602
+   603                   IF WS-STATE = 'A' AND WS-FLAG = 'K' AND
+   604                        FLAG-SEARCH = 'Y'
+   605			     PERFORM 7100-SINGLE-CONFIRM
+   606			 END-IF
    607
-   608			 EVALUATE UDI(WS-INDX)
-   609                   WHEN 'U'
-   610			     PERFORM 4200-CHECK-ROLE
-   611                   WHEN 'D'
-   612			     CONTINUE
-   613                   WHEN '_'
-   614			     PERFORM 4200-CHECK-ROLE
-   615			 WHEN OTHER
-   616                       MOVE 'Q' TO WS-FLAG
-   617			     PERFORM 4200-CHECK-ROLE
-   618			     MOVE  DFHUNIMD TO UDA(WS-INDX)
-   619			 END-EVALUATE
-   620
-   621
-   622		     ADD 1 TO WS-INDX
-   623		 END-PERFORM.
-   624
-   625	     4000-EXIT. EXIT.
-   626
-   627	     4100-DISPLAY-BACKUP.
-   628		 MOVE 1 TO WS-INDX
-   629		 PERFORM UNTIL	WS-INDX > 11
-   630		     MOVE WS-B-UD(WS-INDX)   TO UDI(WS-INDX)
-   631		     MOVE WS-B-REQ(WS-INDX)  TO REQI(WS-INDX)
-   632		     MOVE WS-B-ADMN(WS-INDX) TO ADMNI(WS-INDX)
-   633		     MOVE WS-B-APP(WS-INDX)  TO APPI(WS-INDX)
-   634		     MOVE WS-B-SP(WS-INDX)   TO SPI(WS-INDX)
-   635
-   636		     ADD 1 TO WS-INDX
-   637		 END-PERFORM.
-   638	     4100-EXIT. EXIT.
-   639
-   640	     4200-CHECK-ROLE.
-   641	    *************************************************
-   642           IF REQI(WS-INDX) = 'Y' OR 'N'
-   643		     CONTINUE
-   644		 ELSE
-   645		     MOVE  DFHUNIMD TO REQA(WS-INDX)
-   646               MOVE 'Q' TO WS-FLAG
-   647		 END-IF
-   648
-   649           IF ADMNI(WS-INDX)  = 'Y' OR 'N'
-   650		     CONTINUE
-   651		 ELSE
-   652		     MOVE  DFHUNIMD TO ADMNA(WS-INDX)
-   653               MOVE 'Q' TO WS-FLAGCA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+   608                   IF WS-STATE = 'A' AND WS-FLAG = 'Y' AND
+   609                       FLAG-SEARCH = 'N'
+   610			     PERFORM 7500-PROTECT-FIELD
+   611                       MOVE 'PRESS ENTER AGAIN TO CONFIRM UPDATE'
+   612			      TO MSGO
+   613			 END-IF
+   614
+   615
+   616                   IF WS-STATE = 'A' AND WS-FLAG = 'Y' AND
+   617                       FLAG-SEARCH = 'Y'
+   618
+   619			     MOVE 1 TO WS-INDX
+   620			     MOVE DFHBMPRF TO UDA(WS-INDX)
+   621			     MOVE DFHBMPRF TO UDA(WS-INDX)
+   622			     MOVE DFHBMPRF TO UIDA(WS-INDX)
+   623			     MOVE DFHBMPRF TO REQA(WS-INDX)
+   624			     MOVE DFHBMPRF TO ADMNA(WS-INDX)
+   625			     MOVE DFHBMPRF TO APPA(WS-INDX)
+   626			     MOVE DFHBMPRF TO SPA(WS-INDX)
+   627
+   628                       MOVE 'PRESS ENTER AGAIN TO CONFIRM UPDATE'
+   629			      TO MSGO
+   630			 END-IF
+   631
+   632                   IF WS-STATE = 'A' AND WS-FLAG = 'Q'
+   633                       MOVE 'HIGHLIGHTED IS REQUIRED/HAS INVALID VALUE'
+   634			      TO MSGO
+   635                       MOVE 'N' TO WS-FLAG
+   636			 END-IF
+   637
+   638                     IF WS-STATE = 'B' AND WS-FLAG = 'N' AND
+   639                           FLAG-SEARCH = 'Y'
+   640			     PERFORM 7300-UPDATE
+   641                       MOVE 'UPDATES POSTED, PRESS ENTER'
+   642			      TO MSGO
+   643			     MOVE 1 TO WS-INDX
+   644			     MOVE DFHBMPRF TO UDA(WS-INDX)
+   645			     MOVE DFHBMPRF TO UDA(WS-INDX)
+   646			     MOVE DFHBMPRF TO UIDA(WS-INDX)
+   647			     MOVE DFHBMPRF TO REQA(WS-INDX)
+   648			     MOVE DFHBMPRF TO ADMNA(WS-INDX)
+   649			     MOVE DFHBMPRF TO APPA(WS-INDX)
+   650			     MOVE DFHBMPRF TO SPA(WS-INDX)
+   651			   END-IF
+   652
+   653                     IF WS-STATE = 'B' AND WS-FLAG = 'N' ANDCA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
 
 
-   654		 END-IF
-   655
-   656           IF APPI(WS-INDX) = 'Y' OR 'N'
-   657		     CONTINUE
-   658		 ELSE
-   659		     MOVE  DFHUNIMD TO APPA(WS-INDX)
-   660               MOVE 'Q' TO WS-FLAG
-   661		 END-IF
+   654                           FLAG-SEARCH = 'N'
+   655			     MOVE 1 TO WS-INDX
+   656			     PERFORM 7310-UPDATE-MULTIPLE UNTIL
+   657				 WS-INDX > WS-CNT-UP
+   658                       MOVE 'UPDATES POSTED, PRESS ENTER'
+   659			      TO MSGO
+   660			   END-IF
+   661
    662
-   663           IF SPI(WS-INDX) = 'Y' OR 'N'
-   664		     CONTINUE
-   665		 ELSE
-   666		     MOVE  DFHUNIMD TO SPA(WS-INDX)
-   667               MOVE 'Q' TO WS-FLAG
-   668		 END-IF.
-   669
-   670
+   663		     WHEN EIBAID = DFHPF5
+   664               IF WS-STATE = 'A' AND WS-FLAG = 'N' AND FLAG-SEARCH = 'Y'
+   665                   MOVE 'RECORD FOUND' TO MSGO
+   666		     END-IF
+   667
+   668               IF WS-STATE = 'A' AND WS-FLAG = 'N' AND FLAG-SEARCH = 'N'
+   669                   MOVE 'RECORD NOT FOUND' TO MSGO
+   670		     END-IF
    671
-   672	     4200-EXIT. EXIT.
-   673
-   674
-   675
-   676	     7000-FIND-SEARCH.
-   677
-   678	    *	  USERIDI- user input
-   679           MOVE 'N' TO  FLAG-SEARCH
-   680		 MOVE WS-QITEM-START TO WS-QITEM
-   681		 MOVE USERIDI TO WS-TEST
-   682           PERFORM UNTIL WS-QITEM > WS-QITEM-END OR FLAG-SEARCH = 'Y'
-   683
-   684		     EXEC CICS READQ TS
-   685			 QUEUE(WS-QNAME)
-   686			 INTO (WS-REC)
-   687			 LENGTH(WS-RECB-LENGTH)
-   688			 ITEM (WS-QITEM)
-   689		     END-EXEC
-   690
-   691		     IF WS-TEST = WS-UID
-   692                   MOVE 'Y' TO FLAG-SEARCH
-   693		     END-IF
-   694
-   695		     ADD 1 TO WS-QITEM
-   696
-   697		 END-PERFORM
+   672
+   673		     WHEN EIBAID = DFHPF7
+   674			 SUBTRACT 11 FROM WS-QITEM-PAGE
+   675			 IF WS-QITEM-START = WS-QITEM-PAGE OR
+   676			    WS-QITEM-START > WS-QITEM-PAGE
+   677                       MOVE 'THIS IS THE FIRST PAGE' TO MSGO
+   678			     MOVE WS-QITEM-START TO WS-QITEM-PAGE
+   679			     MOVE 1 TO WS-PAGE
+   680			 ELSE
+   681			     SUBTRACT 1 FROM WS-PAGE
+   682			 END-IF
+   683			 MOVE WS-PAGE TO PAGEO
+   684			 PERFORM 2100-TSQ-DISPLAY
+   685
+   686
+   687		     WHEN EIBAID = DFHPF8
+   688			 ADD 11 TO WS-QITEM-PAGE
+   689			 IF WS-QITEM-PAGE  > WS-QITEM-END
+   690			     SUBTRACT 11 FROM WS-QITEM-PAGE
+   691                       MOVE 'THIS IS THE LAST PAGE' TO MSGO
+   692			 ELSE
+   693			     ADD 1 TO WS-PAGE
+   694			 PERFORM 2100-TSQ-DISPLAY
+   695			 END-IF
+   696			 MOVE WS-PAGE TO PAGEO
+   697
    698
-   699               IF FLAG-SEARCH = 'Y'
-   700
-   701			 MOVE 1 TO WS-INDX
-   702
-   703                   MOVE '_'    TO UDI(WS-INDX)
-   704			 MOVE WS-UID TO UIDI(WS-INDX)
-   705			 MOVE WS-REQ TO REQI(WS-INDX)
-   706			 MOVE WS-ADMN TO ADMNI(WS-INDX)
-   707			 MOVE WS-APP TO APPI(WS-INDX)
-   708			 MOVE WS-SP TO SPI(WS-INDX)
+   699		     WHEN EIBAID = DFHCLEAR
+   700			 MOVE WS-PAGE TO PAGEO
+   701                   IF WS-STATE = 'A' AND WS-FLAG = 'N'
+   702			     PERFORM 2100-TSQ-DISPLAY
+   703                       MOVE 'INVALID PFKEY PRESSED' TO MSGO
+   704			 END-IF
+   705
+   706		     WHEN OTHER
+   707                   MOVE 'INVALID PFKEY PRESSED' TO MSGO
+   708		 END-EVALUATE.
    709
-   710			 MOVE UDI(WS-INDX)   TO WS-B-UD(WS-INDX)
-   711			 MOVE REQI(WS-INDX)  TO WS-B-REQ(WS-INDX)CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+   710
+   711	     3100-EXIT. EXIT.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
 
 
-   712			 MOVE ADMNI(WS-INDX) TO WS-B-ADMN(WS-INDX)
-   713			 MOVE APPI(WS-INDX)  TO WS-B-APP(WS-INDX)
-   714			 MOVE SPI(WS-INDX)   TO WS-B-SP(WS-INDX)
-   715
-   716
-   717			 ADD 1 TO WS-INDX
+   712
+   713	     4000-CHECK-UPDATE.
+   714
+   715		 MOVE 1 TO WS-INDX
+   716		 MOVE 0 TO WS-CNT-UP
+   717           MOVE 'Y' TO WS-FLAG
    718
-   719			 PERFORM UNTIL WS-INDX > 11
+   719		 PERFORM UNTIL WS-INDX > WS-COUNT-DISPLAY
    720
-   721			     MOVE SPACE TO UDI(WS-INDX)
-   722			     MOVE SPACE TO UIDI(WS-INDX)
-   723			     MOVE SPACE TO REQI(WS-INDX)
-   724			     MOVE SPACE TO ADMNI(WS-INDX)
-   725			     MOVE SPACE TO APPI(WS-INDX)
-   726			     MOVE SPACE TO SPI(WS-INDX)
+   721		     MOVE UDI(WS-INDX)	 TO WS-B-UD(WS-INDX)
+   722		     MOVE REQI(WS-INDX)  TO WS-B-REQ(WS-INDX)
+   723		     MOVE ADMNI(WS-INDX) TO WS-B-ADMN(WS-INDX)
+   724		     MOVE APPI(WS-INDX)  TO WS-B-APP(WS-INDX)
+   725		     MOVE SPI(WS-INDX)	 TO WS-B-SP(WS-INDX)
+   726
    727
-   728			     MOVE DFHBMPRO TO UDA(WS-INDX)
-   729			     MOVE DFHBMPRO TO UDA(WS-INDX)
-   730			     MOVE DFHBMPRO TO UIDA(WS-INDX)
-   731			     MOVE DFHBMPRO TO REQA(WS-INDX)
-   732			     MOVE DFHBMPRO TO ADMNA(WS-INDX)
-   733			     MOVE DFHBMPRO TO APPA(WS-INDX)
-   734			     MOVE DFHBMPRO TO SPA(WS-INDX)
-   735
-   736			     ADD 1 TO WS-INDX
-   737			 END-PERFORM
-   738		     END-IF.
-   739
-   740	     7000-EXIT. EXIT.
+   728			 ADD 1 TO WS-CNT-UP
+   729
+   730			 EVALUATE UDI(WS-INDX)
+   731                   WHEN 'U'
+   732			     PERFORM 4200-CHECK-ROLE
+   733                   WHEN 'D'
+   734			     CONTINUE
+   735                   WHEN '_'
+   736			     CONTINUE
+   737			 WHEN OTHER
+   738                       MOVE 'Q' TO WS-FLAG
+   739			     PERFORM 4200-CHECK-ROLE
+   740			     MOVE  DFHUNIMD TO UDA(WS-INDX)
+   741			 END-EVALUATE
+   742
+   743
+   744		     ADD 1 TO WS-INDX
+   745		 END-PERFORM.
+   746
+   747	     4000-EXIT. EXIT.
+   748
+   749	     4100-DISPLAY-BACKUP.
+   750		 MOVE 1 TO WS-INDX
+   751		 PERFORM UNTIL	WS-INDX > 11
+   752		     MOVE WS-B-UD(WS-INDX)   TO UDI(WS-INDX)
+   753		     MOVE WS-B-REQ(WS-INDX)  TO REQI(WS-INDX)
+   754		     MOVE WS-B-ADMN(WS-INDX) TO ADMNI(WS-INDX)
+   755		     MOVE WS-B-APP(WS-INDX)  TO APPI(WS-INDX)
+   756		     MOVE WS-B-SP(WS-INDX)   TO SPI(WS-INDX)
+   757
+   758		     ADD 1 TO WS-INDX
+   759		 END-PERFORM.
+   760	     4100-EXIT. EXIT.
+   761
+   762	     4200-CHECK-ROLE.
+   763           IF REQI(WS-INDX) = 'Y' OR 'N'
+   764		     CONTINUE
+   765		 ELSE
+   766		     MOVE  DFHUNIMD TO REQA(WS-INDX)
+   767               MOVE 'Q' TO WS-FLAG
+   768		 END-IF
+   769CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
+   770           IF ADMNI(WS-INDX)  = 'Y' OR 'N'
+   771		     CONTINUE
+   772		 ELSE
+   773		     MOVE  DFHUNIMD TO ADMNA(WS-INDX)
+   774               MOVE 'Q' TO WS-FLAG
+   775		 END-IF
+   776
+   777           IF APPI(WS-INDX) = 'Y' OR 'N'
+   778		     CONTINUE
+   779		 ELSE
+   780		     MOVE  DFHUNIMD TO APPA(WS-INDX)
+   781               MOVE 'Q' TO WS-FLAG
+   782		 END-IF
+   783
+   784           IF SPI(WS-INDX) = 'Y' OR 'N'
+   785		     CONTINUE
+   786		 ELSE
+   787		     MOVE  DFHUNIMD TO SPA(WS-INDX)
+   788               MOVE 'Q' TO WS-FLAG
+   789		 END-IF.
+   790
+   791
+   792
+   793	     4200-EXIT. EXIT.
+   794
+   795
+   796
+   797	     7000-FIND-SEARCH.
+   798
+   799	    *	  USERIDI- user input
+   800           MOVE 'N' TO  FLAG-SEARCH
+   801		 MOVE WS-QITEM-START TO WS-QITEM
+   802		 MOVE USERIDI TO WS-TEST
+   803           PERFORM UNTIL WS-QITEM > WS-QITEM-END OR FLAG-SEARCH = 'Y'
+   804
+   805		     EXEC CICS READQ TS
+   806			 QUEUE(WS-QNAME)
+   807			 INTO (WS-REC)
+   808			 LENGTH(WS-RECB-LENGTH)
+   809			 ITEM (WS-QITEM)
+   810		     END-EXEC
+   811
+   812		     IF WS-TEST = WS-UID
+   813                   MOVE 'Y' TO FLAG-SEARCH
+   814		     END-IF
+   815
+   816		     ADD 1 TO WS-QITEM
+   817
+   818		 END-PERFORM
+   819
+   820               IF FLAG-SEARCH = 'Y'
+   821
+   822			 MOVE 1 TO WS-INDX
+   823
+   824      *             MOVE '_'    TO UDI(WS-INDX)
+   825			 MOVE WS-UID TO UIDI(WS-INDX)
+   826			 MOVE WS-REQ TO REQI(WS-INDX)
+   827			 MOVE WS-ADMN TO ADMNI(WS-INDX)CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
+   828			 MOVE WS-APP TO APPI(WS-INDX)
+   829			 MOVE WS-SP TO SPI(WS-INDX)
+   830
+   831			 MOVE UDI(WS-INDX)   TO WS-B-UD(WS-INDX)
+   832			 MOVE REQI(WS-INDX)  TO WS-B-REQ(WS-INDX)
+   833			 MOVE ADMNI(WS-INDX) TO WS-B-ADMN(WS-INDX)
+   834			 MOVE APPI(WS-INDX)  TO WS-B-APP(WS-INDX)
+   835			 MOVE SPI(WS-INDX)   TO WS-B-SP(WS-INDX)
+   836
+   837
+   838			 ADD 1 TO WS-INDX
+   839
+   840			 PERFORM UNTIL WS-INDX > 11
+   841
+   842			     MOVE SPACE TO UDI(WS-INDX)
+   843			     MOVE SPACE TO UIDI(WS-INDX)
+   844			     MOVE SPACE TO REQI(WS-INDX)
+   845			     MOVE SPACE TO ADMNI(WS-INDX)
+   846			     MOVE SPACE TO APPI(WS-INDX)
+   847			     MOVE SPACE TO SPI(WS-INDX)
+   848
+   849
+   850			     MOVE DFHBMPRO TO UDA(WS-INDX)
+   851			     MOVE DFHBMPRO TO UIDA(WS-INDX)
+   852			     MOVE DFHBMPRO TO REQA(WS-INDX)
+   853			     MOVE DFHBMPRO TO ADMNA(WS-INDX)
+   854			     MOVE DFHBMPRO TO APPA(WS-INDX)
+   855			     MOVE DFHBMPRO TO SPA(WS-INDX)
+   856
+   857			     ADD 1 TO WS-INDX
+   858			 END-PERFORM
+   859		     END-IF.
+   860
+   861	     7000-EXIT. EXIT.
+   862
+   863	     7100-SINGLE-CONFIRM.
+   864
+   865           MOVE 'Y' TO WS-FLAG
+   866		 MOVE 1 TO WS-INDX
+   867
+   868		 EVALUATE UDI(WS-INDX)
+   869                   WHEN 'U'
+   870			     PERFORM 4200-CHECK-ROLE
+   871                   WHEN 'D'
+   872			     CONTINUE
+   873                   WHEN '_'
+   874                       MOVE 'Q' TO WS-FLAG
+   875			     MOVE  DFHUNIMD TO UDA(WS-INDX)
+   876			 WHEN OTHER
+   877                       MOVE 'Q' TO WS-FLAG
+   878			     MOVE  DFHUNIMD TO UDA(WS-INDX)
+   879		 END-EVALUATE.
+   880
+   881
+   882	     7100-EXIT. EXIT.
+   883
+   884	     7200-CHECK-EDIT.
+   885CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
+   886		 MOVE 1 TO WS-INDX
+   887           MOVE 'N' TO WS-FLAG-VALID
+   888
+   889		 IF REQI(WS-INDX) = WS-B-REQ(WS-INDX)
+   890		     CONTINUE
+   891		 ELSE
+   892               MOVE 'Y' TO WS-FLAG-VALID
+   893		 END-IF
+   894
+   895		 IF ADMNI(WS-INDX) = WS-B-ADMN(WS-INDX)
+   896		     CONTINUE
+   897		 ELSE
+   898               MOVE 'Y' TO WS-FLAG-VALID
+   899		 END-IF
+   900
+   901		 IF APPI(WS-INDX) = WS-B-APP(WS-INDX)
+   902		     CONTINUE
+   903		 ELSE
+   904               MOVE 'Y' TO WS-FLAG-VALID
+   905		 END-IF
+   906
+   907		 IF SPI(WS-INDX) = WS-B-SP(WS-INDX)
+   908		     CONTINUE
+   909		 ELSE
+   910              MOVE 'Y' TO WS-FLAG-VALID
+   911		 END-IF
+   912
+   913		 MOVE UIDI(WS-INDX) TO WS-IDD.
+   914
+   915	     7200-EXIT. EXIT.
+   916
+   917	     7210-CHECK-EDIT.
+   918
+   919		 IF REQI(WS-INDX) = WS-B-REQ(WS-INDX)
+   920		     CONTINUE
+   921		 ELSE
+   922               MOVE 'Y' TO WS-FLAG-VALID
+   923		 END-IF
+   924
+   925		 IF ADMNI(WS-INDX) = WS-B-ADMN(WS-INDX)
+   926		     CONTINUE
+   927		 ELSE
+   928               MOVE 'Y' TO WS-FLAG-VALID
+   929		 END-IF
+   930
+   931		 IF APPI(WS-INDX) = WS-B-APP(WS-INDX)
+   932		     CONTINUE
+   933		 ELSE
+   934               MOVE 'Y' TO WS-FLAG-VALID
+   935		 END-IF
+   936
+   937		 IF SPI(WS-INDX) = WS-B-SP(WS-INDX)
+   938		     CONTINUE
+   939		 ELSE
+   940              MOVE 'Y' TO WS-FLAG-VALID
+   941		 END-IF
+   942
+   943		 MOVE UIDI(WS-INDX) TO WS-IDD.CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
+   944
+   945		 ADD 1 TO WS-INDX.
+   946	     7210-EXIT. EXIT.
+   947
+   948
+   949
+   950	     7300-UPDATE.
+   951
+   952		 EVALUATE UDI(WS-INDX)
+   953                   WHEN 'U'
+   954			     EXEC CICS
+   955                           READ FILE('UAF001')
+   956				 INTO (WS-REC)
+   957				 RIDFLD (WS-IDD)
+   958				 EQUAL
+   959				 UPDATE
+   960				 RESP(WS-RETNCODE)
+   961			     END-EXEC
+   962
+   963			     MOVE REQI(WS-INDX) TO WS-REQ
+   964				     MOVE ADMNI(WS-INDX) TO WS-ADMN
+   965				     MOVE APPI(WS-INDX) TO WS-APP
+   966				     MOVE SPI(WS-INDX) TO WS-SP
+   967			     MOVE USERID TO WS-UPBY
+   968
+   969			     EXEC CICS
+   970                                   REWRITE FILE ('UA001')
+   971					 FROM (WS-REC)
+   972				 RESP(WS-RETNCODE)
+   973				     END-EXEC
+   974
+   975
+   976                   WHEN 'D'
+   977			     EXEC CICS
+   978                           READ FILE('UA002')
+   979				 INTO (WS-REC)
+   980				 RIDFLD (WS-IDD)
+   981						 EQUAL
+   982				 UPDATE
+   983			     END-EXEC
+   984			     EXEC CICS
+   985                               DELETE FILE('UA002')
+   986			     END-EXEC
+   987
+   988		 END-EVALUATE.
+   989
+   990
+   991	     7300-EXIT. EXIT.
+   992
+   993	     7310-UPDATE-MULTIPLE.
+   994
+   995		 MOVE UIDI(WS-INDX)  TO WS-IDD
+   996		 EVALUATE UDI(WS-INDX)
+   997                   WHEN 'U'
+   998			     EXEC CICS
+   999                           READ FILE('UAF001')
+  1000				 INTO (WS-REC)
+  1001				 RIDFLD (WS-IDD)CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
+  1002				 EQUAL
+  1003				 UPDATE
+  1004				 RESP(WS-RETNCODE)
+  1005			     END-EXEC
+  1006
+  1007			     MOVE REQI(WS-INDX) TO WS-REQ
+  1008				     MOVE ADMNI(WS-INDX) TO WS-ADMN
+  1009				     MOVE APPI(WS-INDX) TO WS-APP
+  1010				     MOVE SPI(WS-INDX) TO WS-SP
+  1011			     MOVE USERID TO WS-UPBY
+  1012
+  1013			     EXEC CICS
+  1014                                   REWRITE FILE ('UA001')
+  1015					 FROM (WS-REC)
+  1016				 RESP(WS-RETNCODE)
+  1017				     END-EXEC
+  1018
+  1019
+  1020                   WHEN 'D'
+  1021			     EXEC CICS
+  1022                           READ FILE('UA002')
+  1023				 INTO (WS-REC)
+  1024				 RIDFLD (WS-IDD)
+  1025						 EQUAL
+  1026				 UPDATE
+  1027			     END-EXEC
+  1028			     EXEC CICS
+  1029                               DELETE FILE('UA002')
+  1030			     END-EXEC
+  1031
+  1032		 END-EVALUATE
+  1033		     MOVE DFHBMPRF TO UDA(WS-INDX)
+  1034		     MOVE DFHBMPRF TO UDA(WS-INDX)
+  1035		     MOVE DFHBMPRF TO UIDA(WS-INDX)
+  1036		     MOVE DFHBMPRF TO REQA(WS-INDX)
+  1037		     MOVE DFHBMPRF TO ADMNA(WS-INDX)
+  1038		     MOVE DFHBMPRF TO APPA(WS-INDX)
+  1039		     MOVE DFHBMPRF TO SPA(WS-INDX)
+  1040
+  1041		     ADD 1 TO WS-INDX.
+  1042	     7310-EXIT. EXIT.
+  1043
+  1044	     7400-RESET.
+  1045		 MOVE 1 TO WS-INDX
+  1046		   MOVE SPACE TO  USERIDI
+  1047		 PERFORM UNTIL WS-INDX > 11
+  1048             MOVE '_' TO UDI(WS-INDX)
+  1049			   MOVE NULL TO UDA(WS-INDX)
+  1050			       MOVE NULL TO REQA(WS-INDX)
+  1051		       MOVE NULL TO ADMNA(WS-INDX)
+  1052			   MOVE NULL TO APPA(WS-INDX)
+  1053			       MOVE NULL TO SPA(WS-INDX)
+  1054			   ADD 1 TO WS-INDX
+  1055		 END-PERFORM.
+  1056	     7400-EXIT. EXIT.
+  1057
+  1058	     7500-PROTECT-FIELD.
+  1059CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
+
+
+  1060		 MOVE 1 TO WS-INDX
+  1061		 PERFORM UNTIL WS-INDX > WS-CNT-UP
+  1062		     MOVE DFHBMPRF TO UDA(WS-INDX)
+  1063		     MOVE DFHBMPRF TO UDA(WS-INDX)
+  1064		     MOVE DFHBMPRF TO UIDA(WS-INDX)
+  1065		     MOVE DFHBMPRF TO REQA(WS-INDX)
+  1066		     MOVE DFHBMPRF TO ADMNA(WS-INDX)
+  1067		     MOVE DFHBMPRF TO APPA(WS-INDX)
+  1068		     MOVE DFHBMPRF TO SPA(WS-INDX)
+  1069		     ADD 1 TO WS-INDX
+  1070		 END-PERFORM.
+  1071	     7500-EXIT. EXIT.
 CA-Realia CACXPREP D:\work\CAWB30-HO\UA001.COB
 
 
@@ -1787,6 +2130,6 @@
 		      PPCODE
 		      DCHK
 
-		Source Lines Translated:    1715
-		Translation Time:	     .02 sec
-		Translation Speed:	  716666 lines per min
+		Source Lines Translated:    2046
+		Translation Time:	     .03 sec
+		Translation Speed:	   92000 lines per min
